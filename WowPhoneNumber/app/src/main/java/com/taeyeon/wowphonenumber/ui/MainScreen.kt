@@ -3,17 +3,18 @@
 
 package com.taeyeon.wowphonenumber.ui
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChevronLeft
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.taeyeon.wowphonenumber.R
@@ -27,117 +28,138 @@ fun MainContent(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
         bottomBar = { BottomBar() }
-    ) {
-        Text(text = "afds",
-        modifier = Modifier.padding(it))
+    ) { paddingValues ->
+        val primaryContainer = MaterialTheme.colorScheme.primaryContainer
+        val backgroundColor = MaterialTheme.colorScheme.background
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .drawBehind {
+                    // Top
+                    drawRect(
+                        color = primaryContainer,
+                        topLeft = Offset(0f, 0f),
+                        size = Size(16.dp.toPx(), 16.dp.toPx())
+                    )
+                    drawArc(
+                        color = backgroundColor,
+                        startAngle = 180f,
+                        sweepAngle = 90f,
+                        useCenter = true,
+                        topLeft = Offset(0f, 0f),
+                        size = Size(32.dp.toPx(), 32.dp.toPx()),
+                    )
+                    drawRect(
+                        color = primaryContainer,
+                        topLeft = Offset(size.width - 16.dp.toPx(), 0f),
+                        size = Size(16.dp.toPx(), 16.dp.toPx())
+                    )
+                    drawArc(
+                        color = backgroundColor,
+                        startAngle = 270f,
+                        sweepAngle = 90f,
+                        useCenter = true,
+                        topLeft = Offset(size.width - 32.dp.toPx(), 0f),
+                        size = Size(32.dp.toPx(), 32.dp.toPx()),
+                    )
+                    // Bottom
+                    drawRect(
+                        color = primaryContainer,
+                        topLeft = Offset(0f, size.height - 16.dp.toPx()),
+                        size = Size(16.dp.toPx(), 16.dp.toPx())
+                    )
+                    drawArc(
+                        color = backgroundColor,
+                        startAngle = 90f,
+                        sweepAngle = 90f,
+                        useCenter = true,
+                        topLeft = Offset(0f, size.height - 32.dp.toPx()),
+                        size = Size(32.dp.toPx(), 32.dp.toPx()),
+                    )
+                    drawRect(
+                        color = primaryContainer,
+                        topLeft = Offset(size.width - 16.dp.toPx(), size.height - 16.dp.toPx()),
+                        size = Size(16.dp.toPx(), 16.dp.toPx())
+                    )
+                    drawArc(
+                        color = backgroundColor,
+                        startAngle = 0f,
+                        sweepAngle = 90f,
+                        useCenter = true,
+                        topLeft = Offset(size.width - 32.dp.toPx(), size.height - 32.dp.toPx()),
+                        size = Size(32.dp.toPx(), 32.dp.toPx()),
+                    )
+                }
+                .padding(16.dp)
+        ) {
+            //
+        }
     }
 }
 
 @Composable
 fun TopBar() {
-    val borderColor = MaterialTheme.colorScheme.onPrimaryContainer
-    Surface(
-        modifier = Modifier
-            .drawBehind {
-                val width = 4.dp.toPx()
-                drawArc(
-                    color = borderColor,
-                    startAngle = 90f,
-                    sweepAngle = 90f,
-                    useCenter = false,
-                    topLeft = Offset(0f, size.height - 48.dp.toPx()),
-                    size = Size(48.dp.toPx(), 48.dp.toPx()),
-                    style = Stroke(
-                        width = width,
-                        cap = StrokeCap.Square
-                    )
-                )
-                drawLine(
-                    color = borderColor,
-                    start = Offset(24.dp.toPx(), size.height),
-                    end = Offset(size.width - 24.dp.toPx(), size.height),
-                    strokeWidth = width,
-                    cap = StrokeCap.Square
-                )
-                drawArc(
-                    color = borderColor,
-                    startAngle = 0f,
-                    sweepAngle = 90f,
-                    useCenter = false,
-                    topLeft = Offset(size.width - 48.dp.toPx(), size.height - 48.dp.toPx()),
-                    size = Size(48.dp.toPx(), 48.dp.toPx()),
-                    style = Stroke(
-                        width = width,
-                        cap = StrokeCap.Square
-                    )
-                )
-            }
-            .padding(bottom = 2.dp),
-        shape = RoundedCornerShape(
-            topStart = 0.dp,
-            topEnd = 0.dp,
-            bottomStart = 24.dp,
-            bottomEnd = 24.dp
+    MediumTopAppBar(
+        title = { Text(text = stringResource(id = R.string.app_name)) },
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
-    ) {
-        LargeTopAppBar(
-            title = { Text(text = stringResource(id = R.string.app_name)) },
-            colors = TopAppBarDefaults.largeTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        )
-    }
+    )
 }
 
 @Composable
 fun BottomBar() {
-    val borderColor = MaterialTheme.colorScheme.onPrimaryContainer
-    Surface(
-        modifier = Modifier
-            .drawBehind {
-                val width = 4.dp.toPx()
-                drawArc(
-                    color = borderColor,
-                    startAngle = 180f,
-                    sweepAngle = 90f,
-                    useCenter = false,
-                    topLeft = Offset(0f, 0f),
-                    size = Size(48.dp.toPx(), 48.dp.toPx()),
-                    style = Stroke(width = width)
-                )
-                drawLine(
-                    color = borderColor,
-                    start = Offset(24.dp.toPx(), 0f),
-                    end = Offset(size.width - 24.dp.toPx(), 0f),
-                    strokeWidth = width
-                )
-                drawArc(
-                    color = borderColor,
-                    startAngle = 270f,
-                    sweepAngle = 90f,
-                    useCenter = false,
-                    topLeft = Offset(size.width - 48.dp.toPx(), 0f),
-                    size = Size(48.dp.toPx(), 48.dp.toPx()),
-                    style = Stroke(width = width)
-                )
-            }
-            .padding(top = 2.dp),
-        shape = RoundedCornerShape(
-            topStart = 24.dp,
-            topEnd = 24.dp,
-            bottomStart = 0.dp,
-            bottomEnd = 0.dp
-        )
+    BottomAppBar(
+        modifier = Modifier.height(64.dp),
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
-        BottomAppBar(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        Button(
+            onClick = {  },
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(6.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)
+            )
         ) {
-            
+            Icon(
+                imageVector = Icons.Rounded.ChevronLeft,
+                contentDescription = null
+            )
+        }
+        Text(
+            text = "ad",
+            modifier = Modifier.weight(1f)
+        )
+        Button(
+            onClick = {  },
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(6.dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                disabledContainerColor = Color.Transparent,
+                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)
+            )
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.ChevronRight,
+                contentDescription = null
+            )
         }
     }
 }
