@@ -1,4 +1,4 @@
-package com.taeyeon.wowphonenumber.ui.theme
+package com.taeyeon.wowphonenumber.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

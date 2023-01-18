@@ -1,4 +1,4 @@
-package com.taeyeon.wowphonenumber.ui.theme
+package com.taeyeon.wowphonenumber.theme
 
 import android.app.Activity
 import android.os.Build
