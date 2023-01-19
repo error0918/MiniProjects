@@ -1,5 +1,7 @@
+@file:OptIn(ExperimentalMaterial3Api::class,
+    ExperimentalPagerApi::class
+)
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
-@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.taeyeon.wowphonenumber.ui
 
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
@@ -17,8 +20,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
+import com.taeyeon.wowphonenumber.model.Screen
 
 @Composable
 fun MainContent(
@@ -27,11 +34,12 @@ fun MainContent(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
-        bottomBar = { BottomBar() }
+        bottomBar = { BottomBar(mainViewModel = mainViewModel) }
     ) { paddingValues ->
         val primaryContainer = MaterialTheme.colorScheme.primaryContainer
         val backgroundColor = MaterialTheme.colorScheme.background
-        Box(
+        HorizontalPager(
+            count = Screen.values().size,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
@@ -90,9 +98,11 @@ fun MainContent(
                         topLeft = Offset(size.width - 32.dp.toPx(), size.height - 32.dp.toPx()),
                         size = Size(32.dp.toPx(), 32.dp.toPx()),
                     )
-                }
-                .padding(16.dp)
-        ) {
+                },
+            state = mainViewModel.pagerState,
+            contentPadding = PaddingValues(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) { page ->
             //
         }
     }
@@ -113,7 +123,9 @@ fun TopBar() {
 }
 
 @Composable
-fun BottomBar() {
+fun BottomBar(
+    mainViewModel: MainViewModel = MainViewModel()
+) {
     BottomAppBar(
         modifier = Modifier.height(64.dp),
         containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -138,10 +150,21 @@ fun BottomBar() {
                 contentDescription = null
             )
         }
-        Text(
-            text = "ad",
-            modifier = Modifier.weight(1f)
-        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+            contentAlignment = Alignment.Center
+        ) {
+            HorizontalPagerIndicator(
+                pagerState = mainViewModel.pagerState,
+                pageCount = 3,
+                activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                inactiveColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
+                indicatorWidth = 6.dp,
+                indicatorHeight = 6.dp
+            )
+        }
         Button(
             onClick = {  },
             modifier = Modifier
