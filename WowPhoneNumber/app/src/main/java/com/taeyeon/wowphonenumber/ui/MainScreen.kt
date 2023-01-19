@@ -14,22 +14,25 @@ import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
-import com.taeyeon.wowphonenumber.model.Screen
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun MainScreen(
@@ -108,15 +111,19 @@ fun MainScreen(
             itemSpacing = 16.dp,
             verticalAlignment = Alignment.CenterVertically,
         ) { page ->
-            Screen.values()[page].content()
+            Screen.values()[page].content(mainViewModel = mainViewModel)
         }
     }
+
+    if (mainViewModel.isEditTitleDialog) EditTitleDialog(mainViewModel = mainViewModel)
 }
+
 
 @Composable
 fun TopBar(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
     MediumTopAppBar(
         title = {
             Surface(
@@ -127,15 +134,18 @@ fun TopBar(
                     text = mainViewModel.title,
                     modifier = Modifier
                         .combinedClickable(
-                            onClick = {},
-                            onLongClick = {}
+                            onClick = {  },
+                            onLongClick = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                mainViewModel.isEditTitleDialog = !mainViewModel.isEditTitleDialog
+                            }
                         )
                 )
             }
         },
         actions = {
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = { mainViewModel.isEditTitleDialog = !mainViewModel.isEditTitleDialog }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Edit,
@@ -152,6 +162,53 @@ fun TopBar(
         )
     )
 }
+
+
+@Composable
+fun EditTitleDialog(
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
+) {
+    var temporaryTitle by rememberSaveable { mutableStateOf(mainViewModel.title) }
+
+    LaunchedEffect(mainViewModel.title) {
+        temporaryTitle = mainViewModel.title
+    }
+
+    AlertDialog(
+        onDismissRequest = { mainViewModel.isEditTitleDialog = false },
+        dismissButton = {
+            TextButton(
+                onClick = { mainViewModel.isEditTitleDialog = false }
+            ) {
+                Text(text = "닫기")
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { mainViewModel.isEditTitleDialog = false }
+            ) {
+                Text(text = "완료")
+            }
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Rounded.Edit,
+                contentDescription = null
+            )
+        },
+        title = { Text(text = "타이틀 편집") },
+        text = {
+            OutlinedTextField(
+                value = temporaryTitle,
+                onValueChange = { value ->
+                    temporaryTitle = value
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    )
+}
+
 
 @Composable
 fun BottomBar(
