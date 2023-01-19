@@ -6,13 +6,13 @@
 package com.taeyeon.wowphonenumber.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ChevronLeft
-import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -23,6 +23,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -152,6 +154,14 @@ fun TopBar(
                     contentDescription = null
                 )
             }
+            IconButton(
+                onClick = {  }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = null
+                )
+            }
         },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -169,9 +179,17 @@ fun EditTitleDialog(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
     var temporaryTitle by rememberSaveable { mutableStateOf(mainViewModel.title) }
+    var errorMessage by rememberSaveable { mutableStateOf<String?>("a") }
 
     LaunchedEffect(mainViewModel.title) {
         temporaryTitle = mainViewModel.title
+    }
+    LaunchedEffect(temporaryTitle) {
+        errorMessage = when {
+            temporaryTitle.isBlank() -> "비어있음"
+            temporaryTitle.length > 50 -> "너무 길음"
+            else -> null
+        }
     }
 
     AlertDialog(
@@ -185,7 +203,11 @@ fun EditTitleDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { mainViewModel.isEditTitleDialog = false }
+                onClick = {
+                    mainViewModel.isEditTitleDialog = false
+                    mainViewModel.title = temporaryTitle
+                },
+                enabled = errorMessage == null
             ) {
                 Text(text = "완료")
             }
@@ -198,13 +220,38 @@ fun EditTitleDialog(
         },
         title = { Text(text = "타이틀 편집") },
         text = {
-            OutlinedTextField(
-                value = temporaryTitle,
-                onValueChange = { value ->
-                    temporaryTitle = value
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedTextField(
+                    value = temporaryTitle,
+                    onValueChange = { value ->
+                        temporaryTitle = value
+                    },
+                    label = { Text(text = "새로운 타이틀 입력") },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { temporaryTitle = "" },
+                            enabled = temporaryTitle.isNotEmpty()
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Clear,
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                errorMessage?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.End)
+                    )
+                }
+            }
         }
     )
 }
@@ -214,12 +261,16 @@ fun EditTitleDialog(
 fun BottomBar(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
+    val hapticFeedbackType = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
+
+    var isPopupIndicatorShowing by rememberSaveable { mutableStateOf(false) }
+
     BottomAppBar(
         modifier = Modifier.height(64.dp),
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
-        val scope = rememberCoroutineScope()
         Button(
             onClick = {
                 scope.launch {
@@ -249,22 +300,52 @@ fun BottomBar(
                 .weight(1f)
                 .fillMaxHeight()
         ) {
-            HorizontalPagerIndicator(
-                pagerState = mainViewModel.pagerState,
-                pageCount = 3,
-                pageIndexMapping = { index ->
-                    when (index) {
-                        0 -> 0
-                        mainViewModel.pagerState.pageCount - 1 -> 2
-                        else -> 1
-                    }
-                },
-                activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                inactiveColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
-                indicatorWidth = 6.dp,
-                indicatorHeight = 6.dp,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Surface(
+                color = Color.Transparent,
+                shape = RoundedCornerShape(size = 4.dp),
+                modifier = Modifier
+                    .align(Alignment.Center)
+            ) {
+                HorizontalPagerIndicator(
+                    pagerState = mainViewModel.pagerState,
+                    pageCount = 3,
+                    pageIndexMapping = { index ->
+                        when (index) {
+                            0 -> 0
+                            mainViewModel.pagerState.pageCount - 1 -> 2
+                            else -> 1
+                        }
+                    },
+                    activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    inactiveColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
+                    indicatorWidth = 6.dp,
+                    indicatorHeight = 6.dp,
+                    modifier = Modifier
+                        .clickable { }
+                        .pointerInput(Unit) {
+                            detectDragGestures(
+                                onDragStart = { isPopupIndicatorShowing = true },
+                                onDragEnd = {
+                                    scope.launch {
+                                        delay(1000)
+                                        isPopupIndicatorShowing = false
+                                    }
+                                },
+                                onDragCancel = {
+                                    scope.launch {
+                                        delay(1000)
+                                        isPopupIndicatorShowing = false
+                                    }
+                                },
+                                onDrag = { _, dragAmount ->
+                                    // tODO
+                                    hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+                                }
+                            )
+                        }
+                        .padding(8.dp)
+                )
+            }
             Text(
                 text = Screen.values()[mainViewModel.pagerState.currentPage].title,
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
@@ -297,4 +378,19 @@ fun BottomBar(
             )
         }
     }
+
+    PopupIndicator(
+        mainViewModel = mainViewModel,
+        showing = isPopupIndicatorShowing
+    )
+}
+
+
+@Composable
+fun PopupIndicator(
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current),
+    showing: Boolean
+) {
+    val scope = rememberCoroutineScope()
+    //
 }
