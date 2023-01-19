@@ -5,6 +5,8 @@
 
 package com.taeyeon.wowphonenumber.ui
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
@@ -25,8 +27,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -34,6 +40,7 @@ import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 
 @Composable
@@ -261,8 +268,8 @@ fun EditTitleDialog(
 fun BottomBar(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
-    val hapticFeedbackType = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
+    val hapticFeedbackType = LocalHapticFeedback.current
 
     var isPopupIndicatorShowing by rememberSaveable { mutableStateOf(false) }
 
@@ -306,6 +313,8 @@ fun BottomBar(
                 modifier = Modifier
                     .align(Alignment.Center)
             ) {
+                val step = LocalDensity.current.run { 20.dp.toPx() }
+
                 HorizontalPagerIndicator(
                     pagerState = mainViewModel.pagerState,
                     pageCount = 3,
@@ -337,9 +346,11 @@ fun BottomBar(
                                         isPopupIndicatorShowing = false
                                     }
                                 },
-                                onDrag = { _, dragAmount ->
+                                onDrag = { change, dragAmount ->
                                     // tODO
-                                    hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+
+                                    if (abs(dragAmount.x) > step)
+                                        hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
                                 }
                             )
                         }
@@ -391,6 +402,52 @@ fun PopupIndicator(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current),
     showing: Boolean
 ) {
-    val scope = rememberCoroutineScope()
-    //
+    var realShowing by rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(showing) {
+        realShowing = if (showing) {
+            true
+        } else {
+            delay(1000)
+            false
+        }
+    }
+
+    if (realShowing) {
+        Popup(
+            alignment = Alignment.BottomCenter,
+            offset = IntOffset(x = 0, y = LocalDensity.current.run { (-80).dp.toPx().toInt() }),
+            properties = PopupProperties(
+                focusable = false,
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                excludeFromSystemGesture = true
+            )
+        ) {
+            AnimatedVisibility(
+                visible = showing,
+                enter = fadeIn(
+                    animationSpec = tween(500)
+                ),
+                exit = fadeOut(
+                    animationSpec = tween(500)
+                )
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                    shape = RoundedCornerShape(size = 12.dp)
+                ) {
+                    HorizontalPagerIndicator(
+                        pagerState = mainViewModel.pagerState,
+                        activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        inactiveColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
+                        indicatorWidth = 6.dp,
+                        indicatorHeight = 6.dp,
+                        modifier = Modifier
+                            .padding(16.dp)
+                    )
+                }
+            }
+        }
+    }
 }
