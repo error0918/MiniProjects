@@ -1,10 +1,12 @@
 @file:OptIn(ExperimentalMaterial3Api::class,
-    ExperimentalPagerApi::class
+    ExperimentalPagerApi::class, ExperimentalFoundationApi::class
 )
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
 package com.taeyeon.wowphonenumber.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -106,15 +108,7 @@ fun MainScreen(
             itemSpacing = 16.dp,
             verticalAlignment = Alignment.CenterVertically,
         ) { page ->
-            Text("$page ".repeat(100000))
-            when (Screen.values()[page]) {
-                Screen.Main -> {
-                    //
-                }
-                Screen.A -> {
-                    //
-                }
-            }
+            Screen.values()[page].content()
         }
     }
 }
@@ -124,7 +118,21 @@ fun TopBar(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
     MediumTopAppBar(
-        title = { Text(text = mainViewModel.title) },
+        title = {
+            Surface(
+                color = Color.Transparent,
+                shape = RoundedCornerShape(size = 6.dp)
+            ) {
+                Text(
+                    text = mainViewModel.title,
+                    modifier = Modifier
+                        .combinedClickable(
+                            onClick = {},
+                            onLongClick = {}
+                        )
+                )
+            }
+        },
         actions = {
             IconButton(
                 onClick = { /*TODO*/ }
@@ -155,11 +163,10 @@ fun BottomBar(
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         val scope = rememberCoroutineScope()
-        val pagerState = mainViewModel.pagerState
         Button(
             onClick = {
                 scope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                    mainViewModel.pagerState.animateScrollToPage(mainViewModel.pagerState.currentPage - 1)
                 }
             },
             modifier = Modifier
@@ -183,22 +190,35 @@ fun BottomBar(
         Box(
             modifier = Modifier
                 .weight(1f)
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center
+                .fillMaxHeight()
         ) {
             HorizontalPagerIndicator(
                 pagerState = mainViewModel.pagerState,
                 pageCount = 3,
+                pageIndexMapping = { index ->
+                    when (index) {
+                        0 -> 0
+                        mainViewModel.pagerState.pageCount - 1 -> 2
+                        else -> 1
+                    }
+                },
                 activeColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 inactiveColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                 indicatorWidth = 6.dp,
-                indicatorHeight = 6.dp
+                indicatorHeight = 6.dp,
+                modifier = Modifier.align(Alignment.Center)
+            )
+            Text(
+                text = Screen.values()[mainViewModel.pagerState.currentPage].title,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
         Button(
             onClick = {
                 scope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    mainViewModel.pagerState.animateScrollToPage(mainViewModel.pagerState.currentPage + 1)
                 }
             },
             modifier = Modifier
