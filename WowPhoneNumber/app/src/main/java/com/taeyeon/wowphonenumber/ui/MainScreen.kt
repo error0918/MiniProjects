@@ -10,30 +10,32 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronLeft
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.model.Screen
+import kotlinx.coroutines.launch
 
 @Composable
-fun MainContent(
-    mainViewModel: MainViewModel = MainViewModel()
+fun MainScreen(
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar() },
+        topBar = { TopBar(mainViewModel = mainViewModel) },
         bottomBar = { BottomBar(mainViewModel = mainViewModel) }
     ) { paddingValues ->
         val primaryContainer = MaterialTheme.colorScheme.primaryContainer
@@ -101,17 +103,38 @@ fun MainContent(
                 },
             state = mainViewModel.pagerState,
             contentPadding = PaddingValues(16.dp),
+            itemSpacing = 16.dp,
             verticalAlignment = Alignment.CenterVertically,
         ) { page ->
-            //
+            Text("$page ".repeat(100000))
+            when (Screen.values()[page]) {
+                Screen.Main -> {
+                    //
+                }
+                Screen.A -> {
+                    //
+                }
+            }
         }
     }
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
+) {
     MediumTopAppBar(
-        title = { Text(text = stringResource(id = R.string.app_name)) },
+        title = { Text(text = mainViewModel.title) },
+        actions = {
+            IconButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Edit,
+                    contentDescription = null
+                )
+            }
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             scrolledContainerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -124,20 +147,27 @@ fun TopBar() {
 
 @Composable
 fun BottomBar(
-    mainViewModel: MainViewModel = MainViewModel()
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
     BottomAppBar(
         modifier = Modifier.height(64.dp),
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
+        val scope = rememberCoroutineScope()
+        val pagerState = mainViewModel.pagerState
         Button(
-            onClick = {  },
+            onClick = {
+                scope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage - 1)
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
                 .padding(6.dp),
             shape = RoundedCornerShape(8.dp),
+            enabled = mainViewModel.pagerState.currentPage != 0,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -166,12 +196,17 @@ fun BottomBar(
             )
         }
         Button(
-            onClick = {  },
+            onClick = {
+                scope.launch {
+                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                }
+            },
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
                 .padding(6.dp),
             shape = RoundedCornerShape(8.dp),
+            enabled = mainViewModel.pagerState.currentPage != Screen.values().size - 1,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.Transparent,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
