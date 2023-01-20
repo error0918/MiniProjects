@@ -19,4 +19,5 @@ class MainViewModel(context: Context): ViewModel() {
 
     var title by mutableStateOf(context.getString(R.string.app_name))
     var isEditTitleDialog by mutableStateOf(false)
+    var isInfoDialog by mutableStateOf(false)
 }

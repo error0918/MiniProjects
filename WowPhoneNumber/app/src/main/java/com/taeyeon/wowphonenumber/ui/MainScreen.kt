@@ -1,5 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class,
-    ExperimentalPagerApi::class, ExperimentalFoundationApi::class
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalPagerApi::class,
+    ExperimentalFoundationApi::class
 )
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
@@ -125,6 +127,7 @@ fun MainScreen(
     }
 
     if (mainViewModel.isEditTitleDialog) EditTitleDialog(mainViewModel = mainViewModel)
+    if (mainViewModel.isInfoDialog) InfoDialog(mainViewModel = mainViewModel)
 }
 
 
@@ -313,6 +316,8 @@ fun BottomBar(
                 modifier = Modifier
                     .align(Alignment.Center)
             ) {
+                var startPage by remember { mutableStateOf(0) }
+                var startOffset by remember { mutableStateOf(Offset.Zero) }
                 val step = LocalDensity.current.run { 20.dp.toPx() }
 
                 HorizontalPagerIndicator(
@@ -333,7 +338,11 @@ fun BottomBar(
                         .clickable { }
                         .pointerInput(Unit) {
                             detectDragGestures(
-                                onDragStart = { isPopupIndicatorShowing = true },
+                                onDragStart = { offset ->
+                                    isPopupIndicatorShowing = true
+                                    startPage = mainViewModel.pagerState.currentPage
+                                    startOffset = offset
+                                },
                                 onDragEnd = {
                                     scope.launch {
                                         delay(1000)
@@ -406,6 +415,7 @@ fun PopupIndicator(
 
     LaunchedEffect(showing) {
         realShowing = if (showing) {
+            delay(100)
             true
         } else {
             delay(1000)
