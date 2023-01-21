@@ -22,6 +22,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -42,7 +43,7 @@ import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.abs
+import kotlin.math.roundToInt
 
 @Preview
 @Composable
@@ -165,7 +166,7 @@ fun TopBar(
                 )
             }
             IconButton(
-                onClick = {  }
+                onClick = { mainViewModel.isInfoDialog = !mainViewModel.isInfoDialog }
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Info,
@@ -339,9 +340,11 @@ fun BottomBar(
                         .pointerInput(Unit) {
                             detectDragGestures(
                                 onDragStart = { offset ->
-                                    isPopupIndicatorShowing = true
                                     startPage = mainViewModel.pagerState.currentPage
                                     startOffset = offset
+
+                                    isPopupIndicatorShowing = true
+                                    hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
                                 },
                                 onDragEnd = {
                                     scope.launch {
@@ -351,17 +354,26 @@ fun BottomBar(
                                 },
                                 onDragCancel = {
                                     scope.launch {
-                                        delay(1000)
+                                        delay(500)
                                         isPopupIndicatorShowing = false
                                     }
                                 },
-                                onDrag = { change, dragAmount ->
-                                    // tODO
-
-                                    if (abs(dragAmount.x) > step)
-                                        hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onDrag = { change, _ ->
+                                    val delta = (startOffset.x - change.position.x).roundToInt() / step.toInt()
+                                    if (startPage - delta != mainViewModel.pagerState.currentPage && startPage - delta in 0 until mainViewModel.pagerState.pageCount) {
+                                        scope.launch {
+                                            mainViewModel.pagerState.scrollToPage(startPage - delta)
+                                            hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+                                        }
+                                    }
                                 }
                             )
+                        }
+                        .onFocusChanged {
+                            if (it.hasFocus) {
+                                isPopupIndicatorShowing = true
+                                hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+                            }
                         }
                         .padding(8.dp)
                 )
