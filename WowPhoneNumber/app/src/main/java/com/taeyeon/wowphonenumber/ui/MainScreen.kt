@@ -3,7 +3,6 @@
     ExperimentalPagerApi::class,
     ExperimentalFoundationApi::class
 )
-@file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
 package com.taeyeon.wowphonenumber.ui
 
@@ -31,6 +30,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -44,7 +44,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-
+@Preview
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
