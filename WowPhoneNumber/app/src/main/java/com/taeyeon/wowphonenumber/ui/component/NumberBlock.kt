@@ -2,6 +2,7 @@
 
 package com.taeyeon.wowphonenumber.ui.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -26,7 +27,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 
-class NumberBlockColors internal constructor(
+data class NumberBlockColors internal constructor(
     val textColor: Color,
     val blockColor: Color,
     val borderColor: Color
@@ -60,23 +61,32 @@ fun NumberBlock(
         targetValue = (value ?: -1).toFloat(),
         animationSpec = tween(500)
     )
+    val animatedColors = NumberBlockColors(
+        textColor = animateColorAsState(
+            targetValue = colors.textColor,
+            animationSpec = tween(500)
+        ).value,
+        blockColor = animateColorAsState(
+            targetValue = colors.blockColor,
+            animationSpec = tween(500)
+        ).value,
+        borderColor = animateColorAsState(
+            targetValue = colors.borderColor,
+            animationSpec = tween(500)
+        ).value
+    )
 
     Surface(
         modifier = modifier
             .size(
                 width = 40.dp,
                 height = 60.dp
-            )
-            .let {
-                 if (onClick == null) it
-                 else it.clickable(onClick = { onClick() })
-            },
-        color = colors.blockColor,
-        contentColor = colors.textColor,
+            ),
+        color = animatedColors.blockColor,
         shape = shape,
         border = BorderStroke(
             width = 2.dp,
-            color = colors.borderColor
+            color = animatedColors.borderColor
         )
     ) {
 
@@ -86,7 +96,7 @@ fun NumberBlock(
                     buildAnnotatedString {
                         withStyle(
                             textStyle.toSpanStyle().copy(
-                                color = colors.textColor
+                                color = animatedColors.textColor
                             )
                         ) {
                             append(" 0123456789"[index])
@@ -96,7 +106,12 @@ fun NumberBlock(
         }
 
         Canvas(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .let {
+                    if (onClick == null) it
+                    else it.clickable(onClick = { onClick() })
+                }
         ) {
             textLayoutResultList.forEachIndexed { index, textLayoutResult ->
                 drawText(

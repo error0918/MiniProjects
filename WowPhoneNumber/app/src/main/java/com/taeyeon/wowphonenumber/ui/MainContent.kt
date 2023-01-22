@@ -16,9 +16,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -26,6 +31,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
+import com.taeyeon.wowphonenumber.ui.component.NumberBlockColors
+import com.taeyeon.wowphonenumber.ui.component.NumberBlockDefaults
 
 @Composable
 fun MainContent(
@@ -93,8 +100,20 @@ fun MainContent(
                             }
                         }
                         block.forEach { item ->
+                            var colors by remember { mutableStateOf<NumberBlockColors?>(null) }
+
+                            if (colors == null) colors = NumberBlockDefaults.colors()
+
                             NumberBlock(
-                                value = item?.digitToInt()
+                                value = item?.digitToInt(),
+                                onClick = {
+                                    colors = colors!!.copy(
+                                        textColor = Color.DarkGray,
+                                        blockColor = Color.LightGray,
+                                        borderColor = Color.DarkGray
+                                    )
+                                },
+                                colors = colors!!
                             )
                         }
                         if (align[index] != Alignment.End) {
