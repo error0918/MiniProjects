@@ -8,6 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.surfaceColorAtElevation
@@ -27,21 +31,33 @@ import com.taeyeon.wowphonenumber.ui.component.NumberBlock
 fun MainContent(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
-    val phoneNumber = arrayOf(
-        arrayListOf('0', '1', '0'),
-        arrayListOf('1', '2', '3', '4'),
-        arrayListOf('5', '6', '7', '8')
-    )
     val align = arrayOf(Alignment.Start, Alignment.CenterHorizontally, Alignment.End)
 
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-        val (numbers) = createRefs()
+        val (resetButton, numbers) = createRefs()
+
+        IconButton(
+            onClick = {
+                for (blockId in 1 until mainViewModel.phoneNumber.size) {
+                    for (numberId in mainViewModel.phoneNumber[blockId].indices) mainViewModel.phoneNumber[blockId][numberId] = null
+                }
+            },
+            modifier = Modifier
+                .constrainAs(resetButton) {
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Delete,
+                contentDescription = null
+            )
+        }
 
         Surface(
             modifier = Modifier
-                .padding(8.dp)
                 .constrainAs(numbers) {
                     width = Dimension.matchParent
                     centerTo(parent)
@@ -55,7 +71,7 @@ fun MainContent(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp)
             ) {
-                phoneNumber.forEachIndexed { index, block ->
+                mainViewModel.phoneNumber.forEachIndexed { index, block ->
                     Row(
                         modifier = Modifier.align(align[index]),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -78,7 +94,7 @@ fun MainContent(
                         }
                         block.forEach { item ->
                             NumberBlock(
-                                value = item.digitToInt()
+                                value = item?.digitToInt()
                             )
                         }
                         if (align[index] != Alignment.End) {

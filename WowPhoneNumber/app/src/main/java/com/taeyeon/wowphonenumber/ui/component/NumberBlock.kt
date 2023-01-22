@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalAnimationApi::class, ExperimentalTextApi::class)
+@file:OptIn(ExperimentalTextApi::class)
 
 package com.taeyeon.wowphonenumber.ui.component
 
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -22,7 +24,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 class NumberBlockColors internal constructor(
@@ -54,6 +55,11 @@ fun NumberBlock(
     colors: NumberBlockColors = NumberBlockDefaults.colors()
 ) {
     require(value in 0 .. 9 || value == null) { "value는 0에서 9 사이이어야 합니다." }
+
+    val animatedValue by animateFloatAsState(
+        targetValue = (value ?: -1).toFloat(),
+        animationSpec = tween(500)
+    )
 
     Surface(
         modifier = modifier
@@ -98,18 +104,10 @@ fun NumberBlock(
                     topLeft = Offset(
                         x = size.width / 2 - textLayoutResult.size.width / 2,
                         y = size.height / 2 - textLayoutResult.size.height / 2 +
-                                60.dp.toPx() * (index - (value ?: -1) - 1)
+                                60.dp.toPx() * (index - animatedValue - 1)
                     )
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun NumberBlockPreview() {
-    NumberBlock(
-        value = 7
-    )
 }
