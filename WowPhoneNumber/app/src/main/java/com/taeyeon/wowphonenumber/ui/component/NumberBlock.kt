@@ -1,24 +1,27 @@
-@file:OptIn(ExperimentalAnimationApi::class)
+@file:OptIn(ExperimentalAnimationApi::class, ExperimentalTextApi::class)
 
 package com.taeyeon.wowphonenumber.ui.component
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -70,16 +73,33 @@ fun NumberBlock(
             color = colors.borderColor
         )
     ) {
-        AnimatedContent(
-            targetState = value
+
+        val textLayoutResultList = List(11) { index ->
+            rememberTextMeasurer()
+                .measure(
+                    buildAnnotatedString {
+                        withStyle(
+                            textStyle.toSpanStyle().copy(
+                                color = colors.textColor
+                            )
+                        ) {
+                            append(" 0123456789"[index])
+                        }
+                    }
+                )
+        }
+
+        Canvas(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "$it",
-                    style = textStyle
+            textLayoutResultList.forEachIndexed { index, textLayoutResult ->
+                drawText(
+                    textLayoutResult = textLayoutResult,
+                    topLeft = Offset(
+                        x = size.width / 2 - textLayoutResult.size.width / 2,
+                        y = size.height / 2 - textLayoutResult.size.height / 2 +
+                                60.dp.toPx() * (index - (value ?: -1) - 1)
+                    )
                 )
             }
         }
