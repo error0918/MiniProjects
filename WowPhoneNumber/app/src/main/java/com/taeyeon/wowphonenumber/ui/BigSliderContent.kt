@@ -2,8 +2,8 @@
 
 package com.taeyeon.wowphonenumber.ui
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -11,18 +11,26 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -37,8 +45,18 @@ fun BigSliderContent(
 ) {
     var value by rememberSaveable { mutableStateOf("") }
     var isHelpTextShow by rememberSaveable { mutableStateOf(false) }
+    var isDragging by remember { mutableStateOf(false) }
+    var isDraggingToPlus by remember { mutableStateOf(true) }
+    val textColor by animateColorAsState(
+        targetValue = if (isDragging) {
+            if (isDraggingToPlus) Color.Red.copy(alpha = 0.3f).compositeOver(MaterialTheme.colorScheme.primary)
+            else Color.Blue.copy(alpha = 0.3f).compositeOver(MaterialTheme.colorScheme.primary)
+        } else {
+            MaterialTheme.colorScheme.onBackground
+        }
+    )
 
-    LaunchedEffect(mainViewModel.phoneNumber) {
+    LaunchedEffect(mainViewModel.phoneNumber[0].toList(), mainViewModel.phoneNumber[1].toList(), mainViewModel.phoneNumber[2].toList()) {
         value = ""
         mainViewModel.phoneNumber.forEachIndexed { index, block ->
             block.forEach { item ->
@@ -59,13 +77,36 @@ fun BigSliderContent(
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-        val (numberRow, helpText, slider) = createRefs()
+        val (indicatorIcon, numberText, helpText, slider) = createRefs()
+
+        AnimatedVisibility(
+            visible = isDragging,
+            modifier = Modifier
+                .constrainAs(indicatorIcon) {
+                    centerHorizontallyTo(parent)
+                    top.linkTo(parent.top)
+                },
+            enter = fadeIn(
+                animationSpec = tween(250)
+            ),
+            exit = fadeOut(
+                animationSpec = tween(250)
+            )
+        ) {
+            Icon(
+                imageVector = if (isDraggingToPlus) Icons.Rounded.Add else Icons.Rounded.Remove,
+                contentDescription = null,
+                tint = textColor.copy(alpha = 0.5f),
+            )
+        }
 
         Text(
             text = value,
+            color = textColor,
             style = MaterialTheme.typography.displayMedium,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .constrainAs(numberRow) {
+                .constrainAs(numberText) {
                     centerTo(parent)
                 }
         )
@@ -98,8 +139,19 @@ fun BigSliderContent(
                 }
                 .pointerInput(Unit) {
                     detectDragGestures(
+                        onDragStart = { offset ->
+                            isDragging = true
+                        },
                         onDrag = { change, dragAmount ->
-                            //
+                            isDraggingToPlus = dragAmount.x >= 0
+                            mainViewModel.changePhoneNumber(2L)
+                            change.consume()
+                        },
+                        onDragEnd = {
+                            isDragging = false
+                        },
+                        onDragCancel = {
+                            isDragging = false
                         }
                     )
                 },
