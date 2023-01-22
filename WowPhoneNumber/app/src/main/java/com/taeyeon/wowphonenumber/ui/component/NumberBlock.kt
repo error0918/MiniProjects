@@ -46,7 +46,7 @@ fun NumberBlock(
     value: Int?,
     modifier: Modifier = Modifier,
     shape: Shape = RoundedCornerShape(8.dp),
-    textStyle: TextStyle = MaterialTheme.typography.labelMedium,
+    textStyle: TextStyle = MaterialTheme.typography.titleLarge,
     onClick: (() -> Unit)? = null,
     colors: NumberBlockColors = NumberBlockDefaults.colors()
 ) {
@@ -88,7 +88,7 @@ fun NumberBlock(
 
 @Preview
 @Composable
-fun aas() {
+fun NumberBlockPreview() {
     NumberBlock(
         value = 7
     )
