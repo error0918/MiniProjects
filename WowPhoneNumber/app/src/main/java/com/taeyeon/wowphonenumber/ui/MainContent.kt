@@ -99,6 +99,7 @@ fun MainContent(
                                 )
                             }
                         }
+
                         block.forEach { item ->
                             var colors by remember { mutableStateOf<NumberBlockColors?>(null) }
 
@@ -106,6 +107,7 @@ fun MainContent(
 
                             NumberBlock(
                                 value = item?.digitToInt(),
+                                modifier = Modifier,
                                 onClick = {
                                     colors = colors!!.copy(
                                         textColor = Color.DarkGray,
@@ -116,6 +118,7 @@ fun MainContent(
                                 colors = colors!!
                             )
                         }
+
                         if (align[index] != Alignment.End) {
                             Canvas(
                                 modifier = Modifier.weight(1f)

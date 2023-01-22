@@ -59,6 +59,7 @@ fun MainScreen(
         val backgroundColor = MaterialTheme.colorScheme.background
         HorizontalPager(
             count = Screen.values().size,
+            userScrollEnabled = false,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
