@@ -2,11 +2,8 @@
 
 package com.taeyeon.wowphonenumber.ui.content
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +35,8 @@ import kotlinx.coroutines.delay
 fun BigSliderContent(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
+    var value by rememberSaveable { mutableStateOf(mainViewModel.getPhoneNumberString()) }
+
     var isHelpTextShow by rememberSaveable { mutableStateOf(false) }
     var isDragging by remember { mutableStateOf(false) }
     var isDraggingToPlus by remember { mutableStateOf(true) }
@@ -50,9 +49,11 @@ fun BigSliderContent(
         }
     )
 
+    LaunchedEffect(mainViewModel.phoneNumber[0].toList(), mainViewModel.phoneNumber[1].toList(), mainViewModel.phoneNumber[2].toList()) {
+        value = mainViewModel.getPhoneNumberString()
+    }
     LaunchedEffect(mainViewModel.pagerState.currentPage) {
         if (mainViewModel.pagerState.currentPage == Screen.values().indexOf(Screen.BigSlider)) {
-            delay(100)
             isHelpTextShow = true
             delay(5000)
             isHelpTextShow = false
@@ -86,7 +87,7 @@ fun BigSliderContent(
         }
 
         Text(
-            text = mainViewModel.phoneNumberString,
+            text = value,
             color = textColor,
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
@@ -103,9 +104,7 @@ fun BigSliderContent(
                     centerHorizontallyTo(parent)
                     bottom.linkTo(slider.top, margin = 8.dp)
                 },
-            enter = fadeIn(
-                animationSpec = tween(250)
-            ),
+            enter = EnterTransition.None,
             exit = fadeOut(
                 animationSpec = tween(250)
             )

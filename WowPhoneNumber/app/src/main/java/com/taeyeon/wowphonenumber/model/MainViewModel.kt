@@ -30,13 +30,15 @@ class MainViewModel(context: Context): ViewModel() {
             mutableStateListOf('1', '2', '3', '4'),
             mutableStateListOf('5', '6', '7', '8')
         )
-    val phoneNumberString get() = run {
+
+
+    fun getPhoneNumberString(): String {
         var value = ""
         phoneNumber.forEachIndexed { index, block ->
             block.forEach { value += it ?: '0' }
             if (index != phoneNumber.size - 1) value += " - "
         }
-        value
+        return value
     }
 
     fun changePhoneNumber(delta: Long) {
