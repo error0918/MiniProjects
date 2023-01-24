@@ -18,13 +18,8 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Remove
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
@@ -43,7 +38,6 @@ import kotlinx.coroutines.delay
 fun BigSliderContent(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
-    var value by rememberSaveable { mutableStateOf("") }
     var isHelpTextShow by rememberSaveable { mutableStateOf(false) }
     var isDragging by remember { mutableStateOf(false) }
     var isDraggingToPlus by remember { mutableStateOf(true) }
@@ -56,15 +50,6 @@ fun BigSliderContent(
         }
     )
 
-    LaunchedEffect(mainViewModel.phoneNumber[0].toList(), mainViewModel.phoneNumber[1].toList(), mainViewModel.phoneNumber[2].toList()) {
-        value = ""
-        mainViewModel.phoneNumber.forEachIndexed { index, block ->
-            block.forEach { item ->
-                value += item
-            }
-            if (index != mainViewModel.phoneNumber.size - 1) value += " - "
-        }
-    }
     LaunchedEffect(mainViewModel.pagerState.currentPage) {
         if (mainViewModel.pagerState.currentPage == Screen.values().indexOf(Screen.BigSlider)) {
             delay(100)
@@ -101,9 +86,9 @@ fun BigSliderContent(
         }
 
         Text(
-            text = value,
+            text = mainViewModel.phoneNumberString,
             color = textColor,
-            style = MaterialTheme.typography.displayMedium,
+            style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .constrainAs(numberText) {
@@ -139,13 +124,12 @@ fun BigSliderContent(
                 }
                 .pointerInput(Unit) {
                     detectDragGestures(
-                        onDragStart = { offset ->
+                        onDragStart = {
                             isDragging = true
                         },
-                        onDrag = { change, dragAmount ->
+                        onDrag = { _, dragAmount ->
                             isDraggingToPlus = dragAmount.x >= 0
-                            mainViewModel.changePhoneNumber(2L)
-                            change.consume()
+                            mainViewModel.changePhoneNumber(dragAmount.x.toLong())
                         },
                         onDragEnd = {
                             isDragging = false

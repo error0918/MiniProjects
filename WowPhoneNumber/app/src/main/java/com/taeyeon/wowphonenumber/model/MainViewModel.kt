@@ -9,7 +9,6 @@ import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
@@ -31,17 +30,23 @@ class MainViewModel(context: Context): ViewModel() {
             mutableStateListOf('1', '2', '3', '4'),
             mutableStateListOf('5', '6', '7', '8')
         )
+    val phoneNumberString get() = run {
+        var value = ""
+        phoneNumber.forEachIndexed { index, block ->
+            block.forEach { value += it }
+            if (index != phoneNumber.size - 1) value += " - "
+        }
+        value
+    }
 
     fun changePhoneNumber(delta: Long) {
         var number = delta
-        (phoneNumber[0] + phoneNumber[1] + phoneNumber[2]).reversed().forEachIndexed { index, item ->
-            number += (item ?: '0').digitToInt() * 10.0.pow(index.toDouble()).toLong()
-        }
-        if (delta in 0L .. 999_9999_9999L) {
-            val numberString = "$number"
-            for (index in phoneNumber[0].indices) phoneNumber[0][index] = if (numberString.length > index) numberString[index] else null
-            for (index in phoneNumber[1].indices) phoneNumber[1][index] = if (numberString.length > index + 6) numberString[index + 4] else null
-            for (index in phoneNumber[2].indices) phoneNumber[2][index] = if (numberString.length > index + 7) numberString[index + 7] else null
+        (phoneNumber[0] + phoneNumber[1] + phoneNumber[2]).reversed().forEachIndexed { index, item -> number += (item ?: '0').digitToInt() * 10.0.pow(index.toDouble()).toLong() }
+        if (number in 0L .. 999_9999_9999L) {
+            val numberString = "$number".let { "0".repeat(11 - it.length) + it }
+            for (index in phoneNumber[0].indices) phoneNumber[0][index] = numberString[index]
+            for (index in phoneNumber[1].indices) phoneNumber[1][index] = numberString[index + 3]
+            for (index in phoneNumber[2].indices) phoneNumber[2][index] = numberString[index + 7]
         }
     }
 }
