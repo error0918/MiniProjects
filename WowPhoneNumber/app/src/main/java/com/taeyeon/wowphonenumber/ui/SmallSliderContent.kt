@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -27,7 +27,8 @@ fun SmallSliderContent(
             for (blockIndex in mainViewModel.phoneNumber.indices) {
                 for (numberIndex in mainViewModel.phoneNumber[blockIndex].indices) {
                     NumberSlider(
-                        onValueChanged = {},
+                        value = (mainViewModel.phoneNumber[blockIndex][numberIndex] ?: '0').digitToInt(),
+                        onValueChanged = { mainViewModel.phoneNumber[blockIndex][numberIndex] = "$it"[0] },
                         numberSize = 25.dp
                     )
                 }
