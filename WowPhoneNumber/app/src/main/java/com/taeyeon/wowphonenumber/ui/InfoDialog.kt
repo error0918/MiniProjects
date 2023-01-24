@@ -37,6 +37,7 @@ fun InfoDialog(
                 modifier = Modifier
                     .padding(28.dp)
             ) {
+                // TODO
             }
         }
     }

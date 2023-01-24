@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -29,6 +30,8 @@ fun NumberSlider(
     val pagerState = rememberPagerState(initialPage = 0)
     val hapticFeedback = LocalHapticFeedback.current
 
+    var init by rememberSaveable { mutableStateOf(false) }
+
     LaunchedEffect(value) {
         if (value != pagerState.currentPage) {
             pagerState.scrollToPage(value)
@@ -37,8 +40,12 @@ fun NumberSlider(
 
     LaunchedEffect(pagerState.currentPage) {
         if (value != pagerState.currentPage) {
-            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-            onValueChanged(pagerState.currentPage)
+            if (init) {
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                onValueChanged(pagerState.currentPage)
+            } else {
+                init = true
+            }
         }
     }
 

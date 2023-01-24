@@ -33,7 +33,7 @@ class MainViewModel(context: Context): ViewModel() {
     val phoneNumberString get() = run {
         var value = ""
         phoneNumber.forEachIndexed { index, block ->
-            block.forEach { value += it }
+            block.forEach { value += it ?: '0' }
             if (index != phoneNumber.size - 1) value += " - "
         }
         value
