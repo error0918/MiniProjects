@@ -1,4 +1,4 @@
-package com.taeyeon.wowphonenumber.ui
+package com.taeyeon.wowphonenumber.ui.content
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext

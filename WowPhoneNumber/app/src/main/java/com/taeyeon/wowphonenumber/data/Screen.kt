@@ -2,22 +2,15 @@ package com.taeyeon.wowphonenumber.data
 
 import androidx.compose.runtime.Composable
 import com.taeyeon.wowphonenumber.model.MainViewModel
-import com.taeyeon.wowphonenumber.ui.BigSliderContent
-import com.taeyeon.wowphonenumber.ui.MainContent
-import com.taeyeon.wowphonenumber.ui.NormalContent
-import com.taeyeon.wowphonenumber.ui.RandomContent
-import com.taeyeon.wowphonenumber.ui.SmallSliderContent
+import com.taeyeon.wowphonenumber.ui.content.BigSliderContent
+import com.taeyeon.wowphonenumber.ui.content.NormalContent
+import com.taeyeon.wowphonenumber.ui.content.RandomContent
+import com.taeyeon.wowphonenumber.ui.content.SmallSliderContent
 
 enum class Screen(
     val title: String,
     val content: @Composable (mainViewModel: MainViewModel) -> Unit = {  }
 ) {
-    Main(
-        title = "Main",
-        content = { mainViewModel ->
-            MainContent(mainViewModel = mainViewModel)
-        }
-    ),
     Normal(
         title = "Normal",
         content = { mainViewModel ->

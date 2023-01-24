@@ -1,4 +1,4 @@
-package com.taeyeon.wowphonenumber.ui
+package com.taeyeon.wowphonenumber.ui.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
