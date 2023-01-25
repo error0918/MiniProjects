@@ -1,10 +1,16 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.taeyeon.wowphonenumber.ui.content
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowDownward
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.MoveDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -167,38 +173,79 @@ fun PopupKeyPad() {
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
             shape = RoundedCornerShape(8.dp)
         ) {
-            Row(
+            BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(100.dp)
                     .padding(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = 8.dp,
-                    alignment = Alignment.CenterHorizontally
-                ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {}
+            ) {
+                val buttonList = listOf(
+                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+                )
+                var buttonWidth by remember { mutableStateOf(0.dp) }
+
+                LaunchedEffect(maxWidth) {
+                    buttonWidth =
+                        ((maxWidth - (buttonList.size - 1) * 8.dp) / buttonList.size).let {
+                            if (it >= 30.dp) 30.dp else it
+                        }
+                }
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+                ) {
+
+                    Button(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(30.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = LocalContentColor.current,
+                            disabledContainerColor = Color.Transparent,
+                            disabledContentColor = LocalContentColor.current.copy(alpha = 0.5f)
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowDown,
+                            contentDescription = null
+                        )
+                    }
+
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = 8.dp,
+                            alignment = Alignment.End
+                        ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        for (index in buttonList)
+                            Surface(
+                                modifier = Modifier
+                                    .width(buttonWidth)
+                                    .height(45.dp),
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                shape = RoundedCornerShape(size = 8.dp),
+                                border = BorderStroke(
+                                    width = 2.dp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                ),
+                                onClick = {}
+                            ) {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(text = index)
+                                }
+                            }
+
+                    }
+
+                }
+            }
         }
     }
-    /*Popup(
-        alignment = Alignment.BottomCenter,
-        onDismissRequest = {},
-        properties = PopupProperties(
-            focusable = true,
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        )
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .padding(16.dp),
-            color = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            shape = RoundedCornerShape(16.dp)
-        ) {
-
-        }
-    }*/
 }
