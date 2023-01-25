@@ -57,7 +57,6 @@ import androidx.constraintlayout.compose.Dimension
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
-import com.taeyeon.wowphonenumber.ui.component.NumberBlockColors
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockDefaults
 import kotlinx.coroutines.delay
 
@@ -65,6 +64,17 @@ import kotlinx.coroutines.delay
 fun NormalContent(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
+    val defaultNumberBlockColors = NumberBlockDefaults.colors()
+    val selectedNumberBlockColors = NumberBlockDefaults.colors(
+        textColor = MaterialTheme.colorScheme.onPrimary,
+        blockColor = MaterialTheme.colorScheme.primary,
+        borderColor = MaterialTheme.colorScheme.onPrimary
+    )
+    val deletedNumberBlockColors = NumberBlockDefaults.colors(
+        textColor = Color.DarkGray,
+        blockColor = Color.LightGray,
+        borderColor = Color.DarkGray
+    )
     val align = arrayOf(Alignment.Start, Alignment.CenterHorizontally, Alignment.End)
 
     var focusedKey by remember { mutableStateOf<Pair<Int, Int>?>(null) }
@@ -145,25 +155,17 @@ fun NormalContent(
                         }
 
                         block.forEachIndexed { numberIndex, item ->
-                            var colors by remember { mutableStateOf<NumberBlockColors?>(null) }
-
-                            if (colors == null) colors = NumberBlockDefaults.colors()
-
                             NumberBlock(
                                 value = item?.digitToInt(),
                                 modifier = Modifier,
                                 onClick = {
-                                    colors = colors!!.copy(
-                                        textColor = Color.DarkGray,
-                                        blockColor = Color.LightGray,
-                                        borderColor = Color.DarkGray
-                                    )
                                     // TODO: Keyboard
-
-
-
                                 },
-                                colors = colors!!
+                                colors = when {
+                                    isKeyboardShowing && focusedKey?.first == blockIndex && focusedKey?.second == numberIndex -> selectedNumberBlockColors
+                                    item == null -> deletedNumberBlockColors
+                                    else -> defaultNumberBlockColors
+                                }
                             )
                         }
 
