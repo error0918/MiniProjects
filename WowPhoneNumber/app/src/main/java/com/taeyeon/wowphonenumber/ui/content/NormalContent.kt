@@ -1,31 +1,59 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.taeyeon.wowphonenumber.ui.content
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDownward
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.MoveDown
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.KeyboardBackspace
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.*
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntRect
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.times
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.taeyeon.wowphonenumber.model.MainViewModel
+import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockColors
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockDefaults
@@ -143,7 +171,6 @@ fun NormalContent(
 
 @Composable
 fun PopupKeyPad() {
-    //
     Popup(
         popupPositionProvider = object : PopupPositionProvider {
             override fun calculatePosition(
@@ -194,25 +221,79 @@ fun PopupKeyPad() {
                     verticalArrangement = Arrangement.spacedBy(space = 8.dp)
                 ) {
 
-                    Button(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(30.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Transparent,
-                            contentColor = LocalContentColor.current,
-                            disabledContainerColor = Color.Transparent,
-                            disabledContentColor = LocalContentColor.current.copy(alpha = 0.5f)
-                        )
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Icon(
-                            imageVector = Icons.Rounded.KeyboardArrowDown,
-                            contentDescription = null
-                        )
+                        Row(
+                            modifier = Modifier.align(Alignment.CenterStart),
+                            horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            KeyButton(
+                                onClick = {  },
+                                modifier = Modifier
+                                    .width(buttonWidth * 1.5f)
+                                    .height(40.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.KeyboardArrowLeft,
+                                    contentDescription = null
+                                )
+                            }
+                            KeyButton(
+                                onClick = {  },
+                                modifier = Modifier
+                                    .width(buttonWidth * 1.5f)
+                                    .height(40.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.KeyboardArrowRight,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+
+                        Button(
+                            onClick = { /*TODO*/ },
+                            modifier = Modifier
+                                .width(80.dp)
+                                .height(40.dp)
+                                .align(Alignment.Center),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Transparent,
+                                contentColor = LocalContentColor.current,
+                                disabledContainerColor = Color.Transparent,
+                                disabledContentColor = LocalContentColor.current.copy(alpha = 0.5f)
+                            ),
+                            contentPadding = PaddingValues(0.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.KeyboardArrowDown,
+                                contentDescription = null
+                            )
+                        }
+
+                        Row(
+                            modifier = Modifier.align(Alignment.CenterEnd),
+                            horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            KeyButton(
+                                onClick = {  },
+                                modifier = Modifier
+                                    .width(buttonWidth * 3 + 8.dp)
+                                    .height(40.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.KeyboardBackspace,
+                                    contentDescription = null
+                                )
+                            }
+                        }
                     }
 
                     Row(
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(
                             space = 8.dp,
                             alignment = Alignment.End
@@ -221,25 +302,13 @@ fun PopupKeyPad() {
                     ) {
 
                         for (index in buttonList)
-                            Surface(
+                            KeyButton(
+                                onClick = {  },
                                 modifier = Modifier
                                     .width(buttonWidth)
-                                    .height(45.dp),
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                shape = RoundedCornerShape(size = 8.dp),
-                                border = BorderStroke(
-                                    width = 2.dp,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                ),
-                                onClick = {}
+                                    .height(40.dp)
                             ) {
-                                Box(
-                                    modifier = Modifier.fillMaxSize(),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Text(text = index)
-                                }
+                                Text(text = index)
                             }
 
                     }
