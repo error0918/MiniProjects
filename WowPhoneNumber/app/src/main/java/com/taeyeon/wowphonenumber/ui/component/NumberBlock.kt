@@ -110,7 +110,7 @@ fun NumberBlock(
                 .fillMaxSize()
                 .let {
                     if (onClick == null) it
-                    else it.clickable(onClick = { onClick() })
+                    else it.clickable { onClick() }
                 }
         ) {
             textLayoutResultList.forEachIndexed { index, textLayoutResult ->

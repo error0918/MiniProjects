@@ -23,16 +23,16 @@ enum class Screen(
             RandomContent(mainViewModel = mainViewModel)
         }
     ),
-    BigSlider(
-        title = "BigSlider",
-        content = { mainViewModel ->
-            BigSliderContent(mainViewModel = mainViewModel)
-        }
-    ),
     SmallSlider(
         title = "SmallSlider",
         content = { mainViewModel ->
             SmallSliderContent(mainViewModel = mainViewModel)
+        }
+    ),
+    BigSlider(
+        title = "BigSlider",
+        content = { mainViewModel ->
+            BigSliderContent(mainViewModel = mainViewModel)
         }
     )
 }

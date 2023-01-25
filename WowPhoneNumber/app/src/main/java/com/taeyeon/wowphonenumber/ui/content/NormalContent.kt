@@ -93,7 +93,6 @@ fun NormalContent(
         }
     }
 
-
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -157,9 +156,9 @@ fun NormalContent(
                         block.forEachIndexed { numberIndex, item ->
                             NumberBlock(
                                 value = item?.digitToInt(),
-                                modifier = Modifier,
                                 onClick = {
-                                    // TODO: Keyboard
+                                    if (focusedKey != null && focusedKey!!.first == blockIndex && focusedKey!!.second == numberIndex) isKeyboardShowing = false
+                                    else focusedKey = blockIndex to numberIndex
                                 },
                                 colors = when {
                                     isKeyboardShowing && focusedKey?.first == blockIndex && focusedKey?.second == numberIndex -> selectedNumberBlockColors
@@ -191,7 +190,7 @@ fun NormalContent(
     }
 
 
-    if (focusedKey != null) {
+    if (focusedKey != null) { // TODO: BUTTON ONCLICK
         Popup(
             popupPositionProvider = object : PopupPositionProvider {
                 override fun calculatePosition(
@@ -208,7 +207,7 @@ fun NormalContent(
             },
             onDismissRequest = { isKeyboardShowing = false },
             properties = PopupProperties(
-                focusable = true,
+                focusable = false,
                 dismissOnBackPress = true,
                 dismissOnClickOutside = false
             )
@@ -256,7 +255,15 @@ fun NormalContent(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     KeyButton(
-                                        onClick = { },
+                                        onClick = {
+                                            moveKey(
+                                                mainViewModel = mainViewModel,
+                                                key = focusedKey!!,
+                                                toPlus = false
+                                            ).let {
+                                                if (it != null) focusedKey = it
+                                            }
+                                        },
                                         modifier = Modifier
                                             .width(buttonWidth * 1.5f)
                                             .height(40.dp)
@@ -267,7 +274,15 @@ fun NormalContent(
                                         )
                                     }
                                     KeyButton(
-                                        onClick = { },
+                                        onClick = {
+                                            moveKey(
+                                                mainViewModel = mainViewModel,
+                                                key = focusedKey!!,
+                                                toPlus = true
+                                            ).let {
+                                                if (it != null) focusedKey = it
+                                            }
+                                        },
                                         modifier = Modifier
                                             .width(buttonWidth * 1.5f)
                                             .height(40.dp)
@@ -305,7 +320,17 @@ fun NormalContent(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     KeyButton(
-                                        onClick = { },
+                                        onClick = {
+                                            mainViewModel.phoneNumber[focusedKey!!.first][focusedKey!!.second] = null
+                                            moveKey(
+                                                mainViewModel = mainViewModel,
+                                                key = focusedKey!!,
+                                                toPlus = false
+                                            ).let {
+                                                if (it == null) isKeyboardShowing = false
+                                                else focusedKey = it
+                                            }
+                                        },
                                         modifier = Modifier
                                             .width(buttonWidth * 3 + 8.dp)
                                             .height(40.dp)
@@ -327,14 +352,24 @@ fun NormalContent(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
 
-                                for (index in buttonList)
+                                for (button in buttonList)
                                     KeyButton(
-                                        onClick = { },
+                                        onClick = {
+                                            mainViewModel.phoneNumber[focusedKey!!.first][focusedKey!!.second] = button
+                                            moveKey(
+                                                mainViewModel = mainViewModel,
+                                                key = focusedKey!!,
+                                                toPlus = true
+                                            ).let {
+                                                if (it == null) isKeyboardShowing = false
+                                                else focusedKey = it
+                                            }
+                                        },
                                         modifier = Modifier
                                             .width(buttonWidth)
                                             .height(40.dp)
                                     ) {
-                                        Text(text = "$index")
+                                        Text(text = "$button")
                                     }
 
                             }
@@ -346,5 +381,23 @@ fun NormalContent(
             }
 
         }
+    }
+}
+
+
+fun moveKey(
+    mainViewModel: MainViewModel,
+    key: Pair<Int, Int>,
+    toPlus: Boolean
+): Pair<Int, Int>? {
+    val value = key.second + if (toPlus) 1 else -1
+    return if (value in 0 until mainViewModel.phoneNumber[key.first].size) {
+        key.first to value
+    } else if (value < 0) {
+        if (key.first - 1 >= 0) key.first - 1 to mainViewModel.phoneNumber[key.first - 1].size - 1
+        else null
+    } else {
+        if (key.first + 1 < mainViewModel.phoneNumber.size) key.first + 1 to 0
+        else null
     }
 }

@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -31,13 +33,18 @@ fun KeyButton(
     shape: Shape = RoundedCornerShape(size = 8.dp),
     content: @Composable BoxScope.() -> Unit
 ) {
+    val hapticFeedback = LocalHapticFeedback.current
+
     Surface(
         modifier = modifier,
         color = color,
         contentColor = contentColor,
         border = border,
         shape = shape,
-        onClick = onClick
+        onClick = {
+            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+            onClick()
+        }
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
