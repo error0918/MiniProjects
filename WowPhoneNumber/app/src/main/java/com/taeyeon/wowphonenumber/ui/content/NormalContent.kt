@@ -3,7 +3,6 @@ package com.taeyeon.wowphonenumber.ui.content
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -68,7 +67,22 @@ fun NormalContent(
 ) {
     val align = arrayOf(Alignment.Start, Alignment.CenterHorizontally, Alignment.End)
 
-    PopupKeyPad()
+    var focusedKey by remember { mutableStateOf<Pair<Int, Int>?>(null) }
+    var isKeyboardShowing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(focusedKey) {
+        if (focusedKey != null) {
+            delay(10)
+            isKeyboardShowing = true
+        }
+    }
+    LaunchedEffect(isKeyboardShowing) {
+        if (!isKeyboardShowing) {
+            delay(500)
+            focusedKey = null
+        }
+    }
+
 
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
@@ -108,14 +122,14 @@ fun NormalContent(
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(space = 16.dp)
             ) {
-                mainViewModel.phoneNumber.forEachIndexed { index, block ->
+                mainViewModel.phoneNumber.forEachIndexed { blockIndex, block ->
                     Row(
-                        modifier = Modifier.align(align[index]),
+                        modifier = Modifier.align(align[blockIndex]),
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         val primary = MaterialTheme.colorScheme.primary
-                        if (align[index] != Alignment.Start) {
+                        if (align[blockIndex] != Alignment.Start) {
                             Canvas(
                                 modifier = Modifier.weight(1f)
                             ) {
@@ -130,7 +144,7 @@ fun NormalContent(
                             }
                         }
 
-                        block.forEach { item ->
+                        block.forEachIndexed { numberIndex, item ->
                             var colors by remember { mutableStateOf<NumberBlockColors?>(null) }
 
                             if (colors == null) colors = NumberBlockDefaults.colors()
@@ -145,12 +159,15 @@ fun NormalContent(
                                         borderColor = Color.DarkGray
                                     )
                                     // TODO: Keyboard
+
+
+
                                 },
                                 colors = colors!!
                             )
                         }
 
-                        if (align[index] != Alignment.End) {
+                        if (align[blockIndex] != Alignment.End) {
                             Canvas(
                                 modifier = Modifier.weight(1f)
                             ) {
@@ -170,30 +187,9 @@ fun NormalContent(
         }
 
     }
-}
 
 
-@Composable
-fun PopupKeyPad(
-    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
-) {
-    var isPopupShowing by remember { mutableStateOf(true) }
-    var isKeyboardShowing by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isPopupShowing) {
-        if (isPopupShowing) {
-            delay(10)
-            isKeyboardShowing = true
-        }
-    }
-    LaunchedEffect(isKeyboardShowing) {
-        if (!isKeyboardShowing) {
-            delay(1000)
-            isPopupShowing = false
-        }
-    }
-
-    if (isPopupShowing) {
+    if (focusedKey != null) {
         Popup(
             popupPositionProvider = object : PopupPositionProvider {
                 override fun calculatePosition(
@@ -218,7 +214,7 @@ fun PopupKeyPad(
 
             AnimatedVisibility(
                 visible = isKeyboardShowing,
-                enter = slideInVertically { height -> - height },
+                enter = slideInVertically { height -> height },
                 exit = slideOutVertically { height -> height }
             ) {
 
@@ -235,9 +231,7 @@ fun PopupKeyPad(
                             .fillMaxWidth()
                             .padding(8.dp),
                     ) {
-                        val buttonList = listOf(
-                            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
-                        )
+                        val buttonList = listOf('1', '2', '3', '4', '5', '6', '7', '8', '9', '0')
                         var buttonWidth by remember { mutableStateOf(0.dp) }
 
                         LaunchedEffect(maxWidth) {
@@ -338,7 +332,7 @@ fun PopupKeyPad(
                                             .width(buttonWidth)
                                             .height(40.dp)
                                     ) {
-                                        Text(text = index)
+                                        Text(text = "$index")
                                     }
 
                             }
