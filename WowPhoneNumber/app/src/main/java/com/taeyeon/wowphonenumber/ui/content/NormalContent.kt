@@ -1,5 +1,8 @@
 package com.taeyeon.wowphonenumber.ui.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -57,6 +60,7 @@ import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockColors
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockDefaults
+import kotlinx.coroutines.delay
 
 @Composable
 fun NormalContent(
@@ -170,151 +174,181 @@ fun NormalContent(
 
 
 @Composable
-fun PopupKeyPad() {
-    Popup(
-        popupPositionProvider = object : PopupPositionProvider {
-            override fun calculatePosition(
-                anchorBounds: IntRect,
-                windowSize: IntSize,
-                layoutDirection: LayoutDirection,
-                popupContentSize: IntSize
-            ): IntOffset {
-                return IntOffset(
-                    x = 0,
-                    y = anchorBounds.height + windowSize.height - popupContentSize.height
-                )
-            }
-        },
-        onDismissRequest = {},
-        properties = PopupProperties(
-            focusable = true,
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        )
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            color = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            shape = RoundedCornerShape(8.dp)
+fun PopupKeyPad(
+    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
+) {
+    var isPopupShowing by remember { mutableStateOf(true) }
+    var isKeyboardShowing by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isPopupShowing) {
+        if (isPopupShowing) {
+            delay(10)
+            isKeyboardShowing = true
+        }
+    }
+    LaunchedEffect(isKeyboardShowing) {
+        if (!isKeyboardShowing) {
+            delay(1000)
+            isPopupShowing = false
+        }
+    }
+
+    if (isPopupShowing) {
+        Popup(
+            popupPositionProvider = object : PopupPositionProvider {
+                override fun calculatePosition(
+                    anchorBounds: IntRect,
+                    windowSize: IntSize,
+                    layoutDirection: LayoutDirection,
+                    popupContentSize: IntSize
+                ): IntOffset {
+                    return IntOffset(
+                        x = 0,
+                        y = anchorBounds.height + windowSize.height - popupContentSize.height
+                    )
+                }
+            },
+            onDismissRequest = { isKeyboardShowing = false },
+            properties = PopupProperties(
+                focusable = true,
+                dismissOnBackPress = true,
+                dismissOnClickOutside = false
+            )
         ) {
-            BoxWithConstraints(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
+
+            AnimatedVisibility(
+                visible = isKeyboardShowing,
+                enter = slideInVertically { height -> - height },
+                exit = slideOutVertically { height -> height }
             ) {
-                val buttonList = listOf(
-                    "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
-                )
-                var buttonWidth by remember { mutableStateOf(0.dp) }
 
-                LaunchedEffect(maxWidth) {
-                    buttonWidth =
-                        ((maxWidth - (buttonList.size - 1) * 8.dp) / buttonList.size).let {
-                            if (it >= 30.dp) 30.dp else it
-                        }
-                }
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(space = 8.dp)
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceColorAtElevation(6.dp),
+                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
-
-                    Box(
-                        modifier = Modifier.fillMaxWidth()
+                    BoxWithConstraints(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp),
                     ) {
-                        Row(
-                            modifier = Modifier.align(Alignment.CenterStart),
-                            horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            KeyButton(
-                                onClick = {  },
-                                modifier = Modifier
-                                    .width(buttonWidth * 1.5f)
-                                    .height(40.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.KeyboardArrowLeft,
-                                    contentDescription = null
-                                )
-                            }
-                            KeyButton(
-                                onClick = {  },
-                                modifier = Modifier
-                                    .width(buttonWidth * 1.5f)
-                                    .height(40.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.KeyboardArrowRight,
-                                    contentDescription = null
-                                )
-                            }
+                        val buttonList = listOf(
+                            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
+                        )
+                        var buttonWidth by remember { mutableStateOf(0.dp) }
+
+                        LaunchedEffect(maxWidth) {
+                            buttonWidth =
+                                ((maxWidth - (buttonList.size - 1) * 8.dp) / buttonList.size).let {
+                                    if (it >= 30.dp) 30.dp else it
+                                }
                         }
 
-                        Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .width(80.dp)
-                                .height(40.dp)
-                                .align(Alignment.Center),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.Transparent,
-                                contentColor = LocalContentColor.current,
-                                disabledContainerColor = Color.Transparent,
-                                disabledContentColor = LocalContentColor.current.copy(alpha = 0.5f)
-                            ),
-                            contentPadding = PaddingValues(0.dp)
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(space = 8.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Rounded.KeyboardArrowDown,
-                                contentDescription = null
-                            )
-                        }
 
-                        Row(
-                            modifier = Modifier.align(Alignment.CenterEnd),
-                            horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            KeyButton(
-                                onClick = {  },
-                                modifier = Modifier
-                                    .width(buttonWidth * 3 + 8.dp)
-                                    .height(40.dp)
+                            Box(
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.KeyboardBackspace,
-                                    contentDescription = null
-                                )
+                                Row(
+                                    modifier = Modifier.align(Alignment.CenterStart),
+                                    horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    KeyButton(
+                                        onClick = { },
+                                        modifier = Modifier
+                                            .width(buttonWidth * 1.5f)
+                                            .height(40.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.KeyboardArrowLeft,
+                                            contentDescription = null
+                                        )
+                                    }
+                                    KeyButton(
+                                        onClick = { },
+                                        modifier = Modifier
+                                            .width(buttonWidth * 1.5f)
+                                            .height(40.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
+
+                                Button(
+                                    onClick = { isKeyboardShowing = false },
+                                    modifier = Modifier
+                                        .width(80.dp)
+                                        .height(40.dp)
+                                        .align(Alignment.Center),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.Transparent,
+                                        contentColor = LocalContentColor.current,
+                                        disabledContainerColor = Color.Transparent,
+                                        disabledContentColor = LocalContentColor.current.copy(alpha = 0.5f)
+                                    ),
+                                    contentPadding = PaddingValues(0.dp)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.KeyboardArrowDown,
+                                        contentDescription = null
+                                    )
+                                }
+
+                                Row(
+                                    modifier = Modifier.align(Alignment.CenterEnd),
+                                    horizontalArrangement = Arrangement.spacedBy(space = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    KeyButton(
+                                        onClick = { },
+                                        modifier = Modifier
+                                            .width(buttonWidth * 3 + 8.dp)
+                                            .height(40.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Rounded.KeyboardBackspace,
+                                            contentDescription = null
+                                        )
+                                    }
+                                }
                             }
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = 8.dp,
+                                    alignment = Alignment.End
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+
+                                for (index in buttonList)
+                                    KeyButton(
+                                        onClick = { },
+                                        modifier = Modifier
+                                            .width(buttonWidth)
+                                            .height(40.dp)
+                                    ) {
+                                        Text(text = index)
+                                    }
+
+                            }
+
                         }
                     }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = 8.dp,
-                            alignment = Alignment.End
-                        ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        for (index in buttonList)
-                            KeyButton(
-                                onClick = {  },
-                                modifier = Modifier
-                                    .width(buttonWidth)
-                                    .height(40.dp)
-                            ) {
-                                Text(text = index)
-                            }
-
-                    }
-
                 }
+
             }
+
         }
     }
 }
