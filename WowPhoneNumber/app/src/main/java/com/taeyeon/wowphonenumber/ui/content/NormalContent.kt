@@ -55,6 +55,7 @@ import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
 import com.taeyeon.wowphonenumber.ui.component.NumberBlockDefaults
+import com.taeyeon.wowphonenumber.util.moveKey
 import kotlinx.coroutines.delay
 
 @Composable
@@ -97,6 +98,9 @@ fun NormalContent(
 
         IconButton(
             onClick = {
+                mainViewModel.phoneNumber[0][0] = '0'
+                mainViewModel.phoneNumber[0][1] = '1'
+                mainViewModel.phoneNumber[0][0] = '0'
                 for (blockId in 1 until mainViewModel.phoneNumber.size) {
                     for (numberId in mainViewModel.phoneNumber[blockId].indices) mainViewModel.phoneNumber[blockId][numberId] = null
                 }
@@ -332,7 +336,7 @@ fun NormalContent(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(
                                     space = 8.dp,
-                                    alignment = Alignment.End
+                                    alignment = Alignment.CenterHorizontally
                                 ),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -366,23 +370,5 @@ fun NormalContent(
             }
 
         }
-    }
-}
-
-
-fun moveKey(
-    mainViewModel: MainViewModel,
-    key: Pair<Int, Int>,
-    toPlus: Boolean
-): Pair<Int, Int>? {
-    val value = key.second + if (toPlus) 1 else -1
-    return if (value in 0 until mainViewModel.phoneNumber[key.first].size) {
-        key.first to value
-    } else if (value < 0) {
-        if (key.first - 1 >= 0) key.first - 1 to mainViewModel.phoneNumber[key.first - 1].size - 1
-        else null
-    } else {
-        if (key.first + 1 < mainViewModel.phoneNumber.size) key.first + 1 to 0
-        else null
     }
 }
