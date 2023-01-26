@@ -56,6 +56,8 @@ fun BigSliderContent(
     var isHelpTextShow by rememberSaveable { mutableStateOf(false) }
     var isDragging by remember { mutableStateOf(false) }
     var isDraggingToPlus by remember { mutableStateOf(true) }
+    var touching by remember { mutableStateOf<String?>(null) }
+
     val textColor by animateColorAsState(
         targetValue = if (isDragging) {
             if (isDraggingToPlus) Color.Red.copy(alpha = 0.3f).compositeOver(MaterialTheme.colorScheme.primary)
@@ -73,6 +75,16 @@ fun BigSliderContent(
             isHelpTextShow = true
             delay(5000)
             isHelpTextShow = false
+        }
+    }
+    LaunchedEffect(touching) {
+        while (touching == "-") {
+            mainViewModel.changePhoneNumber(-1_0000L)
+            delay(1)
+        }
+        while (touching == "+") {
+            mainViewModel.changePhoneNumber(1_0000L)
+            delay(1)
         }
     }
 
@@ -120,7 +132,9 @@ fun BigSliderContent(
                     .pointerInput(Unit) {
                         detectTapGestures(
                             onPress = {
-                                mainViewModel.changePhoneNumber(-1L)
+                                touching = "-"
+                                tryAwaitRelease()
+                                touching = null
                             }
                         )
                     },
@@ -142,8 +156,9 @@ fun BigSliderContent(
                     .pointerInput(Unit) {
                         detectTapGestures(
                             onPress = {
-                                mainViewModel.changePhoneNumber(1L)
-                                // TODO
+                                touching = "+"
+                                tryAwaitRelease()
+                                touching = null
                             }
                         )
                     },

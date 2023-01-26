@@ -31,7 +31,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -45,7 +44,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-@Preview
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
@@ -320,7 +318,7 @@ fun BottomBar(
             ) {
                 var startPage by remember { mutableStateOf(0) }
                 var startOffset by remember { mutableStateOf(Offset.Zero) }
-                val step = LocalDensity.current.run { 20.dp.toPx() }
+                val step = LocalDensity.current.run { 10.dp.toPx() }
 
                 HorizontalPagerIndicator(
                     pagerState = mainViewModel.pagerState,
