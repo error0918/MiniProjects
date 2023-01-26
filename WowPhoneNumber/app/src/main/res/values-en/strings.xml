@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wow Phone Number</string>
+
+    <string name="screen_normal">Normal</string>
+    <string name="screen_random">Random</string>
+    <string name="screen_small_slider">Small Slider</string>
+    <string name="screen_big_slider">Big Slider</string>
+
+    <string name="component_number_block_require_value">value must be between 0 and 9.</string>
+
+    <string name="main_screen_topbar_edit_title">Edit Title</string>
+    <string name="main_screen_topbar_edit_title_message">Enter a new title</string>
+    <string name="main_screen_topbar_edit_title_clear">Clear</string>
+    <string name="main_screen_topbar_edit_title_empty_error">Empty.</string>
+    <string name="main_screen_topbar_edit_title_too_long_error">Too Long.</string>
+    <string name="main_screen_topbar_edit_title_close_dialog">Close</string>
+    <string name="main_screen_topbar_edit_title_finish">Finish</string>
+    <string name="main_screen_topbar_show_info">Show Info</string>
+    <string name="main_screen_bottombar_page_left">Left</string>
+    <string name="main_screen_bottombar_page_right">Right</string>
+
+    <string name="normal_content_delete">Delete</string>
+    <string name="random_content_roll">Roll</string>
+    <string name="big_slider_content_plus">Plus</string>
+    <string name="big_slider_content_minus">Minus</string>
+    <string name="big_slider_content_drag_message">Drag here to adjust the value.</string>
 </resources>

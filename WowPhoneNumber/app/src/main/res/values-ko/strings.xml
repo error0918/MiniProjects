@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wow Phone Number</string>
+
+    <string name="screen_normal">정상</string>
+    <string name="screen_random">랜덤</string>
+    <string name="screen_small_slider">작은 슬라이더</string>
+    <string name="screen_big_slider">큰 슬라이더</string>
+
+    <string name="component_number_block_require_value">value는 0에서 9 사이이어야 합니다.</string>
+
+    <string name="main_screen_topbar_edit_title">타이틀 수정</string>
+    <string name="main_screen_topbar_edit_title_message">새로운 타이틀 입력</string>
+    <string name="main_screen_topbar_edit_title_clear">초기화</string>
+    <string name="main_screen_topbar_edit_title_empty_error">비어있음.</string>
+    <string name="main_screen_topbar_edit_title_too_long_error">너무 길음.</string>
+    <string name="main_screen_topbar_edit_title_close_dialog">닫기</string>
+    <string name="main_screen_topbar_edit_title_finish">완료</string>
+    <string name="main_screen_topbar_show_info">정보 보기</string>
+    <string name="main_screen_bottombar_page_left">왼쪽</string>
+    <string name="main_screen_bottombar_page_right">오른쪽</string>
+
+    <string name="normal_content_delete">삭제</string>
+    <string name="random_content_roll">랜덤 입력</string>
+    <string name="big_slider_content_plus">더하기</string>
+    <string name="big_slider_content_minus">빼기</string>
+    <string name="big_slider_content_drag_message">이곳을 드래그하여 값을 조절하십시오.</string>
 </resources>

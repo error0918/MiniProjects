@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.taeyeon.wowphonenumber.R
 
 data class NumberBlockColors internal constructor(
     val textColor: Color,
@@ -55,7 +57,7 @@ fun NumberBlock(
     onClick: (() -> Unit)? = null,
     colors: NumberBlockColors = NumberBlockDefaults.colors()
 ) {
-    require(value in 0 .. 9 || value == null) { "value는 0에서 9 사이이어야 합니다." }
+    require(value in 0 .. 9 || value == null) { stringResource(id = R.string.component_number_block_require_value) }
 
     val animatedValue by animateFloatAsState(
         targetValue = (value ?: -1).toFloat(),

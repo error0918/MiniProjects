@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
 import java.util.*
@@ -44,7 +46,7 @@ fun RandomContent(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Sync,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.random_content_roll)
             )
         }
 
@@ -101,7 +103,7 @@ fun RandomContent(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Sync,
-                                contentDescription = null
+                                contentDescription = stringResource(id = R.string.random_content_roll)
                             )
                         }
                     }

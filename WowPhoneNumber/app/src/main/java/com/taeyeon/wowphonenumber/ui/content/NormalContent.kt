@@ -43,12 +43,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
@@ -107,7 +109,7 @@ fun NormalContent(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Delete,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.normal_content_delete)
             )
         }
 
@@ -185,7 +187,7 @@ fun NormalContent(
     }
 
 
-    if (focusedKey != null) { // TODO: BUTTON ONCLICK
+    if (focusedKey != null) {
         Popup(
             alignment = Alignment.BottomCenter,
             onDismissRequest = { isKeyboardShowing = false },

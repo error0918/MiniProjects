@@ -38,11 +38,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import kotlinx.coroutines.delay
@@ -109,7 +111,7 @@ fun BigSliderContent(
         ) {
             Icon(
                 imageVector = if (isDraggingToPlus) Icons.Rounded.Add else Icons.Rounded.Remove,
-                contentDescription = null,
+                contentDescription = if (isDraggingToPlus) stringResource(id = R.string.big_slider_content_plus) else stringResource(id = R.string.big_slider_content_minus),
                 tint = textColor.copy(alpha = 0.5f),
             )
         }
@@ -142,7 +144,7 @@ fun BigSliderContent(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Remove,
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.big_slider_content_minus),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
@@ -166,7 +168,7 @@ fun BigSliderContent(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
-                    contentDescription = null,
+                    contentDescription = stringResource(id = R.string.big_slider_content_plus),
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
@@ -196,7 +198,7 @@ fun BigSliderContent(
             )
         ) {
             Text(
-                text = "이곳을 드래그하여 값을 조절하십시오"
+                text = stringResource(id = R.string.big_slider_content_drag_message)
             )
         }
 

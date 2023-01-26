@@ -31,6 +31,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -38,6 +39,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import kotlinx.coroutines.delay
@@ -161,7 +163,7 @@ fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Edit,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title)
                 )
             }
             IconButton(
@@ -169,7 +171,7 @@ fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Info,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.main_screen_topbar_show_info)
                 )
             }
         },
@@ -191,13 +193,16 @@ fun EditTitleDialog(
     var temporaryTitle by rememberSaveable { mutableStateOf(mainViewModel.title) }
     var errorMessage by rememberSaveable { mutableStateOf<String?>("a") }
 
+    val emptyMessage = stringResource(id = R.string.main_screen_topbar_edit_title_empty_error)
+    val tooLongMessage = stringResource(id = R.string.main_screen_topbar_edit_title_too_long_error)
+
     LaunchedEffect(mainViewModel.title) {
         temporaryTitle = mainViewModel.title
     }
     LaunchedEffect(temporaryTitle) {
         errorMessage = when {
-            temporaryTitle.isBlank() -> "비어있음"
-            temporaryTitle.length > 50 -> "너무 길음"
+            temporaryTitle.isBlank() -> emptyMessage
+            temporaryTitle.length > 50 -> tooLongMessage
             else -> null
         }
     }
@@ -208,7 +213,7 @@ fun EditTitleDialog(
             TextButton(
                 onClick = { mainViewModel.isEditTitleDialog = false }
             ) {
-                Text(text = "닫기")
+                Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_close_dialog))
             }
         },
         confirmButton = {
@@ -219,16 +224,16 @@ fun EditTitleDialog(
                 },
                 enabled = errorMessage == null
             ) {
-                Text(text = "완료")
+                Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_finish))
             }
         },
         icon = {
             Icon(
                 imageVector = Icons.Rounded.Edit,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title)
             )
         },
-        title = { Text(text = "타이틀 편집") },
+        title = { Text(text = stringResource(id = R.string.main_screen_topbar_edit_title)) },
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -239,7 +244,7 @@ fun EditTitleDialog(
                     onValueChange = { value ->
                         temporaryTitle = value
                     },
-                    label = { Text(text = "새로운 타이틀 입력") },
+                    label = { Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_message)) },
                     trailingIcon = {
                         IconButton(
                             onClick = { temporaryTitle = "" },
@@ -247,7 +252,7 @@ fun EditTitleDialog(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Clear,
-                                contentDescription = null
+                                contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title_clear)
                             )
                         }
                     },
@@ -302,7 +307,7 @@ fun BottomBar(
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChevronLeft,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.main_screen_bottombar_page_left)
             )
         }
         Box(
@@ -358,11 +363,14 @@ fun BottomBar(
                                     }
                                 },
                                 onDrag = { change, _ ->
-                                    val delta = (startOffset.x - change.position.x).roundToInt() / step.toInt()
+                                    val delta =
+                                        (startOffset.x - change.position.x).roundToInt() / step.toInt()
                                     if (startPage - delta != mainViewModel.pagerState.currentPage && startPage - delta in 0 until mainViewModel.pagerState.pageCount) {
                                         scope.launch {
                                             mainViewModel.pagerState.scrollToPage(startPage - delta)
-                                            hapticFeedbackType.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            hapticFeedbackType.performHapticFeedback(
+                                                HapticFeedbackType.LongPress
+                                            )
                                         }
                                     }
                                 }
@@ -378,7 +386,7 @@ fun BottomBar(
                 )
             }
             Text(
-                text = Screen.values()[mainViewModel.pagerState.currentPage].title,
+                text = stringResource(id = Screen.values()[mainViewModel.pagerState.currentPage].titleId),
                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f),
                 style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.align(Alignment.BottomCenter)
@@ -405,7 +413,7 @@ fun BottomBar(
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChevronRight,
-                contentDescription = null
+                contentDescription = stringResource(id = R.string.main_screen_bottombar_page_right)
             )
         }
     }

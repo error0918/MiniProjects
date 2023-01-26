@@ -1,7 +1,4 @@
-@file:OptIn(
-    ExperimentalPagerApi::class
-)
-@file:Suppress("OPT_IN_IS_NOT_ENABLED")
+@file:OptIn(ExperimentalPagerApi::class)
 
 package com.taeyeon.wowphonenumber.model
 
