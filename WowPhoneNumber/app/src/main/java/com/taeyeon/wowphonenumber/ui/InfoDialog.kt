@@ -2,8 +2,6 @@
 
 package com.taeyeon.wowphonenumber.ui
 
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
@@ -33,7 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
+import java.util.Random
 
 @Composable
 fun InfoDialog(
@@ -78,8 +79,20 @@ fun InfoDialog(
                     .padding(28.dp)
             ) {
                 val hapticFeedback = LocalHapticFeedback.current
+                val easterEggMessages = remember {
+                    mutableStateListOf(
+                        "뻘짓!", "생각보다 만드는 데 시간 많이 걸렸어", "집 가고 싶다~ 😵", "(～￣▽￣)～", "＼(((￣(￣(￣▽￣)￣)￣)))／", "이스터 에그!!"
+                    )
+                }
+
                 var boxHeight by remember { mutableStateOf(0) }
                 var easterEgg by remember { mutableStateOf(false) }
+                var easterEggIndex by remember { mutableStateOf(0) }
+
+                LaunchedEffect(easterEgg) {
+                    if (easterEgg)
+                        easterEggIndex = Random().nextInt(easterEggMessages.size)
+                }
 
                 Box(
                     modifier = Modifier
@@ -118,7 +131,7 @@ fun InfoDialog(
                         visible = easterEgg,
                         modifier = Modifier
                             .height(LocalDensity.current.run { boxHeight.toDp() })
-                            .padding(end = LocalDensity.current.run { boxHeight.toDp() + 8.dp})
+                            .padding(end = LocalDensity.current.run { boxHeight.toDp() + 8.dp })
                             .align(Alignment.CenterEnd),
                         enter = slideInHorizontally { it } + scaleIn(),
                         exit = slideOutHorizontally { it } + scaleOut()
@@ -130,7 +143,7 @@ fun InfoDialog(
                                 bottomStart = 6.dp,
                                 bottomEnd = 6.dp,
                             ),
-                            color = Color.Black.copy(alpha = 0.5f),
+                            color = Color.DarkGray.copy(alpha = 0.75f),
                             contentColor = Color.White,
                             modifier = Modifier.fillMaxHeight()
                         ) {
@@ -141,7 +154,7 @@ fun InfoDialog(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "adsf", // TODO
+                                    text = easterEggMessages[easterEggIndex],
                                     fontWeight = FontWeight.Light,
                                     fontSize = MaterialTheme.typography.headlineSmall.fontSize / 1.75f
                                 )
