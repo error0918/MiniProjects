@@ -1,5 +1,14 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+
 package com.taeyeon.wowphonenumber.ui
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -7,6 +16,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,6 +25,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,18 +39,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.taeyeon.wowphonenumber.R
 import com.taeyeon.wowphonenumber.model.MainViewModel
 
-@Preview
 @Composable
 fun InfoDialog(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current).apply {
@@ -64,7 +77,9 @@ fun InfoDialog(
                 modifier = Modifier
                     .padding(28.dp)
             ) {
+                val hapticFeedback = LocalHapticFeedback.current
                 var boxHeight by remember { mutableStateOf(0) }
+                var easterEgg by remember { mutableStateOf(false) }
 
                 Box(
                     modifier = Modifier
@@ -87,12 +102,51 @@ fun InfoDialog(
                         border = BorderStroke(
                             width = 1.5f.dp,
                             color = LocalContentColor.current
-                        )
+                        ),
+                        onClick = {
+                            // Easter Egg
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            easterEgg = !easterEgg
+                        }
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.ic_launcher),
                             contentDescription = stringResource(id = R.string.app_name)
                         )
+                    }
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = easterEgg,
+                        modifier = Modifier
+                            .height(LocalDensity.current.run { boxHeight.toDp() })
+                            .padding(end = LocalDensity.current.run { boxHeight.toDp() + 8.dp})
+                            .align(Alignment.CenterEnd),
+                        enter = slideInHorizontally { it } + scaleIn(),
+                        exit = slideOutHorizontally { it } + scaleOut()
+                    ) {// Easter Egg
+                        Surface(
+                            shape = RoundedCornerShape(
+                                topStart = 6.dp,
+                                topEnd = 0.dp,
+                                bottomStart = 6.dp,
+                                bottomEnd = 6.dp,
+                            ),
+                            color = Color.Black.copy(alpha = 0.5f),
+                            contentColor = Color.White,
+                            modifier = Modifier.fillMaxHeight()
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .padding(6.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "adsf", // TODO
+                                    fontWeight = FontWeight.Light,
+                                    fontSize = MaterialTheme.typography.headlineSmall.fontSize / 1.75f
+                                )
+                            }
+                        }
                     }
                 }
 
