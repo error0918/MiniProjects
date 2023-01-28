@@ -1,5 +1,6 @@
 package com.taeyeon.wowphonenumber.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +14,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.Divider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -22,9 +26,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -55,8 +65,12 @@ fun InfoDialog(
                 modifier = Modifier
                     .padding(28.dp)
             ) {
-                BoxWithConstraints(
-                    modifier = Modifier.fillMaxWidth()
+                var boxHeight by remember { mutableStateOf(0) }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged { boxHeight = it.height }
                 ) {
                     Text(
                         text = "앱 정보",
@@ -64,15 +78,23 @@ fun InfoDialog(
                         style = MaterialTheme.typography.headlineSmall,
                         modifier = Modifier
                             .align(Alignment.CenterStart)
-                            .padding(end = minHeight)
+                            .padding(end = LocalDensity.current.run { boxHeight.toDp() })
                     )
-                    Image(
-                        painter = TODO(),
-                        contentDescription = null, // TODO
+                    Surface(
                         modifier = Modifier
-                            .size(minHeight)
-                            .align(Alignment.CenterEnd)
-                    )
+                            .size(LocalDensity.current.run { boxHeight.toDp() })
+                            .align(Alignment.CenterEnd),
+                        shape = CircleShape,
+                        border = BorderStroke(
+                            width = 2.dp,
+                            color = LocalContentColor.current
+                        )
+                    ) {
+                        Image(
+                            imageVector = Icons.Default.Image,
+                            contentDescription = null // TODO
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
