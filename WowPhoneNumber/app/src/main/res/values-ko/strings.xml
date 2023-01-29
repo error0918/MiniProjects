@@ -20,6 +20,10 @@
     <string name="main_screen_bottombar_page_left">왼쪽</string>
     <string name="main_screen_bottombar_page_right">오른쪽</string>
 
+    <string name="info_dialog_app_info">앱 정보</string>
+
+    <string name="info_dialog_close">닫기</string>
+
     <string name="normal_content_delete">삭제</string>
     <string name="random_content_roll">랜덤 입력</string>
     <string name="big_slider_content_plus">더하기</string>

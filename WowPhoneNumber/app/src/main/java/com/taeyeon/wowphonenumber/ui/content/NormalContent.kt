@@ -100,7 +100,7 @@ fun NormalContent(
             onClick = {
                 mainViewModel.phoneNumber[0][0] = '0'
                 mainViewModel.phoneNumber[0][1] = '1'
-                mainViewModel.phoneNumber[0][0] = '0'
+                mainViewModel.phoneNumber[0][2] = '0'
                 for (blockId in 1 until mainViewModel.phoneNumber.size) {
                     for (numberId in mainViewModel.phoneNumber[blockId].indices) mainViewModel.phoneNumber[blockId][numberId] = null
                 }

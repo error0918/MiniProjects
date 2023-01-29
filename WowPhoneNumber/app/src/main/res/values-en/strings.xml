@@ -20,6 +20,10 @@
     <string name="main_screen_bottombar_page_left">Left</string>
     <string name="main_screen_bottombar_page_right">Right</string>
 
+    <string name="info_dialog_app_info">Application Information</string>
+
+    <string name="info_dialog_close">Close</string>
+
     <string name="normal_content_delete">Delete</string>
     <string name="random_content_roll">Roll</string>
     <string name="big_slider_content_plus">Plus</string>

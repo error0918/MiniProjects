@@ -3,6 +3,8 @@
 package com.taeyeon.wowphonenumber.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
@@ -100,7 +102,7 @@ fun InfoDialog(
                         .onSizeChanged { boxHeight = it.height }
                 ) {
                     Text(
-                        text = "앱 정보",
+                        text = stringResource(id = R.string.info_dialog_app_info),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.headlineSmall,
                         modifier = Modifier
@@ -133,8 +135,8 @@ fun InfoDialog(
                             .height(LocalDensity.current.run { boxHeight.toDp() })
                             .padding(end = LocalDensity.current.run { boxHeight.toDp() + 8.dp })
                             .align(Alignment.CenterEnd),
-                        enter = slideInHorizontally { it } + scaleIn(),
-                        exit = slideOutHorizontally { it } + scaleOut()
+                        enter = slideInHorizontally { it / 2 } + scaleIn() + fadeIn(),
+                        exit = slideOutHorizontally { it / 2 } + scaleOut() + fadeOut()
                     ) {// Easter Egg
                         Surface(
                             shape = RoundedCornerShape(
@@ -194,7 +196,7 @@ fun InfoDialog(
                         TextButton(
                             onClick = { mainViewModel.isInfoDialog = false }
                         ) {
-                            Text(text = "닫기")
+                            Text(text = stringResource(id = R.string.info_dialog_close))
                         }
                     }
                 }
