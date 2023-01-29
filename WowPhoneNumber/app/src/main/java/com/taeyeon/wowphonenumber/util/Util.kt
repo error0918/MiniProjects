@@ -1,6 +1,22 @@
 package com.taeyeon.wowphonenumber.util
 
+import android.content.Context
+import androidx.annotation.RawRes
 import com.taeyeon.wowphonenumber.model.MainViewModel
+import java.io.ByteArrayOutputStream
+
+fun Context.readRaw(@RawRes id: Int): String {
+    val inputStream = resources.openRawResource(id)
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    var index = inputStream.read()
+    while (index != -1) {
+        byteArrayOutputStream.write(index)
+        index = inputStream.read()
+    }
+    val result = String(byteArrayOutputStream.toByteArray(), Charsets.UTF_8)
+    byteArrayOutputStream.close()
+    return result
+}
 
 fun moveKey(
     mainViewModel: MainViewModel,
