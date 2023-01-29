@@ -130,6 +130,7 @@ fun MainScreen(
 
     if (mainViewModel.isEditTitleDialog) EditTitleDialog(mainViewModel = mainViewModel)
     if (mainViewModel.isInfoDialog) InfoDialog(mainViewModel = mainViewModel)
+    if (mainViewModel.isLicenseDialog) LicenseDialog(mainViewModel = mainViewModel)
 }
 
 

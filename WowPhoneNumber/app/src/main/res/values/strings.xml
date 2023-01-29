@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Wow Phone Number</string>
+    <string name="app_explanation">Enter phone number UI that can annoy you\n⌈Wow Phone Number⌋ is a simulated phone number entry application that does not collect personal phone numbers in any way.</string>
+    <string name="app_maker">jtaeyeon05</string>
 
     <string name="screen_normal">Normal</string>
     <string name="screen_random">Random</string>

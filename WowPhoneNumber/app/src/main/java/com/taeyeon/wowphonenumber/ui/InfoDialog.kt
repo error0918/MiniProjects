@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class
+)
 
 package com.taeyeon.wowphonenumber.ui
 
@@ -20,7 +23,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,7 +35,6 @@ import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Source
-import androidx.compose.material.icons.rounded.Web
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -43,7 +44,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -60,7 +60,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.taeyeon.wowphonenumber.R
@@ -179,12 +182,40 @@ fun InfoDialog(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Divider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp)
+                    modifier = Modifier.fillMaxWidth()
                 )
 
-                // TODO: Body
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            MaterialTheme.typography.titleLarge.toSpanStyle()
+                        ) {
+                            append(stringResource(id = R.string.app_name) + "\n")
+                        }
+                        withStyle(
+                            MaterialTheme.typography.labelSmall.toSpanStyle()
+                        ) {
+                            appendLine()
+                        }
+                        append(stringResource(id = R.string.app_explanation))
+                    },
+                    style = MaterialTheme.typography.labelMedium
+                )
+
+                Text(
+                    text = stringResource(id = R.string.app_maker),
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Divider(
+                    modifier = Modifier.fillMaxWidth()
+                )
 
                 val actionList = listOf(
 
@@ -237,7 +268,7 @@ fun InfoDialog(
                     Triple(
                         {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                             // License
+                             mainViewModel.isLicenseDialog = true
                         },
                         Icons.Rounded.Info,
                         stringResource(id = R.string.info_dialog_open_source_license)
@@ -276,11 +307,9 @@ fun InfoDialog(
                     }
                 }
 
-
                 Divider(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 4.dp)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Wow Phone Number</string>
+    <string name="app_explanation">당신을 킹받게 할 수 있는 전화번호 입력 UI\n⌈Wow Phone Number⌋는 모의 전화번호 입력 애플리케이션으로 어떠한 방법으로도 개인의 전화번호를 수집하지 않습니다.</string>
+    <string name="app_maker">jtaeyeon05</string>
 
     <string name="screen_normal">정상</string>
     <string name="screen_random">랜덤</string>
