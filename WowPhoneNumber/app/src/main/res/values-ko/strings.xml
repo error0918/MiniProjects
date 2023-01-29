@@ -29,6 +29,10 @@
     <string name="info_dialog_open_source_license">오픈 소스 라이선스</string>
     <string name="info_dialog_close">닫기</string>
 
+    <string name="license_dialog_open_source_license">오픈 소스 라이선스</string>
+
+    <string name="license_dialog_close">닫기</string>
+
     <string name="normal_content_delete">삭제</string>
     <string name="random_content_roll">랜덤 입력</string>
     <string name="big_slider_content_plus">더하기</string>

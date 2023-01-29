@@ -29,6 +29,10 @@
     <string name="info_dialog_open_source_license">Open Source License</string>
     <string name="info_dialog_close">Close</string>
 
+    <string name="license_dialog_open_source_license">Open Source License</string>
+
+    <string name="license_dialog_close">Close</string>
+
     <string name="normal_content_delete">Delete</string>
     <string name="random_content_roll">Roll</string>
     <string name="big_slider_content_plus">Plus</string>

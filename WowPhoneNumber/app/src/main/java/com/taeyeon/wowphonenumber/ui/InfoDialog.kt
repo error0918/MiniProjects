@@ -308,8 +308,7 @@ fun InfoDialog(
                 }
 
                 Divider(
-                    modifier = Modifier
-                        .fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
