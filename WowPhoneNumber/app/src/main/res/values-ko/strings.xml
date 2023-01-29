@@ -30,7 +30,8 @@
     <string name="info_dialog_close">닫기</string>
 
     <string name="license_dialog_open_source_license">오픈 소스 라이선스</string>
-
+    <string name="license_dialog_open_license">열기</string>
+    <string name="license_dialog_close_license">닫기</string>
     <string name="license_dialog_close">닫기</string>
 
     <string name="normal_content_delete">삭제</string>

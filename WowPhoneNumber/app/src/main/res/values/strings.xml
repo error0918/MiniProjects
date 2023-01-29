@@ -29,7 +29,8 @@
     <string name="info_dialog_close">Close</string>
 
     <string name="license_dialog_open_source_license">Open Source License</string>
-
+    <string name="license_dialog_open_license">열기</string>
+    <string name="license_dialog_close_license">닫기</string>
     <string name="license_dialog_close">Close</string>
 
     <string name="normal_content_delete">Delete</string>

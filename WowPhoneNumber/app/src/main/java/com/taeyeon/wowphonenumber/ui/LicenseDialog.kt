@@ -1,18 +1,29 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(
+    ExperimentalFoundationApi::class,
+    ExperimentalMaterial3Api::class
+)
 
 package com.taeyeon.wowphonenumber.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,9 +32,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -100,9 +114,14 @@ fun LicenseDialog(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Divider(
-                    modifier = Modifier.fillMaxWidth()
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.onSurface)
                 )
+
+                var isExpanded = remember { mutableStateListOf<Boolean>() }
 
                 LazyColumn(
                     modifier = Modifier
@@ -110,17 +129,69 @@ fun LicenseDialog(
                         .weight(1f)
                 ) {
                     // TODO
-                    stickyHeader {
-                        //
-                    }
-                    items(licenseList) {
-                        Text(text = it.title)
-                        Text(text = it.license!!)
+                    licenseList.forEachIndexed { index, license ->
+                        if (isExpanded.size <= index + 1) isExpanded = List(licenseList.size) { false }.toMutableStateList()
+                        stickyHeader {
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.surface,
+                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                shape = RectangleShape,
+                                onClick = { isExpanded[index] = !isExpanded[index] }
+                            ) {
+                                Column(
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(4.dp)
+                                    ) {
+                                        val size = LocalDensity.current.run {
+                                            MaterialTheme.typography.labelMedium.fontSize.toDp() +
+                                                    ButtonDefaults.TextButtonContentPadding.calculateTopPadding() +
+                                                    ButtonDefaults.TextButtonContentPadding.calculateBottomPadding()
+                                        }
+                                        Text(
+                                            text = license.title,
+                                            style = MaterialTheme.typography.bodySmall,
+                                            modifier = Modifier
+                                                .align(Alignment.CenterStart)
+                                                .padding(end = size)
+                                        )
+                                        Icon(
+                                            imageVector = if (isExpanded[index]) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                            contentDescription = if (isExpanded[index]) stringResource(id = R.string.license_dialog_close_license) else stringResource(id = R.string.license_dialog_open_license),
+                                            modifier = Modifier
+                                                .size(size)
+                                                .align(Alignment.CenterEnd)
+                                        )
+                                    }
+                                    Spacer(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(1.dp)
+                                            .background(MaterialTheme.colorScheme.onSurface)
+                                    )
+                                }
+                            }
+                        }
+                        item {
+                            AnimatedVisibility(visible = isExpanded[index]) {
+                                Text(
+                                    text = license.license!!,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
+                        }
                     }
                 }
 
-                Divider(
-                    modifier = Modifier.fillMaxWidth()
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.onSurface)
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
