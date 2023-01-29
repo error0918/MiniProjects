@@ -21,7 +21,10 @@
     <string name="main_screen_bottombar_page_right">오른쪽</string>
 
     <string name="info_dialog_app_info">앱 정보</string>
-
+    <string name="info_dialog_system_settings">시스템 설정</string>
+    <string name="info_dialog_source_code">소스 코드</string>
+    <string name="info_dialog_email">이메일</string>
+    <string name="info_dialog_open_source_license">오픈 소스 라이선스</string>
     <string name="info_dialog_close">닫기</string>
 
     <string name="normal_content_delete">삭제</string>

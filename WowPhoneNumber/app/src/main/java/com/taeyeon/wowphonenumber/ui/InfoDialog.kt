@@ -2,6 +2,9 @@
 
 package com.taeyeon.wowphonenumber.ui
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,6 +20,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -24,8 +28,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.Source
+import androidx.compose.material.icons.rounded.Web
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -77,9 +88,9 @@ fun InfoDialog(
                 )
         ) {
             Column(
-                modifier = Modifier
-                    .padding(28.dp)
+                modifier = Modifier.padding(28.dp)
             ) {
+                val context = LocalContext.current
                 val hapticFeedback = LocalHapticFeedback.current
                 val easterEggMessages = remember {
                     mutableStateListOf(
@@ -175,6 +186,97 @@ fun InfoDialog(
 
                 // TODO: Body
 
+                val actionList = listOf(
+
+                    Triple(
+                        {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            context.startActivity(
+                                Intent(
+                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.parse("package:${context.packageName}")
+                                ).apply {
+                                    addCategory(Intent.CATEGORY_DEFAULT)
+                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                }
+                            )
+                        },
+                        Icons.Rounded.Settings,
+                        stringResource(id = R.string.info_dialog_system_settings)
+                    ),
+
+                    Triple(
+                        {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            context.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber")
+                                )
+                            )
+                        },
+                        Icons.Rounded.Source,
+                        stringResource(id = R.string.info_dialog_source_code)
+                    ),
+
+                    Triple(
+                        {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            context.startActivity(
+                                Intent(Intent.ACTION_SEND).apply {
+                                    type = "plain/text"
+                                    putExtra(Intent.EXTRA_EMAIL, arrayOf("developer.taeyeon@gmail.com"))
+                                    putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+                                }
+                            )
+                        },
+                        Icons.Rounded.Email,
+                        stringResource(id = R.string.info_dialog_email)
+                    ),
+
+                    Triple(
+                        {
+                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                             // License
+                        },
+                        Icons.Rounded.Info,
+                        stringResource(id = R.string.info_dialog_open_source_license)
+                    ),
+
+                )
+
+                actionList.forEach { action ->
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = Color.Transparent,
+                        contentColor = LocalContentColor.current,
+                        shape = RoundedCornerShape(size = 8.dp),
+                        onClick = action.first
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = 8.dp,
+                                alignment = Alignment.Start
+                            ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = action.second,
+                                contentDescription = action.third,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Text(
+                                text = action.third,
+                                fontSize = LocalDensity.current.run { 16.dp.toSp() }
+                            )
+                        }
+                    }
+                }
+
+
                 Divider(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -183,22 +285,11 @@ fun InfoDialog(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Row(
-                    modifier = Modifier.align(Alignment.End),
-                    horizontalArrangement = Arrangement.spacedBy(space = 8.dp)
+                TextButton(
+                    onClick = { mainViewModel.isInfoDialog = false },
+                    modifier = Modifier.align(Alignment.End)
                 ) {
-                    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.primary) {
-                        TextButton(
-                            onClick = { /* TODO */ }
-                        ) {
-                            Text(text = "오픈소스 라이선스")
-                        }
-                        TextButton(
-                            onClick = { mainViewModel.isInfoDialog = false }
-                        ) {
-                            Text(text = stringResource(id = R.string.info_dialog_close))
-                        }
-                    }
+                    Text(text = stringResource(id = R.string.info_dialog_close))
                 }
             }
         }

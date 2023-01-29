@@ -21,7 +21,10 @@
     <string name="main_screen_bottombar_page_right">Right</string>
 
     <string name="info_dialog_app_info">Application Information</string>
-
+    <string name="info_dialog_system_settings">System Settings</string>
+    <string name="info_dialog_source_code">Source Code</string>
+    <string name="info_dialog_email">Email</string>
+    <string name="info_dialog_open_source_license">Open Source License</string>
     <string name="info_dialog_close">Close</string>
 
     <string name="normal_content_delete">Delete</string>
