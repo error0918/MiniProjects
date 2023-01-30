@@ -9,9 +9,9 @@
 <table align="end">
     <tr>
         <td>
-            <font size="4">
+            <h3>
                 당신을 킹받게 할 수 있는 전화번호 입력 UI
-            </font>
+            </h3>
         </td>
         <td>
             <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/icon.png" width="200" height="200" title="Wow Phone Number"/>
