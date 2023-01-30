@@ -10,6 +10,7 @@ import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,7 +27,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,7 +39,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -47,7 +47,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.taeyeon.wowphonenumber.R
@@ -88,7 +90,7 @@ fun LicenseDialog(
 
                 licenseList.add(
                     License(
-                        title = rawTitle.split(" ")[1],
+                        title = rawTitle.split(" ")[1].trim(),
                         license = license.first,
                         link = license.second
                     )
@@ -131,16 +133,15 @@ fun LicenseDialog(
                         .background(MaterialTheme.colorScheme.onSurface)
                 )
 
-                var isExpanded = remember { mutableStateListOf<Boolean>() }
+                val isExpanded = remember { mutableStateListOf<Boolean>() }
 
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-                    // TODO
                     licenseList.forEachIndexed { index, license ->
-                        if (isExpanded.size <= index + 1) isExpanded = List(licenseList.size) { false }.toMutableStateList()
+                        if (isExpanded.size <= index + 1) isExpanded.addAll(List(licenseList.size - index - 1) { false })
                         stickyHeader {
                             Surface(
                                 modifier = Modifier.fillMaxWidth(),
@@ -172,6 +173,7 @@ fun LicenseDialog(
                                         Text(
                                             text = license.title,
                                             style = MaterialTheme.typography.labelSmall,
+                                            overflow = TextOverflow.Visible,
                                             modifier = Modifier
                                                 .align(Alignment.CenterStart)
                                                 .padding(end = size + 4.dp)
@@ -211,11 +213,12 @@ fun LicenseDialog(
                                         Column(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .padding(8.dp)
+                                                .padding(4.dp),
+                                            verticalArrangement = Arrangement.spacedBy(8.dp)
                                         ) {
                                             if (license.license == null) {
                                                 Text(
-                                                    text = "라이선스 미리보기가 제공되지 않습니다.\n아래 링크를 통해 확인하십시오.",
+                                                    text = stringResource(id = R.string.license_dialog_preview_not_provide_message),
                                                     textAlign = TextAlign.Center,
                                                     style = MaterialTheme.typography.labelSmall,
                                                     modifier = Modifier.fillMaxWidth()
@@ -224,12 +227,19 @@ fun LicenseDialog(
                                                 SelectionContainer {
                                                     Text(
                                                         text = license.license,
-                                                        style = MaterialTheme.typography.labelSmall
+                                                        style = MaterialTheme.typography.labelSmall.copy(
+                                                            fontSize = MaterialTheme.typography.labelSmall.fontSize * 0.6f,
+                                                            fontWeight = FontWeight.Light,
+                                                            lineHeight = MaterialTheme.typography.labelSmall.lineHeight * 0.6f,
+                                                        )
                                                     )
                                                 }
                                             }
                                             license.link?.let {
-                                                Button(
+                                                Surface(
+                                                    color = MaterialTheme.colorScheme.primary,
+                                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                                    shape = CircleShape,
                                                     onClick = {
                                                         hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
                                                         context.startActivity(
@@ -239,24 +249,35 @@ fun LicenseDialog(
                                                             )
                                                         )
                                                     },
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    shape = CircleShape,
-                                                    colors = ButtonDefaults.buttonColors(
-                                                        containerColor = MaterialTheme.colorScheme.primary,
-                                                        contentColor = MaterialTheme.colorScheme.onPrimary
-                                                    ),
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .height(24.dp)
                                                 ) {
                                                     Row(
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        horizontalArrangement = Arrangement
+                                                            .spacedBy(
+                                                                space = 4.dp,
+                                                                alignment = Alignment.CenterHorizontally
+                                                            ),
                                                         verticalAlignment = Alignment.CenterVertically
                                                     ) {
-                                                        //
+                                                        Icon(
+                                                            imageVector = Icons.Rounded.PlayArrow,
+                                                            contentDescription = stringResource(id = R.string.license_dialog_view_full),
+                                                            modifier = Modifier.size(12.dp)
+                                                        )
+                                                        Text(
+                                                            text = stringResource(id = R.string.license_dialog_view_full),
+                                                            fontSize = LocalDensity.current.run { 12.dp.toSp() }
+                                                        )
                                                     }
                                                 }
                                             }
                                         }
                                     } else {
                                         Text(
-                                            text = "라이선스 불러오기에 실패하였습니다 :(",
+                                            text = stringResource(id = R.string.license_dialog_preview_fail_to_road),
                                             textAlign = TextAlign.Center,
                                             style = MaterialTheme.typography.labelSmall,
                                             modifier = Modifier.fillMaxWidth()

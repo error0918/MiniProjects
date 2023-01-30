@@ -164,7 +164,7 @@ fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Edit,
-                    contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title)
+                    contentDescription = stringResource(id = R.string.main_screen_top_bar_edit_title)
                 )
             }
             IconButton(
@@ -172,7 +172,7 @@ fun TopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Info,
-                    contentDescription = stringResource(id = R.string.main_screen_topbar_show_info)
+                    contentDescription = stringResource(id = R.string.main_screen_top_bar_show_info)
                 )
             }
         },
@@ -183,92 +183,6 @@ fun TopBar(
             titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
-    )
-}
-
-
-@Composable
-fun EditTitleDialog(
-    mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
-) {
-    var temporaryTitle by rememberSaveable { mutableStateOf(mainViewModel.title) }
-    var errorMessage by rememberSaveable { mutableStateOf<String?>("a") }
-
-    val emptyMessage = stringResource(id = R.string.main_screen_topbar_edit_title_empty_error)
-    val tooLongMessage = stringResource(id = R.string.main_screen_topbar_edit_title_too_long_error)
-
-    LaunchedEffect(mainViewModel.title) {
-        temporaryTitle = mainViewModel.title
-    }
-    LaunchedEffect(temporaryTitle) {
-        errorMessage = when {
-            temporaryTitle.isBlank() -> emptyMessage
-            temporaryTitle.length > 50 -> tooLongMessage
-            else -> null
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = { mainViewModel.isEditTitleDialog = false },
-        dismissButton = {
-            TextButton(
-                onClick = { mainViewModel.isEditTitleDialog = false }
-            ) {
-                Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_close_dialog))
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    mainViewModel.isEditTitleDialog = false
-                    mainViewModel.title = temporaryTitle
-                },
-                enabled = errorMessage == null
-            ) {
-                Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_finish))
-            }
-        },
-        icon = {
-            Icon(
-                imageVector = Icons.Rounded.Edit,
-                contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title)
-            )
-        },
-        title = { Text(text = stringResource(id = R.string.main_screen_topbar_edit_title)) },
-        text = {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedTextField(
-                    value = temporaryTitle,
-                    onValueChange = { value ->
-                        temporaryTitle = value
-                    },
-                    label = { Text(text = stringResource(id = R.string.main_screen_topbar_edit_title_message)) },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { temporaryTitle = "" },
-                            enabled = temporaryTitle.isNotEmpty()
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Clear,
-                                contentDescription = stringResource(id = R.string.main_screen_topbar_edit_title_clear)
-                            )
-                        }
-                    },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                errorMessage?.let {
-                    Text(
-                        text = it,
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.End)
-                    )
-                }
-            }
-        }
     )
 }
 
@@ -308,7 +222,7 @@ fun BottomBar(
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChevronLeft,
-                contentDescription = stringResource(id = R.string.main_screen_bottombar_page_left)
+                contentDescription = stringResource(id = R.string.main_screen_bottom_bar_page_left)
             )
         }
         Box(
@@ -414,7 +328,7 @@ fun BottomBar(
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChevronRight,
-                contentDescription = stringResource(id = R.string.main_screen_bottombar_page_right)
+                contentDescription = stringResource(id = R.string.main_screen_bottom_bar_page_right)
             )
         }
     }

@@ -11,16 +11,18 @@
 
     <string name="component_number_block_require_value">value must be between 0 and 9.</string>
 
-    <string name="main_screen_topbar_edit_title">Edit Title</string>
-    <string name="main_screen_topbar_edit_title_message">Enter a new title</string>
-    <string name="main_screen_topbar_edit_title_clear">Clear</string>
-    <string name="main_screen_topbar_edit_title_empty_error">Empty.</string>
-    <string name="main_screen_topbar_edit_title_too_long_error">Too Long.</string>
-    <string name="main_screen_topbar_edit_title_close_dialog">Close</string>
-    <string name="main_screen_topbar_edit_title_finish">Finish</string>
-    <string name="main_screen_topbar_show_info">Show Info</string>
-    <string name="main_screen_bottombar_page_left">Left</string>
-    <string name="main_screen_bottombar_page_right">Right</string>
+    <string name="main_screen_top_bar_edit_title">Edit Title</string>
+    <string name="main_screen_top_bar_show_info">Show Info</string>
+    <string name="main_screen_bottom_bar_page_left">Left</string>
+    <string name="main_screen_bottom_bar_page_right">Right</string>
+
+    <string name="edit_title_dialog_edit_title">Edit Title</string>
+    <string name="edit_title_dialog_message">Enter a new title</string>
+    <string name="edit_title_dialog_clear">Clear</string>
+    <string name="edit_title_dialog_empty_error">Empty.</string>
+    <string name="edit_title_dialog_too_long_error">Too Long.</string>
+    <string name="edit_title_dialog_close_dialog">Close</string>
+    <string name="edit_title_dialog_finish">Finish</string>
 
     <string name="info_dialog_app_info">Application Information</string>
     <string name="info_dialog_system_settings">System Settings</string>
@@ -30,8 +32,11 @@
     <string name="info_dialog_close">Close</string>
 
     <string name="license_dialog_open_source_license">Open Source License</string>
-    <string name="license_dialog_open_license">열기</string>
-    <string name="license_dialog_close_license">닫기</string>
+    <string name="license_dialog_open_license">Open</string>
+    <string name="license_dialog_close_license">Close</string>
+    <string name="license_dialog_view_full">View full text</string>
+    <string name="license_dialog_preview_not_provide_message">License preview is not available.\nPlease check via the link below.</string>
+    <string name="license_dialog_preview_fail_to_road">Failed to load license :(</string>
     <string name="license_dialog_close">Close</string>
 
     <string name="normal_content_delete">Delete</string>

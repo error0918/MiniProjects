@@ -11,16 +11,18 @@
 
     <string name="component_number_block_require_value">value는 0에서 9 사이이어야 합니다.</string>
 
-    <string name="main_screen_topbar_edit_title">타이틀 수정</string>
-    <string name="main_screen_topbar_edit_title_message">새로운 타이틀 입력</string>
-    <string name="main_screen_topbar_edit_title_clear">초기화</string>
-    <string name="main_screen_topbar_edit_title_empty_error">비어있음.</string>
-    <string name="main_screen_topbar_edit_title_too_long_error">너무 길음.</string>
-    <string name="main_screen_topbar_edit_title_close_dialog">닫기</string>
-    <string name="main_screen_topbar_edit_title_finish">완료</string>
-    <string name="main_screen_topbar_show_info">정보 보기</string>
-    <string name="main_screen_bottombar_page_left">왼쪽</string>
-    <string name="main_screen_bottombar_page_right">오른쪽</string>
+    <string name="main_screen_top_bar_edit_title">타이틀 수정</string>
+    <string name="main_screen_top_bar_show_info">정보 보기</string>
+    <string name="main_screen_bottom_bar_page_left">왼쪽</string>
+    <string name="main_screen_bottom_bar_page_right">오른쪽</string>
+
+    <string name="edit_title_dialog_edit_title">타이틀 수정</string>
+    <string name="edit_title_dialog_message">새로운 타이틀 입력</string>
+    <string name="edit_title_dialog_clear">초기화</string>
+    <string name="edit_title_dialog_empty_error">비어있음.</string>
+    <string name="edit_title_dialog_too_long_error">너무 길음.</string>
+    <string name="edit_title_dialog_close_dialog">닫기</string>
+    <string name="edit_title_dialog_finish">완료</string>
 
     <string name="info_dialog_app_info">앱 정보</string>
     <string name="info_dialog_system_settings">시스템 설정</string>
@@ -32,6 +34,9 @@
     <string name="license_dialog_open_source_license">오픈 소스 라이선스</string>
     <string name="license_dialog_open_license">열기</string>
     <string name="license_dialog_close_license">닫기</string>
+    <string name="license_dialog_view_full">전문 보기</string>
+    <string name="license_dialog_preview_not_provide_message">라이선스 미리보기가 제공되지 않습니다.\n아래 링크를 통해 확인하십시오.</string>
+    <string name="license_dialog_preview_fail_to_road">라이선스 불러오기에 실패하였습니다 :(</string>
     <string name="license_dialog_close">닫기</string>
 
     <string name="normal_content_delete">삭제</string>
