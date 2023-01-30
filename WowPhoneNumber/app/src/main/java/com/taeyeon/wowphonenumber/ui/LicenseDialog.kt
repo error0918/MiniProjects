@@ -8,6 +8,7 @@ package com.taeyeon.wowphonenumber.ui
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -142,22 +143,29 @@ fun LicenseDialog(
                                 Column(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
+                                    Spacer(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(0.5f.dp)
+                                            .background(MaterialTheme.colorScheme.onSurface)
+                                    )
                                     Box(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(4.dp)
+                                            .height(48.dp)
+                                            .padding(horizontal = 4.dp)
                                     ) {
                                         val size = LocalDensity.current.run {
-                                            MaterialTheme.typography.labelMedium.fontSize.toDp() +
+                                            MaterialTheme.typography.labelSmall.fontSize.toDp() +
                                                     ButtonDefaults.TextButtonContentPadding.calculateTopPadding() +
                                                     ButtonDefaults.TextButtonContentPadding.calculateBottomPadding()
                                         }
                                         Text(
                                             text = license.title,
-                                            style = MaterialTheme.typography.bodySmall,
+                                            style = MaterialTheme.typography.labelSmall,
                                             modifier = Modifier
                                                 .align(Alignment.CenterStart)
-                                                .padding(end = size)
+                                                .padding(end = size + 4.dp)
                                         )
                                         Icon(
                                             imageVector = if (isExpanded[index]) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
@@ -170,7 +178,7 @@ fun LicenseDialog(
                                     Spacer(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .height(1.dp)
+                                            .height(0.5f.dp)
                                             .background(MaterialTheme.colorScheme.onSurface)
                                     )
                                 }
