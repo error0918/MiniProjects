@@ -35,7 +35,7 @@ fun EditTitleDialog(
     mainViewModel: MainViewModel = MainViewModel(LocalContext.current)
 ) {
     var temporaryTitle by rememberSaveable { mutableStateOf(mainViewModel.title) }
-    var errorMessage by rememberSaveable { mutableStateOf<String?>("a") }
+    var errorMessage by rememberSaveable { mutableStateOf<String?>("") }
 
     val emptyMessage = stringResource(id = R.string.edit_title_dialog_empty_error)
     val tooLongMessage = stringResource(id = R.string.edit_title_dialog_too_long_error)
