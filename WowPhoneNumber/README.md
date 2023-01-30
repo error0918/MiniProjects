@@ -1,9 +1,10 @@
 # Wow Phone Number
-<div align=right> <h6> by jtaeyeon05 </h6> </div>
-
 > 당신을 킹받게 할 수 있는 전화번호 입력 UI
 
 <div align=right>
+    <h6>
+        by jtaeyeon05
+    </h6>
     <img 
         src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/icon.png" 
         width="50" 
@@ -51,8 +52,8 @@
             <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_License.png" title="Screenshot_License"/>
         </td>
         <td align=center>
-            <a href="">
-                사용 영상 <br/> (업로드 예정)
+            <a href="https://youtu.be/flTpZPcBokU">
+                사용 영상
             </a>
         </td>
     </tr>
