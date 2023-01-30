@@ -5,12 +5,14 @@
 
 package com.taeyeon.wowphonenumber.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,11 +20,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,9 +42,12 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.taeyeon.wowphonenumber.R
@@ -55,6 +62,7 @@ fun LicenseDialog(
     }
 ) {
     val context = LocalContext.current
+    val hapticFeedback = LocalHapticFeedback.current
     val licenseList = remember { mutableStateListOf<License>() }
 
     LaunchedEffect(true) {
@@ -199,20 +207,60 @@ fun LicenseDialog(
                                     shape = RoundedCornerShape(8.dp),
                                     modifier = Modifier.padding(8.dp)
                                 ) {
-                                    if (license.license != null) {
+                                    if (license.license != null || license.link != null) {
                                         Column(
-                                            modifier = Modifier.fillMaxWidth()
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(8.dp)
                                         ) {
-                                            SelectionContainer {
+                                            if (license.license == null) {
                                                 Text(
-                                                    text = license.license!!,
-                                                    style = MaterialTheme.typography.labelSmall
+                                                    text = "라이선스 미리보기가 제공되지 않습니다.\n아래 링크를 통해 확인하십시오.",
+                                                    textAlign = TextAlign.Center,
+                                                    style = MaterialTheme.typography.labelSmall,
+                                                    modifier = Modifier.fillMaxWidth()
                                                 )
+                                            } else {
+                                                SelectionContainer {
+                                                    Text(
+                                                        text = license.license,
+                                                        style = MaterialTheme.typography.labelSmall
+                                                    )
+                                                }
                                             }
                                             license.link?.let {
-                                                //
+                                                Button(
+                                                    onClick = {
+                                                        hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                                                        context.startActivity(
+                                                            Intent(
+                                                                Intent.ACTION_VIEW,
+                                                                Uri.parse(license.link)
+                                                            )
+                                                        )
+                                                    },
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    shape = CircleShape,
+                                                    colors = ButtonDefaults.buttonColors(
+                                                        containerColor = MaterialTheme.colorScheme.primary,
+                                                        contentColor = MaterialTheme.colorScheme.onPrimary
+                                                    ),
+                                                ) {
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically
+                                                    ) {
+                                                        //
+                                                    }
+                                                }
                                             }
                                         }
+                                    } else {
+                                        Text(
+                                            text = "라이선스 불러오기에 실패하였습니다 :(",
+                                            textAlign = TextAlign.Center,
+                                            style = MaterialTheme.typography.labelSmall,
+                                            modifier = Modifier.fillMaxWidth()
+                                        )
                                     }
                                 }
                             }
