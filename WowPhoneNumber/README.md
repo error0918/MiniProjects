@@ -1,9 +1,9 @@
 # Wow Phone Number
-<div align=end> <h6> by jtaeyeon05 </h6> </div>
+<div align=right> <h6> by jtaeyeon05 </h6> </div>
 
 > 당신을 킹받게 할 수 있는 전화번호 입력 UI
 
-<div align=end>
+<div align=right>
     <img 
         src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/icon.png" 
         width="50" 
@@ -24,6 +24,34 @@
 ---
 
 ## 📱️ 사용 화면
+
+<table>
+    <tr>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_Normal.png" title="Screenshot_Normal"/>
+        </td>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_Random.png" title="Screenshot_Random"/>
+        </td>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_SmallSlider.png" title="Screenshot_SmallSlider"/>
+        </td>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_BigSlider.png" title="Screenshot_BigSlider"/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_EditTitle.png" title="Screenshot_EditTitle"/>
+        </td>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_AppInfo.png" title="Screenshot_AppInfo"/>
+        </td>
+        <td>
+            <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_License.png" title="Screenshot_License"/>
+        </td>
+    </tr>
+</table>
 
 ---
 
