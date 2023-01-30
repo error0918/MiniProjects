@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -185,11 +186,35 @@ fun LicenseDialog(
                             }
                         }
                         item {
-                            AnimatedVisibility(visible = isExpanded[index]) {
-                                Text(
-                                    text = license.license!!,
-                                    style = MaterialTheme.typography.labelSmall
-                                )
+                            AnimatedVisibility(
+                                visible = isExpanded[index],
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.CenterHorizontally)
+                            ) {
+                                Surface(
+                                    color = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    tonalElevation = 9.dp,
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier.padding(8.dp)
+                                ) {
+                                    if (license.license != null) {
+                                        Column(
+                                            modifier = Modifier.fillMaxWidth()
+                                        ) {
+                                            SelectionContainer {
+                                                Text(
+                                                    text = license.license!!,
+                                                    style = MaterialTheme.typography.labelSmall
+                                                )
+                                            }
+                                            license.link?.let {
+                                                //
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
