@@ -9,8 +9,6 @@
     <string name="screen_small_slider">작은 슬라이더</string>
     <string name="screen_big_slider">큰 슬라이더</string>
 
-    <string name="component_number_block_require_value">value는 0에서 9 사이이어야 합니다.</string>
-
     <string name="main_screen_top_bar_edit_title">타이틀 수정</string>
     <string name="main_screen_top_bar_show_info">정보 보기</string>
     <string name="main_screen_bottom_bar_page_left">왼쪽</string>
@@ -38,6 +36,8 @@
     <string name="license_dialog_preview_not_provide_message">라이선스 미리보기가 제공되지 않습니다.\n아래 링크를 통해 확인하십시오.</string>
     <string name="license_dialog_preview_fail_to_road">라이선스 불러오기에 실패하였습니다 :(</string>
     <string name="license_dialog_close">닫기</string>
+
+    <string name="component_number_block_require_value">value는 0에서 9 사이이어야 합니다.</string>
 
     <string name="normal_content_delete">삭제</string>
     <string name="random_content_roll">랜덤 입력</string>

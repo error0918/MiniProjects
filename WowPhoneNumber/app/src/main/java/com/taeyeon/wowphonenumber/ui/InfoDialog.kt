@@ -195,7 +195,8 @@ fun InfoDialog(
                         withStyle(
                             MaterialTheme.typography.titleLarge.toSpanStyle()
                         ) {
-                            append(stringResource(id = R.string.app_name) + "\n")
+                            append(stringResource(id = R.string.app_name))
+                            appendLine()
                         }
                         withStyle(
                             MaterialTheme.typography.labelSmall.toSpanStyle()
