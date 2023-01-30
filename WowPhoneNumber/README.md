@@ -50,6 +50,11 @@
         <td>
             <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/screenshots/Screenshot_License.png" title="Screenshot_License"/>
         </td>
+        <td align=center>
+            <a href="">
+                사용 영상 <br/> (업로드 예정)
+            </a>
+        </td>
     </tr>
 </table>
 
@@ -68,6 +73,8 @@
 ## 😯 기타
 
 - ⌈Wow Phone Number⌋는 모의 전화번호 입력 애플리케이션으로 어떠한 방법으로도 개인의 전화번호를 수집하지 않습니다.
+- ⌈Wow Phone Number⌋는 Android 7.1.1부터 사용 가능합니다.
+- ⌈Wow Phone Number⌋는 Jetpack Compose를 이용하여 제작되었습니다.
 
 ---
 
