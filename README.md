@@ -25,7 +25,7 @@
     😀 소개
 </h2>
 
-소개할거야
+　MiniProjects는 <strong>작은 개발 프로젝트의 모음</strong>입니다. MiniProjects에는 다양한 언어와 플랫폼을 활용한 개발 프로젝트들이 있습니다.
 
 ---
 
