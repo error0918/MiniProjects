@@ -1,5 +1,5 @@
 <div align=center>
-    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3,4&animation=scaleIn&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3&section=header&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
 </div>
 <div align=right>
     <h6>
@@ -82,12 +82,6 @@
 - ⌈Wow Phone Number⌋는 Android 7.1.1부터 사용 가능합니다.
 - ⌈Wow Phone Number⌋는 Jetpack Compose를 이용하여 제작되었습니다.
 
----
-
 <div align=center>
-    <h6>
-        Copyright 2023. jtaeyeon05 all rights reserved
-    </h6>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=3&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved"/>
 </div>
-
----
