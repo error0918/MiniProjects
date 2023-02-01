@@ -2,7 +2,7 @@
 
 <div align=right>
     <h6>
-        by jtaeyeon0<br/>
+        by jtaeyeon05<br/>
         (2023/01/19~)
     </h6>
 </div>
