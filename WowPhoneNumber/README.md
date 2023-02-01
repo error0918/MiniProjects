@@ -1,6 +1,4 @@
-# Wow Phone Number
-> 당신을 킹받게 할 수 있는 전화번호 입력 UI
-
+<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3,4&animation=scaleIn&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
 <div align=right>
     <h6>
         by jtaeyeon05
@@ -11,6 +9,11 @@
         height="50" 
         title="Wow Phone Number"/>
 </div>
+
+- [👀 기능](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기능)
+- [📱️ ️사용 화면](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-사용%20화면)
+- [✔️ 다운로드](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-다운로드)
+- [😯 기타](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기타)
 
 ---
 
