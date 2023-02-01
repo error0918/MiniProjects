@@ -1,12 +1,23 @@
 <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음"/>
+
 <div align=right>
     <h6>
         by jtaeyeon05
     </h6>
 </div>
 
-- [😀 소개](https://github.com/error0918/MiniProjects/tree/main/#-----소개)
-- [🖥️ 프로젝트 목록](https://github.com/error0918/MiniProjects/tree//#----프로젝트%20목록)
+<ul dir="auto">
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/#-----소개">
+            😀 소개
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/#----프로젝트%20목록">
+            🖥️ 프로젝트 목록
+        </a>
+    </li>
+</ul>
 
 ---
 

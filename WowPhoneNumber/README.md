@@ -1,6 +1,7 @@
 <div align=center>
     <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3&section=header&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
 </div>
+
 <div align=right>
     <h6>
         by jtaeyeon05
@@ -12,20 +13,50 @@
         title="Wow Phone Number"/>
 </div>
 
-- [👀 기능](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기능)
-- [📱️ ️사용 화면](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-사용%20화면)
-- [✔️ 다운로드](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-다운로드)
-- [😯 기타](https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기타)
+<ul dir="auto">
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기능">
+            👀 기능
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-사용%20화면">
+            📱️ ️사용 화면
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-다운로드">
+            ✔️ 다운로드
+        </a>
+    </li>
+    <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기타">
+            😯 기타
+        </a>
+    </li>
+</ul>
 
 ---
 
-## 👀 기능
+<h2>
+    👀 기능
+</h2>
 
 ⌈Wow Phone Number⌋는 여러 버전의 UI를 가진 모의 전화번호 입력 애플리케이션입니다. <br/>
-- 🥸 정상: 가상 키패드를 이용해 전화번호를 입력할 수 있습니다.
-- 🎲 랜덤: 바꿀 부분을 클릭해 랜덤으로 전화번호를 입력할 수 있습니다.
-- ▶️ 작은 슬라이더: 다이얼을 조절하듯이 전화번호를 입력할 수 있습니다.
-- ⏩ 큰 슬라이더: 플러스/마이너스 버튼을 클릭하거나 터치 패드를 움직여 전화번호를 입력할 수 있습니다.
+<ul dir="auto">
+    <li>
+        🥸 정상: 가상 키패드를 이용해 전화번호를 입력할 수 있습니다.
+    </li>
+    <li>
+        🎲 랜덤: 바꿀 부분을 클릭해 랜덤으로 전화번호를 입력할 수 있습니다.
+    </li>
+    <li>
+        ▶️ 작은 슬라이더: 다이얼을 조절하듯이 전화번호를 입력할 수 있습니다.
+    </li>
+    <li>
+        ⏩ 큰 슬라이더: 플러스/마이너스 버튼을 클릭하거나 터치 패드를 움직여 전화번호를 입력할 수 있습니다.
+    </li>
+</ul>
 
 ---
 
