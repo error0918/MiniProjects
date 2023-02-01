@@ -1,4 +1,6 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3,4&animation=scaleIn&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
+<div align=center>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=3,4&animation=scaleIn&text=Wow%20Phone%20Number&desc=당신을%20킹받게%20할%20수%20있는%20전화번호%20입력%20UI"/>
+</div>
 <div align=right>
     <h6>
         by jtaeyeon05
