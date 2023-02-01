@@ -2,7 +2,8 @@
 
 <div align=right>
     <h6>
-        by jtaeyeon05
+        by jtaeyeon0<br/>
+        (2023/01/19~)
     </h6>
 </div>
 
@@ -37,7 +38,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber">
-                Wow Phone Number
+                Wow Phone Number (2023/01/19~)
             </a>
         </li>
     </h3>

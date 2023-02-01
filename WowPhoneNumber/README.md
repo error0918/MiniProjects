@@ -4,7 +4,8 @@
 
 <div align=right>
     <h6>
-        by jtaeyeon05
+        by jtaeyeon0<br/>
+        (2023/01/19~)
     </h6>
     <img 
         src="https://raw.githubusercontent.com/error0918/MiniProjects/main/WowPhoneNumber/icon.png" 
@@ -104,9 +105,12 @@
 </h2>
 
 <div align=center>
-    <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/app/release/Wow%20Phone%20Number%20(v1.0.0).apk">
-        Wow Phone Number (v1.0.0)
-    </a>
+    <h6>
+        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/app/release/Wow%20Phone%20Number%20(v1.0.0).apk">
+            Wow Phone Number (v1.0.0)
+        </a>
+        2023/01/31
+    </h6>
 </div>
 
 ---
