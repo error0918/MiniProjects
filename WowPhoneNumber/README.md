@@ -15,22 +15,22 @@
 
 <ul dir="auto">
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기능">
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-----기능">
             👀 기능
         </a>
     </li>
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-사용%20화면">
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-----사용%20화면">
             📱️ ️사용 화면
         </a>
     </li>
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-다운로드">
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-----다운로드">
             ✔️ 다운로드
         </a>
     </li>
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-기타">
+        <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber#-----기타">
             😯 기타
         </a>
     </li>
@@ -42,7 +42,7 @@
     👀 기능
 </h2>
 
-⌈Wow Phone Number⌋는 여러 버전의 UI를 가진 모의 전화번호 입력 애플리케이션입니다. <br/>
+⌈Wow Phone Number⌋는 여러 버전의 UI를 가진 <strong>모의 전화번호 입력 애플리케이션</strong>입니다. <br/>
 <ul dir="auto">
     <li>
         🥸 정상: 가상 키패드를 이용해 전화번호를 입력할 수 있습니다.
@@ -60,7 +60,9 @@
 
 ---
 
-## 📱️ 사용 화면
+<h2>
+    📱️ 사용 화면
+</h2>
 
 <table>
     <tr>
@@ -97,7 +99,9 @@
 
 ---
 
-## ✔️ 다운로드
+<h2>
+    ✔️ 다운로드
+</h2>
 
 <div align=center>
     <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/app/release/Wow%20Phone%20Number%20(v1.0.0).apk">
@@ -107,11 +111,21 @@
 
 ---
 
-## 😯 기타
+<h2>
+    😯 기타
+</h2>
 
-- ⌈Wow Phone Number⌋는 모의 전화번호 입력 애플리케이션으로 어떠한 방법으로도 개인의 전화번호를 수집하지 않습니다.
-- ⌈Wow Phone Number⌋는 Android 7.1.1부터 사용 가능합니다.
-- ⌈Wow Phone Number⌋는 Jetpack Compose를 이용하여 제작되었습니다.
+<ul dir="auto">
+    <li>
+        ⌈Wow Phone Number⌋는 모의 전화번호 입력 애플리케이션으로 어떠한 방법으로도 개인의 전화번호를 수집하지 않습니다.
+    </li>
+    <li>
+        ⌈Wow Phone Number⌋는 Android 7.1.1부터 사용 가능합니다.
+    </li>
+    <li>
+        ⌈Wow Phone Number⌋는 Jetpack Compose를 이용하여 제작되었습니다.
+    </li>
+</ul>
 
 <div align=center>
     <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=3&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved"/>
