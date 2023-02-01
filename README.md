@@ -53,6 +53,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/IconViewer">
+                Icon Viewer (2023/02/02~)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
+        </li>
+        <h6>
+            <li>
+                Android, Jetpack Compose, Kotlin
+            </li>
+        </h6>
+    </ul>
 </ul>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved"/>
