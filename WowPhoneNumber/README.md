@@ -106,7 +106,11 @@
 
 <div align=center>
     <h6>
-        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/app/release/Wow%20Phone%20Number%20(v1.0.0).apk">
+        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/apks/Wow%20Phone%20Number%20(v1.0.1).apk">
+            Wow Phone Number (v1.0.1)
+        </a>
+        2023/02/01<br/>
+        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/apks/Wow%20Phone%20Number%20(v1.0.0).apk">
             Wow Phone Number (v1.0.0)
         </a>
         2023/01/31

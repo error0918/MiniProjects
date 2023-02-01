@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalPagerApi::class)
+
 package com.taeyeon.wowphonenumber.ui.content
 
 import androidx.compose.animation.AnimatedVisibility
@@ -50,7 +52,9 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.taeyeon.wowphonenumber.R
+import com.taeyeon.wowphonenumber.data.Screen
 import com.taeyeon.wowphonenumber.model.MainViewModel
 import com.taeyeon.wowphonenumber.ui.component.KeyButton
 import com.taeyeon.wowphonenumber.ui.component.NumberBlock
@@ -84,9 +88,14 @@ fun NormalContent(
             isKeyboardShowing = true
         }
     }
+    LaunchedEffect(mainViewModel.pagerState.currentPage) {
+        if (mainViewModel.pagerState.currentPage != Screen.values().indexOf(Screen.Normal)) {
+            isKeyboardShowing = false
+        }
+    }
     LaunchedEffect(isKeyboardShowing) {
         if (!isKeyboardShowing) {
-            delay(500)
+            delay(100)
             focusedKey = null
         }
     }
