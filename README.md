@@ -5,8 +5,8 @@
     </h6>
 </div>
 
-- [😀 소개](https://github.com/error0918/MiniProjects/tree/main/#-소개)
-- [🖥️ 프로젝트 목록](https://github.com/error0918/MiniProjects/tree/#-프로젝트%20목록)
+- [😀 소개](https://github.com/error0918/MiniProjects/tree/main/#-----소개)
+- [🖥️ 프로젝트 목록](https://github.com/error0918/MiniProjects/tree//#----프로젝트%20목록)
 
 ---
 
