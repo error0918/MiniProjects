@@ -62,7 +62,7 @@
     </h3>
     <ul dir="auto">
         <li>
-            Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
+            ⌈아이콘 뷰어⌋는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
         </li>
         <h6>
             <li>
