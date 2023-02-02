@@ -1,5 +1,5 @@
 <div align=center>
-    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=24&section=header&text=Icon%20Viewer&desc=Jetpack%20Compose%20Icon%20Viewer"/>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=24&section=header&text=아이콘%20뷰어&desc=Jetpack%20Compose%20Icon%20Viewer"/>
 </div>
 
 <div align=right>
@@ -38,7 +38,7 @@
     📜 소개
 </h2>
 
-Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
+⌈아이콘 뷰어⌋는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
 
 ---
 
@@ -72,10 +72,10 @@ Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended
 
 <ul dir="auto">
     <li>
-        ⌈Icon Viewer⌋는 Android 7.1.1부터 사용 가능합니다.
+        ⌈아이콘 뷰어⌋는 Android 7.1.1부터 사용 가능합니다.
     </li>
     <li>
-        ⌈Icon Viewer⌋는 Jetpack Compose를 이용하여 제작되었습니다.
+        ⌈아이콘 뷰어⌋는 Jetpack Compose를 이용하여 제작되었습니다.
     </li>
 </ul>
 

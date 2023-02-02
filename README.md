@@ -56,7 +56,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/IconViewer">
-                Icon Viewer (2023/02/02~)
+                아이콘 뷰어 (2023/02/02~)
             </a>
         </li>
     </h3>
