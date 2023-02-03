@@ -1,10 +1,14 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@file:OptIn(
+    ExperimentalLayoutApi::class,
+    ExperimentalMaterial3Api::class
+)
 
 package com.taeyeon.iconviewer.ui
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -31,7 +35,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -48,7 +57,7 @@ fun MainScreen() {
     var material_icons_core: List<IconData> = listOf()
     var material_icons_extended: List<IconData> = listOf()
 
-    material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
+    //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
     val scrollState = rememberScrollState()
@@ -81,29 +90,40 @@ fun MainScreen() {
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
-        FlowRow(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(state = scrollState),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 8.dp,
-                alignment = Alignment.CenterHorizontally
-            )
+                .verticalScroll(state = scrollState)
         ) {
-            material_icons_core.forEach { iconData ->
-                Icon(
-                    imageVector = iconData.filled,
-                    contentDescription = iconData.name,
-                    modifier = Modifier.size(36.dp)
-                )
+            val itemWidth = 36.dp
+            var itemSpace by remember { mutableStateOf(8.dp) } // Min: 8.dp
+
+            LaunchedEffect(maxWidth) {
+
             }
-            material_icons_extended.forEach { iconData ->
-                Icon(
-                    imageVector = iconData.filled,
-                    contentDescription = iconData.name,
-                    modifier = Modifier.size(36.dp)
+
+            FlowRow(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.spacedBy(
+                    space = 8.dp,
+                    alignment = Alignment.CenterHorizontally
                 )
+            ) {
+                material_icons_core.forEach { iconData ->
+                    Icon(
+                        imageVector = iconData.filled,
+                        contentDescription = iconData.name,
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
+                material_icons_extended.forEach { iconData ->
+                    Icon(
+                        imageVector = iconData.filled,
+                        contentDescription = iconData.name,
+                        modifier = Modifier.size(36.dp)
+                    )
+                }
             }
         }
     }
