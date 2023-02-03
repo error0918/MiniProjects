@@ -1,29 +1,23 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 
 package com.taeyeon.iconviewer.ui
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -37,15 +31,16 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
+import kotlinx.coroutines.launch
 import kotlin.math.pow
 
 @Composable
@@ -53,10 +48,10 @@ fun MainScreen() {
     var material_icons_core: List<IconData> = listOf()
     var material_icons_extended: List<IconData> = listOf()
 
-    //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
+    material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
-    val lazyGridState = rememberLazyGridState()
+    val scrollState = rememberScrollState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     systemUiController.setStatusBarColor(
@@ -81,38 +76,29 @@ fun MainScreen() {
         },
         floatingActionButton = {
             Fab(
-                lazyGridState = lazyGridState
+                scrollState = scrollState
             )
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 36.dp),
-            modifier = Modifier.fillMaxWidth(),
-            state = lazyGridState,
-            contentPadding = PaddingValues(
-                top = 8.dp + paddingValues.calculateTopPadding(),
-                start = 8.dp + paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                end = 8.dp + paddingValues.calculateEndPadding(LocalLayoutDirection.current),
-                bottom = 8.dp + paddingValues.calculateBottomPadding()
-            ),
-            verticalArrangement = Arrangement.spacedBy(
-                space = 8.dp,
-                alignment = Alignment.Top
-            ),
+        FlowRow(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(state = scrollState),
             horizontalArrangement = Arrangement.spacedBy(
                 space = 8.dp,
-                alignment = Alignment.Start
+                alignment = Alignment.CenterHorizontally
             )
         ) {
-            items(material_icons_core) { iconData ->
+            material_icons_core.forEach { iconData ->
                 Icon(
                     imageVector = iconData.filled,
                     contentDescription = iconData.name,
                     modifier = Modifier.size(36.dp)
                 )
             }
-            items(material_icons_extended) { iconData ->
+            material_icons_extended.forEach { iconData ->
                 Icon(
                     imageVector = iconData.filled,
                     contentDescription = iconData.name,
@@ -135,8 +121,10 @@ fun TopBar(
 
 @Composable
 fun Fab(
-    lazyGridState: LazyGridState = rememberLazyGridState()
+    scrollState: ScrollState = rememberScrollState()
 ) {
+    val scope = rememberCoroutineScope()
+
     Surface(
         shape = CircleShape,
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -148,8 +136,13 @@ fun Fab(
             modifier = Modifier.width(48.dp)
         ) {
             IconButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.size(48.dp)
+                onClick = {
+                    scope.launch {
+                        scrollState.animateScrollTo(0)
+                    }
+                },
+                modifier = Modifier.size(48.dp),
+                enabled = scrollState.value != 0
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
@@ -157,8 +150,13 @@ fun Fab(
                 )
             }
             IconButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier.size(48.dp)
+                onClick = {
+                    scope.launch {
+                        scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                },
+                modifier = Modifier.size(48.dp),
+                enabled = scrollState.value != scrollState.maxValue
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
