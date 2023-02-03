@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -73,7 +74,7 @@ fun MainScreen() {
                 lazyGridState = lazyGridState
             )
         },
-        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = 36.dp),
@@ -125,4 +126,8 @@ fun TopBar(
 @Composable
 fun Fab(
     lazyGridState: LazyGridState = rememberLazyGridState()
-) {}
+) {
+    Surface {
+        // TODO
+    }
+}
