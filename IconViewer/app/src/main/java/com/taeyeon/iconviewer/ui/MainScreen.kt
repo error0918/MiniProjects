@@ -145,58 +145,64 @@ fun MainScreen() {
                 itemSpace = (maxWidth - itemWidth * itemColumns) / (itemColumns + 1)
             }
 
-            AnimatedVisibility(
-                visible = itemColumns > 1,
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                enter = slideInVertically { - it },
-                exit = ExitTransition.None
+                verticalArrangement = Arrangement.spacedBy(itemSpace)
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(itemSpace)
-                ) {
-                    Spacer(modifier = Modifier)
 
-                    for (rowIndex in 0..material_icons_core.size / itemColumns) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = itemSpace),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = itemSpace,
-                                alignment = Alignment.Start
-                            )
-                        ) {
-                            for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                val iconData =
-                                    material_icons_core[rowIndex * itemColumns + columnIndex]
-                                Icon(
-                                    imageVector = iconData.filled,
-                                    contentDescription = iconData.name,
-                                    modifier = Modifier.size(itemWidth)
+                // TODO
+
+                AnimatedVisibility(
+                    visible = itemColumns > 1,
+                    modifier = Modifier.fillMaxWidth(),
+                    enter = slideInVertically { - it },
+                    exit = ExitTransition.None
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+                    ) {
+                        for (rowIndex in 0..material_icons_core.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
                                 )
+                            ) {
+                                for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData =
+                                        material_icons_core[rowIndex * itemColumns + columnIndex]
+                                    Icon(
+                                        imageVector = iconData.filled,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
+                                }
                             }
                         }
-                    }
 
-                    for (rowIndex in 0..material_icons_extended.size / itemColumns) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = itemSpace),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = itemSpace,
-                                alignment = Alignment.Start
-                            )
-                        ) {
-                            for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                val iconData =
-                                    material_icons_extended[rowIndex * itemColumns + columnIndex]
-                                Icon(
-                                    imageVector = iconData.filled,
-                                    contentDescription = iconData.name,
-                                    modifier = Modifier.size(itemWidth)
+                        for (rowIndex in 0..material_icons_extended.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
                                 )
+                            ) {
+                                for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData =
+                                        material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                    Icon(
+                                        imageVector = iconData.filled,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
+                                }
                             }
                         }
                     }
