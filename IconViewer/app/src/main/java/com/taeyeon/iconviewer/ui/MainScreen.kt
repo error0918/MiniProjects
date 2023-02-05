@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.pow
 
@@ -85,7 +87,8 @@ fun MainScreen() {
         },
         floatingActionButton = {
             Fab(
-                scrollState = scrollState
+                scrollState = scrollState,
+                scrollBehavior = scrollBehavior
             )
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -133,17 +136,57 @@ fun MainScreen() {
 fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
+    var animation by remember { mutableStateOf(false) }
+
+    LaunchedEffect(animation) {
+        if (animation) {
+            val step = (scrollBehavior.state.heightOffsetLimit - scrollBehavior.state.heightOffset) / 10f
+            repeat(10) {
+                scrollBehavior.state.heightOffset += step
+                delay(5)
+            }
+            animation = false
+        }
+    }
+
     MediumTopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
+        actions = {
+            IconButton(
+                onClick = {
+                    animation = true
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = stringResource(id = R.string.main_top_bar_search)
+                )
+            }
+        },
         scrollBehavior = scrollBehavior
     )
 }
 
 @Composable
 fun Fab(
-    scrollState: ScrollState = rememberScrollState()
+    scrollState: ScrollState = rememberScrollState(),
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
     val scope = rememberCoroutineScope()
+    var animation by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(animation) {
+        animation?.let {
+            val step =
+                if (animation == "top") -scrollBehavior.state.heightOffset * 0.1f
+                else (scrollBehavior.state.heightOffsetLimit - scrollBehavior.state.heightOffset) * 0.1f
+            repeat(10) {
+                scrollBehavior.state.heightOffset += step
+                delay(5)
+            }
+            animation = null
+        }
+    }
 
     Surface(
         shape = CircleShape,
@@ -157,6 +200,7 @@ fun Fab(
         ) {
             IconButton(
                 onClick = {
+                    animation = "top"
                     scope.launch {
                         scrollState.animateScrollTo(0)
                     }
@@ -166,11 +210,12 @@ fun Fab(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.main_fab_go_up)
                 )
             }
             IconButton(
                 onClick = {
+                    animation = "bottom"
                     scope.launch {
                         scrollState.animateScrollTo(scrollState.maxValue)
                     }
@@ -180,7 +225,7 @@ fun Fab(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = null
+                    contentDescription = stringResource(id = R.string.main_fab_go_down)
                 )
             }
         }
