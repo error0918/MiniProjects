@@ -50,6 +50,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
+import com.taeyeon.iconviewer.util.collapse
+import com.taeyeon.iconviewer.util.open
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.pow
@@ -59,7 +61,7 @@ fun MainScreen() {
     var material_icons_core: List<IconData> = listOf()
     var material_icons_extended: List<IconData> = listOf()
 
-    //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
+    material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
     val scrollState = rememberScrollState()
@@ -136,25 +138,16 @@ fun MainScreen() {
 fun TopBar(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
-    var animation by remember { mutableStateOf(false) }
-
-    LaunchedEffect(animation) {
-        if (animation) {
-            val step = (scrollBehavior.state.heightOffsetLimit - scrollBehavior.state.heightOffset) / 10f
-            repeat(10) {
-                scrollBehavior.state.heightOffset += step
-                delay(5)
-            }
-            animation = false
-        }
-    }
+    val scope = rememberCoroutineScope()
 
     MediumTopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
         actions = {
             IconButton(
                 onClick = {
-                    animation = true
+                    scope.launch {
+                        scrollBehavior.state.collapse()
+                    }
                 }
             ) {
                 Icon(
@@ -173,20 +166,7 @@ fun Fab(
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
     val scope = rememberCoroutineScope()
-    var animation by remember { mutableStateOf<String?>(null) }
-
-    LaunchedEffect(animation) {
-        animation?.let {
-            val step =
-                if (animation == "top") -scrollBehavior.state.heightOffset * 0.1f
-                else (scrollBehavior.state.heightOffsetLimit - scrollBehavior.state.heightOffset) * 0.1f
-            repeat(10) {
-                scrollBehavior.state.heightOffset += step
-                delay(5)
-            }
-            animation = null
-        }
-    }
+    val scope2 = rememberCoroutineScope()
 
     Surface(
         shape = CircleShape,
@@ -200,9 +180,11 @@ fun Fab(
         ) {
             IconButton(
                 onClick = {
-                    animation = "top"
                     scope.launch {
                         scrollState.animateScrollTo(0)
+                    }
+                    scope2.launch {
+                        scrollBehavior.state.open()
                     }
                 },
                 modifier = Modifier.size(48.dp),
@@ -215,9 +197,11 @@ fun Fab(
             }
             IconButton(
                 onClick = {
-                    animation = "bottom"
                     scope.launch {
                         scrollState.animateScrollTo(scrollState.maxValue)
+                    }
+                    scope2.launch {
+                        scrollBehavior.state.collapse()
                     }
                 },
                 modifier = Modifier.size(48.dp),
