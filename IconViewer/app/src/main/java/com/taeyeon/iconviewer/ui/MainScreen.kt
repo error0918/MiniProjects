@@ -1,5 +1,4 @@
 @file:OptIn(
-    ExperimentalLayoutApi::class,
     ExperimentalMaterial3Api::class
 )
 
@@ -9,15 +8,21 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -40,6 +45,7 @@ import androidx.compose.material.icons.twotone.AccountBox
 import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -146,16 +152,53 @@ fun MainScreen() {
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(itemSpace)
+                modifier = Modifier.fillMaxWidth()
             ) {
 
-                // TODO
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .horizontalScroll(state = rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = 16.dp,
+                        alignment = Alignment.Start
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier)
+                    IconData.libraryList.forEachIndexed { index, library ->
+                        FilterChip(
+                            selected = true,
+                            onClick = { /*TODO*/ },
+                            label = { Text(text = library) }
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .width(1.dp)
+                            .fillMaxHeight()
+                            .background(
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                shape = CircleShape
+                            )
+                    )
+                    IconData.typeList.forEachIndexed { index, type ->
+                        FilterChip(
+                            selected = true,
+                            onClick = { /*TODO*/ },
+                            label = { Text(text = type) }
+                        )
+                    }
+                    Spacer(modifier = Modifier)
+                }
+
+                Spacer(modifier = Modifier.height(itemSpace))
 
                 AnimatedVisibility(
                     visible = itemColumns > 1,
                     modifier = Modifier.fillMaxWidth(),
-                    enter = slideInVertically { - it },
+                    enter = slideInVertically { 0 },
                     exit = ExitTransition.None
                 ) {
                     Column(
