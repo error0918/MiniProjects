@@ -5,14 +5,19 @@
 
 package com.taeyeon.iconviewer.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,9 +25,19 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.AccountBox
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.rounded.AccountBox
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.sharp.AccountBox
+import androidx.compose.material.icons.sharp.Add
+import androidx.compose.material.icons.twotone.AccountBox
+import androidx.compose.material.icons.twotone.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -52,16 +67,34 @@ import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.util.collapse
 import com.taeyeon.iconviewer.util.open
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.floor
 import kotlin.math.pow
 
 @Composable
 fun MainScreen() {
-    var material_icons_core: List<IconData> = listOf()
-    var material_icons_extended: List<IconData> = listOf()
+    val material_icons_core = List(50) {
+        IconData(
+            name = "AccountBox",
+            filled = Icons.Filled.AccountBox,
+            outlined = Icons.Outlined.AccountBox,
+            rounded = Icons.Rounded.AccountBox,
+            sharp = Icons.Sharp.AccountBox,
+            twoTone = Icons.TwoTone.AccountBox
+        )
+    }
+    val material_icons_extended = List(300) {
+        IconData(
+            name = "Add",
+            filled = Icons.Filled.Add,
+            outlined = Icons.Outlined.Add,
+            rounded = Icons.Rounded.Add,
+            sharp = Icons.Sharp.Add,
+            twoTone = Icons.TwoTone.Add
+        )
+    }
 
-    material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
+    //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
     val scrollState = rememberScrollState()
@@ -102,32 +135,71 @@ fun MainScreen() {
                 .verticalScroll(state = scrollState)
         ) {
             val itemWidth = 36.dp
-            var itemSpace by remember { mutableStateOf(8.dp) } // Min: 8.dp
+            val itemMinSpace = 8.dp
+
+            var itemColumns by remember { mutableStateOf(1) }
+            var itemSpace by remember { mutableStateOf(8.dp) }
 
             LaunchedEffect(maxWidth) {
-
+                itemColumns = floor((maxWidth - itemMinSpace) / (itemWidth + itemMinSpace)).toInt()
+                itemSpace = (maxWidth - itemWidth * itemColumns) / (itemColumns + 1)
             }
 
-            FlowRow(
-                modifier = Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(
-                    space = 8.dp,
-                    alignment = Alignment.CenterHorizontally
-                )
+            AnimatedVisibility(
+                visible = itemColumns > 1,
+                modifier = Modifier.fillMaxWidth(),
+                enter = slideInVertically { - it },
+                exit = ExitTransition.None
             ) {
-                material_icons_core.forEach { iconData ->
-                    Icon(
-                        imageVector = iconData.filled,
-                        contentDescription = iconData.name,
-                        modifier = Modifier.size(36.dp)
-                    )
-                }
-                material_icons_extended.forEach { iconData ->
-                    Icon(
-                        imageVector = iconData.filled,
-                        contentDescription = iconData.name,
-                        modifier = Modifier.size(36.dp)
-                    )
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(itemSpace)
+                ) {
+                    Spacer(modifier = Modifier)
+
+                    for (rowIndex in 0..material_icons_core.size / itemColumns) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = itemSpace),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = itemSpace,
+                                alignment = Alignment.Start
+                            )
+                        ) {
+                            for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                val iconData =
+                                    material_icons_core[rowIndex * itemColumns + columnIndex]
+                                Icon(
+                                    imageVector = iconData.filled,
+                                    contentDescription = iconData.name,
+                                    modifier = Modifier.size(itemWidth)
+                                )
+                            }
+                        }
+                    }
+
+                    for (rowIndex in 0..material_icons_extended.size / itemColumns) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = itemSpace),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = itemSpace,
+                                alignment = Alignment.Start
+                            )
+                        ) {
+                            for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                val iconData =
+                                    material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                Icon(
+                                    imageVector = iconData.filled,
+                                    contentDescription = iconData.name,
+                                    modifier = Modifier.size(itemWidth)
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -188,7 +260,7 @@ fun Fab(
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = scrollState.value != 0
+                enabled = scrollState.value != 0 || scrollBehavior.state.collapsedFraction != 0f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
@@ -205,7 +277,7 @@ fun Fab(
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = scrollState.value != scrollState.maxValue
+                enabled = scrollState.value != scrollState.maxValue || scrollBehavior.state.collapsedFraction != 1f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
