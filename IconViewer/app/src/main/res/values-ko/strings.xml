@@ -3,6 +3,7 @@
     <string name="app_name">아이콘 뷰어</string>
 
     <string name="main_top_bar_search">검색</string>
+    <string name="main_top_bar_search_go">검색</string>
     <string name="main_top_bar_more">더보기</string>
 
     <string name="main_fab_go_up">맨 위로</string>
