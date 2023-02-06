@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
-                    content = { MainScreen(mainViewModel = MainViewModel()) }
+                    content = { MainScreen(viewModel = IconViewerViewModel()) }
                 )
             }
         }

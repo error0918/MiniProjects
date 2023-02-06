@@ -68,9 +68,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.taeyeon.iconviewer.IconViewerViewModel
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
-import com.taeyeon.iconviewer.MainViewModel
 import com.taeyeon.iconviewer.data.IconType
 import com.taeyeon.iconviewer.util.collapse
 import com.taeyeon.iconviewer.util.open
@@ -80,7 +80,7 @@ import kotlin.math.pow
 
 @Composable
 fun MainScreen(
-    mainViewModel: MainViewModel = MainViewModel()
+    viewModel: IconViewerViewModel = IconViewerViewModel()
 ) {
     val material_icons_core = List(50) {
         IconData(
@@ -105,12 +105,10 @@ fun MainScreen(
     //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
-    val scrollState = rememberScrollState()
-    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
     systemUiController.setStatusBarColor(
         color = MaterialTheme.colorScheme.surfaceColorAtElevation(
-            elevation = 3.dp * scrollBehavior.state.collapsedFraction.pow(3)
+            elevation = 3.dp * viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(3)
         ),
         darkIcons = !isSystemInDarkTheme()
     )
@@ -122,16 +120,17 @@ fun MainScreen(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
+            .nestedScroll(viewModel.state.topAppBarScrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                scrollBehavior = scrollBehavior
+                viewModel = viewModel,
+                scrollBehavior = viewModel.state.topAppBarScrollBehavior
             )
         },
         floatingActionButton = {
             Fab(
-                scrollState = scrollState,
-                scrollBehavior = scrollBehavior
+                scrollState = viewModel.state.bodyScrollState,
+                scrollBehavior = viewModel.state.topAppBarScrollBehavior
             )
         },
         floatingActionButtonPosition = FabPosition.End,
@@ -140,7 +139,7 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(state = scrollState)
+                .verticalScroll(state = viewModel.state.bodyScrollState)
         ) {
             val itemWidth = 36.dp
             val itemMinSpace = 8.dp
@@ -171,8 +170,8 @@ fun MainScreen(
                     Spacer(modifier = Modifier)
                     IconData.libraryList.forEachIndexed { index, library ->
                         FilterChip(
-                            selected = mainViewModel.libraryIndex == index,
-                            onClick = { mainViewModel.libraryIndex = index },
+                            selected = viewModel.libraryIndex == index,
+                            onClick = { viewModel.libraryIndex = index },
                             label = { Text(text = library) }
                         )
                     }
@@ -187,8 +186,8 @@ fun MainScreen(
                     )
                     IconType.values().forEach { type ->
                         FilterChip(
-                            selected = mainViewModel.iconType == type,
-                            onClick = { mainViewModel.iconType = type },
+                            selected = viewModel.iconType == type,
+                            onClick = { viewModel.iconType = type },
                             label = { Text(text = type.name) }
                         )
                     }
@@ -207,7 +206,7 @@ fun MainScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(itemSpace)
                     ) {
-                        if (mainViewModel.libraryIndex == 0 || mainViewModel.libraryIndex == 1) {
+                        if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1) {
                             for (rowIndex in 0..material_icons_core.size / itemColumns) {
                                 Row(
                                     modifier = Modifier
@@ -219,10 +218,15 @@ fun MainScreen(
                                     )
                                 ) {
                                     for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData =
-                                            material_icons_core[rowIndex * itemColumns + columnIndex]
+                                        val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
+                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                        LaunchedEffect(viewModel.iconType) {
+                                            imageVector = viewModel.iconType.get(iconData)
+                                        }
+
                                         Icon(
-                                            imageVector = mainViewModel.iconType.get(iconData),
+                                            imageVector = imageVector,
                                             contentDescription = iconData.name,
                                             modifier = Modifier.size(itemWidth)
                                         )
@@ -231,7 +235,7 @@ fun MainScreen(
                             }
                         }
 
-                        if (mainViewModel.libraryIndex == 0 || mainViewModel.libraryIndex == 2) {
+                        if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2) {
                             for (rowIndex in 0..material_icons_extended.size / itemColumns) {
                                 Row(
                                     modifier = Modifier
@@ -243,10 +247,15 @@ fun MainScreen(
                                     )
                                 ) {
                                     for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData =
-                                            material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                        val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                        LaunchedEffect(viewModel.iconType) {
+                                            imageVector = viewModel.iconType.get(iconData)
+                                        }
+
                                         Icon(
-                                            imageVector = mainViewModel.iconType.get(iconData),
+                                            imageVector = imageVector,
                                             contentDescription = iconData.name,
                                             modifier = Modifier.size(itemWidth)
                                         )
@@ -263,6 +272,7 @@ fun MainScreen(
 
 @Composable
 fun TopBar(
+    viewModel: IconViewerViewModel = IconViewerViewModel(),
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 ) {
     val scope = rememberCoroutineScope()
@@ -274,6 +284,7 @@ fun TopBar(
                 onClick = {
                     scope.launch {
                         scrollBehavior.state.collapse()
+                        viewModel.isSearching = !viewModel.isSearching
                     }
                 }
             ) {
