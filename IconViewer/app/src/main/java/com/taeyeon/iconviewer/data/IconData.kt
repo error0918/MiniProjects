@@ -19,7 +19,7 @@ data class IconData(
     companion object {
         val libraryList = listOf("All", "Core", "Extended")
 
-        val material_icons_core = listOf(
+        val core = listOf(
             IconData(
                 name = "AccountBox",
                 filled = Icons.Filled.AccountBox,
@@ -413,7 +413,8 @@ data class IconData(
                 twoTone = Icons.TwoTone.Warning
             )
         )
-        val material_icons_extended = listOf(
+
+        val extended = listOf(
             IconData(
                 name = "AcUnit",
                 filled = Icons.Filled.AcUnit,

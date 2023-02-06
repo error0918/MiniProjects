@@ -14,7 +14,6 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -71,7 +70,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
@@ -93,7 +91,7 @@ import kotlin.math.pow
 fun MainScreen(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
-    val material_icons_core = List(50) {
+    val core = List(50) {
         IconData(
             name = "AccountBox",
             filled = Icons.Filled.AccountBox,
@@ -103,7 +101,7 @@ fun MainScreen(
             twoTone = Icons.TwoTone.AccountBox
         )
     }
-    val material_icons_extended = List(300) {
+    val extended = List(300) {
         IconData(
             name = "Add",
             filled = Icons.Filled.Add,
@@ -113,7 +111,6 @@ fun MainScreen(
             twoTone = Icons.TwoTone.Add
         )
     }
-    //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
 
@@ -208,7 +205,7 @@ fun MainScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(itemSpace)
                     ) {
-                        for (rowIndex in 0..material_icons_core.size / itemColumns) {
+                        for (rowIndex in 0..core.size / itemColumns) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -218,8 +215,8 @@ fun MainScreen(
                                     alignment = Alignment.Start
                                 )
                             ) {
-                                for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
+                                for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = core[rowIndex * itemColumns + columnIndex]
                                     var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
 
                                     LaunchedEffect(viewModel.iconType) {
@@ -244,7 +241,7 @@ fun MainScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(itemSpace)
                     ) {
-                        for (rowIndex in 0..material_icons_extended.size / itemColumns) {
+                        for (rowIndex in 0..extended.size / itemColumns) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -254,8 +251,8 @@ fun MainScreen(
                                     alignment = Alignment.Start
                                 )
                             ) {
-                                for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = extended[rowIndex * itemColumns + columnIndex]
                                     var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
 
                                     LaunchedEffect(viewModel.iconType) {
