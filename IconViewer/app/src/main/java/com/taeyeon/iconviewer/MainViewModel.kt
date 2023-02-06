@@ -1,4 +1,4 @@
-package com.taeyeon.iconviewer.model
+package com.taeyeon.iconviewer
 
 import androidx.lifecycle.ViewModel
 
