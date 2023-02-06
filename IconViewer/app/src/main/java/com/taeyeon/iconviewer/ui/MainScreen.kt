@@ -71,6 +71,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
+import com.taeyeon.iconviewer.model.MainViewModel
 import com.taeyeon.iconviewer.util.collapse
 import com.taeyeon.iconviewer.util.open
 import kotlinx.coroutines.launch
@@ -78,7 +79,9 @@ import kotlin.math.floor
 import kotlin.math.pow
 
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    mainViewModel: MainViewModel = MainViewModel()
+) {
     val material_icons_core = List(50) {
         IconData(
             name = "AccountBox",
@@ -99,7 +102,6 @@ fun MainScreen() {
             twoTone = Icons.TwoTone.Add
         )
     }
-
     //material_icons_core = IconData.material_icons_core; material_icons_extended = IconData.material_icons_extended
 
     val systemUiController = rememberSystemUiController()
