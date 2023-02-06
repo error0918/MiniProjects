@@ -66,6 +66,7 @@ import com.taeyeon.iconviewer.IconViewerViewModel
 import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.data.IconType
+import com.taeyeon.iconviewer.rememberIconViewerState
 import com.taeyeon.iconviewer.util.collapse
 import com.taeyeon.iconviewer.util.open
 import kotlinx.coroutines.launch
@@ -74,7 +75,7 @@ import kotlin.math.pow
 
 @Composable
 fun MainScreen(
-    viewModel: IconViewerViewModel = IconViewerViewModel()
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
     val material_icons_core = List(50) {
         IconData(
@@ -131,7 +132,7 @@ fun MainScreen(
             var itemColumns by remember { mutableStateOf(1) }
             var itemSpace by remember { mutableStateOf(8.dp) }
 
-            LaunchedEffect(maxWidth) {
+            LaunchedEffect(maxWidth, true) {
                 itemColumns = floor((maxWidth - itemMinSpace) / (itemWidth + itemMinSpace)).toInt()
                 itemSpace = (maxWidth - itemWidth * itemColumns) / (itemColumns + 1)
             }
@@ -243,7 +244,7 @@ fun MainScreen(
 
 @Composable
 fun TopBar(
-    viewModel: IconViewerViewModel = IconViewerViewModel()
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
     val scope = rememberCoroutineScope()
     val topAppBarScrollBehavior = viewModel.state.topAppBarScrollBehavior
@@ -265,13 +266,13 @@ fun TopBar(
                 )
             }
         },
-        scrollBehavior = topAppBarScrollBehavior
+        scrollBehavior = viewModel.state.topAppBarScrollBehavior
     )
 }
 
 @Composable
 fun Fab(
-    viewModel: IconViewerViewModel = IconViewerViewModel()
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
     val scope = rememberCoroutineScope()
     val scope2 = rememberCoroutineScope()
