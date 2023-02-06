@@ -13,7 +13,6 @@ import com.taeyeon.iconviewer.data.IconType
 
 class IconViewerViewModel : ViewModel() {
     val state @Composable get() = rememberIconViewerState()
-    val scope @Composable get() = List(5) { rememberCoroutineScope() }
 
     var isSearching by mutableStateOf(false)
     var libraryIndex by mutableStateOf(0)

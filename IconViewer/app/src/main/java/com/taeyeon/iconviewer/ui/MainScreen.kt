@@ -4,10 +4,6 @@
 
 package com.taeyeon.iconviewer.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -52,8 +48,6 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -121,18 +115,8 @@ fun MainScreen(
         modifier = Modifier
             .fillMaxSize()
             .nestedScroll(viewModel.state.topAppBarScrollBehavior.nestedScrollConnection),
-        topBar = {
-            TopBar(
-                viewModel = viewModel,
-                scrollBehavior = viewModel.state.topAppBarScrollBehavior
-            )
-        },
-        floatingActionButton = {
-            Fab(
-                scrollState = viewModel.state.bodyScrollState,
-                scrollBehavior = viewModel.state.topAppBarScrollBehavior
-            )
-        },
+        topBar = { TopBar(viewModel = viewModel) },
+        floatingActionButton = { Fab(viewModel = viewModel) },
         floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         BoxWithConstraints(
@@ -153,7 +137,8 @@ fun MainScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(itemSpace)
             ) {
 
                 Row(
@@ -194,73 +179,59 @@ fun MainScreen(
                     Spacer(modifier = Modifier)
                 }
 
-                Spacer(modifier = Modifier.height(itemSpace))
+                if (itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)) {
+                    for (rowIndex in 0..material_icons_core.size / itemColumns) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = itemSpace),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = itemSpace,
+                                alignment = Alignment.Start
+                            )
+                        ) {
+                            for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
+                                var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
 
-                AnimatedVisibility(
-                    visible = itemColumns > 1,
-                    modifier = Modifier.fillMaxWidth(),
-                    enter = slideInVertically { 0 },
-                    exit = ExitTransition.None
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(itemSpace)
-                    ) {
-                        if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1) {
-                            for (rowIndex in 0..material_icons_core.size / itemColumns) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    )
-                                ) {
-                                    for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
-                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                        LaunchedEffect(viewModel.iconType) {
-                                            imageVector = viewModel.iconType.get(iconData)
-                                        }
-
-                                        Icon(
-                                            imageVector = imageVector,
-                                            contentDescription = iconData.name,
-                                            modifier = Modifier.size(itemWidth)
-                                        )
-                                    }
+                                LaunchedEffect(viewModel.iconType) {
+                                    imageVector = viewModel.iconType.get(iconData)
                                 }
+
+                                Icon(
+                                    imageVector = imageVector,
+                                    contentDescription = iconData.name,
+                                    modifier = Modifier.size(itemWidth)
+                                )
                             }
                         }
+                    }
+                }
 
-                        if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2) {
-                            for (rowIndex in 0..material_icons_extended.size / itemColumns) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    )
-                                ) {
-                                    for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
-                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+                if (itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)) {
+                    for (rowIndex in 0..material_icons_extended.size / itemColumns) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = itemSpace),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                space = itemSpace,
+                                alignment = Alignment.Start
+                            )
+                        ) {
+                            for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
 
-                                        LaunchedEffect(viewModel.iconType) {
-                                            imageVector = viewModel.iconType.get(iconData)
-                                        }
-
-                                        Icon(
-                                            imageVector = imageVector,
-                                            contentDescription = iconData.name,
-                                            modifier = Modifier.size(itemWidth)
-                                        )
-                                    }
+                                LaunchedEffect(viewModel.iconType) {
+                                    imageVector = viewModel.iconType.get(iconData)
                                 }
+
+                                Icon(
+                                    imageVector = imageVector,
+                                    contentDescription = iconData.name,
+                                    modifier = Modifier.size(itemWidth)
+                                )
                             }
                         }
                     }
@@ -272,10 +243,10 @@ fun MainScreen(
 
 @Composable
 fun TopBar(
-    viewModel: IconViewerViewModel = IconViewerViewModel(),
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    viewModel: IconViewerViewModel = IconViewerViewModel()
 ) {
     val scope = rememberCoroutineScope()
+    val topAppBarScrollBehavior = viewModel.state.topAppBarScrollBehavior
 
     MediumTopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
@@ -283,7 +254,7 @@ fun TopBar(
             IconButton(
                 onClick = {
                     scope.launch {
-                        scrollBehavior.state.collapse()
+                        topAppBarScrollBehavior.state.collapse()
                         viewModel.isSearching = !viewModel.isSearching
                     }
                 }
@@ -294,17 +265,18 @@ fun TopBar(
                 )
             }
         },
-        scrollBehavior = scrollBehavior
+        scrollBehavior = topAppBarScrollBehavior
     )
 }
 
 @Composable
 fun Fab(
-    scrollState: ScrollState = rememberScrollState(),
-    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    viewModel: IconViewerViewModel = IconViewerViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val scope2 = rememberCoroutineScope()
+    val topAppBarScrollBehavior = viewModel.state.topAppBarScrollBehavior
+    val bodyScrollState = viewModel.state.bodyScrollState
 
     Surface(
         shape = CircleShape,
@@ -319,14 +291,14 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        scrollState.animateScrollTo(0)
+                        bodyScrollState.animateScrollTo(0)
                     }
                     scope2.launch {
-                        scrollBehavior.state.open()
+                        topAppBarScrollBehavior.state.open()
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = scrollState.value != 0 || scrollBehavior.state.collapsedFraction != 0f
+                enabled = bodyScrollState.value != 0 || topAppBarScrollBehavior.state.collapsedFraction != 0f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
@@ -336,14 +308,14 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        scrollState.animateScrollTo(scrollState.maxValue)
+                        bodyScrollState.animateScrollTo(bodyScrollState.maxValue)
                     }
                     scope2.launch {
-                        scrollBehavior.state.collapse()
+                        topAppBarScrollBehavior.state.collapse()
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = scrollState.value != scrollState.maxValue || scrollBehavior.state.collapsedFraction != 1f
+                enabled = bodyScrollState.value != bodyScrollState.maxValue || topAppBarScrollBehavior.state.collapsedFraction != 1f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,

@@ -14,7 +14,7 @@ import androidx.compose.runtime.remember
 fun rememberIconViewerState(
     topAppBarScrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
     bodyScrollState: ScrollState = rememberScrollState()
-) = remember {
+) = remember(topAppBarScrollBehavior, bodyScrollState) {
     IconViewerState(
         topAppBarScrollBehavior = topAppBarScrollBehavior,
         bodyScrollState = bodyScrollState
