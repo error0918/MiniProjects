@@ -4,6 +4,7 @@
 
 package com.taeyeon.iconviewer.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -33,6 +34,7 @@ import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.sharp.AccountBox
 import androidx.compose.material.icons.sharp.Add
@@ -138,9 +140,10 @@ fun MainScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(itemSpace)
+                modifier = Modifier.fillMaxWidth()
             ) {
+
+                Spacer(modifier = Modifier.height(itemSpace / 2))
 
                 Row(
                     modifier = Modifier
@@ -163,8 +166,9 @@ fun MainScreen(
                     }
                     Box(
                         modifier = Modifier
-                            .width(1.dp)
+                            .width(1.5f.dp)
                             .fillMaxHeight()
+                            .padding(vertical = 2.dp)
                             .background(
                                 color = MaterialTheme.colorScheme.outlineVariant,
                                 shape = CircleShape
@@ -174,65 +178,82 @@ fun MainScreen(
                         FilterChip(
                             selected = viewModel.iconType == type,
                             onClick = { viewModel.iconType = type },
+                            leadingIcon = { Icon(imageVector = type.example, contentDescription = "Example") },
                             label = { Text(text = type.name) }
                         )
                     }
                     Spacer(modifier = Modifier)
                 }
+                
+                Spacer(modifier = Modifier.height(itemSpace))
 
-                if (itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)) {
-                    for (rowIndex in 0..material_icons_core.size / itemColumns) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = itemSpace),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = itemSpace,
-                                alignment = Alignment.Start
-                            )
-                        ) {
-                            for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
-                                var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                LaunchedEffect(viewModel.iconType) {
-                                    imageVector = viewModel.iconType.get(iconData)
-                                }
-
-                                Icon(
-                                    imageVector = imageVector,
-                                    contentDescription = iconData.name,
-                                    modifier = Modifier.size(itemWidth)
+                AnimatedVisibility(
+                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+                    ) {
+                        for (rowIndex in 0..material_icons_core.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
                                 )
+                            ) {
+                                for (columnIndex in 0 until (material_icons_core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = material_icons_core[rowIndex * itemColumns + columnIndex]
+                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                    LaunchedEffect(viewModel.iconType) {
+                                        imageVector = viewModel.iconType.get(iconData)
+                                    }
+
+                                    Icon(
+                                        imageVector = imageVector,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
+                                }
                             }
                         }
                     }
                 }
 
-                if (itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)) {
-                    for (rowIndex in 0..material_icons_extended.size / itemColumns) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = itemSpace),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                space = itemSpace,
-                                alignment = Alignment.Start
-                            )
-                        ) {
-                            for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
-                                var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                LaunchedEffect(viewModel.iconType) {
-                                    imageVector = viewModel.iconType.get(iconData)
-                                }
-
-                                Icon(
-                                    imageVector = imageVector,
-                                    contentDescription = iconData.name,
-                                    modifier = Modifier.size(itemWidth)
+                AnimatedVisibility(
+                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+                    ) {
+                        for (rowIndex in 0..material_icons_extended.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
                                 )
+                            ) {
+                                for (columnIndex in 0 until (material_icons_extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = material_icons_extended[rowIndex * itemColumns + columnIndex]
+                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                    LaunchedEffect(viewModel.iconType) {
+                                        imageVector = viewModel.iconType.get(iconData)
+                                    }
+
+                                    Icon(
+                                        imageVector = imageVector,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
+                                }
                             }
                         }
                     }
@@ -262,6 +283,16 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Rounded.Search,
                     contentDescription = stringResource(id = R.string.main_top_bar_search)
+                )
+            }
+            IconButton(
+                onClick = {
+                    viewModel.isDropDownMenuShowing = !viewModel.isDropDownMenuShowing
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                    contentDescription = stringResource(id = R.string.main_top_bar_more)
                 )
             }
         },

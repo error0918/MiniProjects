@@ -7,7 +7,7 @@ import androidx.compose.material3.TopAppBarState
 import kotlinx.coroutines.delay
 
 suspend fun TopAppBarState.open(
-    step: Int = 10,
+    step: Long = 10,
     time: Long = 50
 ) {
     val append = - heightOffset / step
@@ -18,7 +18,7 @@ suspend fun TopAppBarState.open(
 }
 
 suspend fun TopAppBarState.collapse(
-    step: Int = 10,
+    step: Long = 10,
     time: Long = 50
 ) {
     val append = (heightOffsetLimit - heightOffset) / step

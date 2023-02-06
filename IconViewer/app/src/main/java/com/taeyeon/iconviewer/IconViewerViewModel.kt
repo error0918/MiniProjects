@@ -13,6 +13,7 @@ class IconViewerViewModel(
     val state: IconViewerState
 ) : ViewModel() {
     var isSearching by mutableStateOf(false)
+    var isDropDownMenuShowing by mutableStateOf(false)
     var libraryIndex by mutableStateOf(0)
     var iconType by mutableStateOf(IconType.Filled)
 }
