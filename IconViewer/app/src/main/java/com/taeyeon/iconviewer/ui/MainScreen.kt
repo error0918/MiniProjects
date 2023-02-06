@@ -247,7 +247,6 @@ fun TopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
     val scope = rememberCoroutineScope()
-    val topAppBarScrollBehavior = viewModel.state.topAppBarScrollBehavior
 
     MediumTopAppBar(
         title = { Text(text = stringResource(id = R.string.app_name)) },
@@ -255,7 +254,7 @@ fun TopBar(
             IconButton(
                 onClick = {
                     scope.launch {
-                        topAppBarScrollBehavior.state.collapse()
+                        viewModel.state.topAppBarScrollBehavior.state.collapse()
                         viewModel.isSearching = !viewModel.isSearching
                     }
                 }
@@ -276,8 +275,6 @@ fun Fab(
 ) {
     val scope = rememberCoroutineScope()
     val scope2 = rememberCoroutineScope()
-    val topAppBarScrollBehavior = viewModel.state.topAppBarScrollBehavior
-    val bodyScrollState = viewModel.state.bodyScrollState
 
     Surface(
         shape = CircleShape,
@@ -292,14 +289,14 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        bodyScrollState.animateScrollTo(0)
+                        viewModel.state.bodyScrollState.animateScrollTo(0)
                     }
                     scope2.launch {
-                        topAppBarScrollBehavior.state.open()
+                        viewModel.state.topAppBarScrollBehavior.state.open()
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = bodyScrollState.value != 0 || topAppBarScrollBehavior.state.collapsedFraction != 0f
+                enabled = viewModel.state.bodyScrollState.value != 0 || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 0f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
@@ -309,14 +306,14 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        bodyScrollState.animateScrollTo(bodyScrollState.maxValue)
+                        viewModel.state.bodyScrollState.animateScrollTo(viewModel.state.bodyScrollState.maxValue)
                     }
                     scope2.launch {
-                        topAppBarScrollBehavior.state.collapse()
+                        viewModel.state.topAppBarScrollBehavior.state.collapse()
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = bodyScrollState.value != bodyScrollState.maxValue || topAppBarScrollBehavior.state.collapsedFraction != 1f
+                enabled = viewModel.state.bodyScrollState.value != viewModel.state.bodyScrollState.maxValue || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 1f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,
