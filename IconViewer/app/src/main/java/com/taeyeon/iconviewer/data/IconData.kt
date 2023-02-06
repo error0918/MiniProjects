@@ -18,7 +18,6 @@ data class IconData(
 ) {
     companion object {
         val libraryList = listOf("All", "Core", "Extended")
-        val typeList = listOf("Filled", "Outlined", "Rounded", "Sharp", "TwoTone")
 
         val material_icons_core = listOf(
             IconData(
