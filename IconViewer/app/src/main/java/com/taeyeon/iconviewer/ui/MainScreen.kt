@@ -71,6 +71,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -114,16 +115,24 @@ fun MainScreen(
 
     val systemUiController = rememberSystemUiController()
 
-    systemUiController.setStatusBarColor(
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(
-            elevation = 3.dp * viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(3)
-        ),
-        darkIcons = !isSystemInDarkTheme()
-    )
-    systemUiController.setNavigationBarColor(
-        color = MaterialTheme.colorScheme.surface,
-        darkIcons = !isSystemInDarkTheme()
-    )
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
+            .copy(alpha = viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
+            .compositeOver(background = MaterialTheme.colorScheme.background)
+    val navigationBarColor = MaterialTheme.colorScheme.surface
+
+    LaunchedEffect(isSystemInDarkTheme, statusBarColor) {
+        systemUiController.setStatusBarColor(
+            color = statusBarColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
+    LaunchedEffect(isSystemInDarkTheme, navigationBarColor) {
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
 
     Scaffold(
         modifier = Modifier
