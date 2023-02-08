@@ -78,6 +78,7 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.iconviewer.IconViewerViewModel
@@ -119,14 +120,14 @@ fun MainScreen(
     val systemUiController = rememberSystemUiController()
 
     val isSystemInDarkTheme = isSystemInDarkTheme()
-    val statusBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
+    val topAppBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
             .copy(alpha = viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
             .compositeOver(background = MaterialTheme.colorScheme.background)
     val navigationBarColor = MaterialTheme.colorScheme.surface
 
-    LaunchedEffect(isSystemInDarkTheme, statusBarColor) {
+    LaunchedEffect(isSystemInDarkTheme, topAppBarColor) {
         systemUiController.setStatusBarColor(
-            color = statusBarColor,
+            color = topAppBarColor,
             darkIcons = !isSystemInDarkTheme
         )
     }
@@ -165,58 +166,54 @@ fun MainScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
 
-                AnimatedVisibility(
-                    visible = !viewModel.state.bodyScrollState.isScrollInProgress
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Min)
-                            .background(statusBarColor)
-                            .padding(
-                                top = itemSpace / 2,
-                                bottom = itemSpace
-                            )
-                            .horizontalScroll(state = rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(
-                            space = 16.dp,
-                            alignment = Alignment.Start
-                        ),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Spacer(modifier = Modifier)
-                        IconData.libraryList.forEachIndexed { index, library ->
-                            FilterChip(
-                                selected = viewModel.libraryIndex == index,
-                                onClick = { viewModel.libraryIndex = index },
-                                label = { Text(text = library) }
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .width(1.5f.dp)
-                                .fillMaxHeight()
-                                .padding(vertical = 2.dp)
-                                .background(
-                                    color = MaterialTheme.colorScheme.outlineVariant,
-                                    shape = CircleShape
-                                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
+                        .background(topAppBarColor)
+                        .padding(
+                            top = itemSpace / 2,
+                            bottom = itemSpace
                         )
-                        IconType.values().forEach { type ->
-                            FilterChip(
-                                selected = viewModel.iconType == type,
-                                onClick = { viewModel.iconType = type },
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = type.example,
-                                        contentDescription = "Example"
-                                    )
-                                },
-                                label = { Text(text = type.name) }
-                            )
-                        }
-                        Spacer(modifier = Modifier)
+                        .horizontalScroll(state = rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        space = 16.dp,
+                        alignment = Alignment.Start
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier)
+                    IconData.libraryList.forEachIndexed { index, library ->
+                        FilterChip(
+                            selected = viewModel.libraryIndex == index,
+                            onClick = { viewModel.libraryIndex = index },
+                            label = { Text(text = library) }
+                        )
                     }
+                    Box(
+                        modifier = Modifier
+                            .width(1.5f.dp)
+                            .fillMaxHeight()
+                            .padding(vertical = 2.dp)
+                            .background(
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                shape = CircleShape
+                            )
+                    )
+                    IconType.values().forEach { type ->
+                        FilterChip(
+                            selected = viewModel.iconType == type,
+                            onClick = { viewModel.iconType = type },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = type.example,
+                                    contentDescription = "Example"
+                                )
+                            },
+                            label = { Text(text = type.name) }
+                        )
+                    }
+                    Spacer(modifier = Modifier)
                 }
 
                 Column(
@@ -297,7 +294,6 @@ fun MainScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(48.dp + itemSpace * 1.5f))
                 }
             }
         }
@@ -428,7 +424,8 @@ fun TopBar(
                     }
                     DropdownMenu(
                         expanded = viewModel.isDropDownMenuShowing,
-                        onDismissRequest = { viewModel.isDropDownMenuShowing = false }
+                        onDismissRequest = { viewModel.isDropDownMenuShowing = false },
+                        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 7.dp))
                     ) {
                         DropdownMenuItem(
                             leadingIcon = {
