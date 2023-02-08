@@ -5,6 +5,7 @@
     <string name="main_top_bar_search">Search</string>
     <string name="main_top_bar_search_go">Search</string>
     <string name="main_top_bar_more">More</string>
+    <string name="main_top_bar_more_settings">Settings</string>
 
     <string name="main_fab_go_up">Go Up</string>
     <string name="main_fab_go_down">Go Down</string>

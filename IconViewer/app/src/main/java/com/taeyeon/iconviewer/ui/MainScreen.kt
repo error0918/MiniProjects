@@ -46,10 +46,13 @@ import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.sharp.AccountBox
 import androidx.compose.material.icons.sharp.Add
 import androidx.compose.material.icons.twotone.AccountBox
 import androidx.compose.material.icons.twotone.Add
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FilterChip
@@ -146,7 +149,6 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(state = viewModel.state.bodyScrollState)
         ) {
             val itemWidth = 36.dp
             val itemMinSpace = 8.dp
@@ -163,120 +165,139 @@ fun MainScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
 
-                Spacer(modifier = Modifier.height(itemSpace / 2))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Min)
-                        .horizontalScroll(state = rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 16.dp,
-                        alignment = Alignment.Start
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
+                AnimatedVisibility(
+                    visible = !viewModel.state.bodyScrollState.isScrollInProgress
                 ) {
-                    Spacer(modifier = Modifier)
-                    IconData.libraryList.forEachIndexed { index, library ->
-                        FilterChip(
-                            selected = viewModel.libraryIndex == index,
-                            onClick = { viewModel.libraryIndex = index },
-                            label = { Text(text = library) }
-                        )
-                    }
-                    Box(
+                    Row(
                         modifier = Modifier
-                            .width(1.5f.dp)
-                            .fillMaxHeight()
-                            .padding(vertical = 2.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                                shape = CircleShape
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Min)
+                            .background(statusBarColor)
+                            .padding(
+                                top = itemSpace / 2,
+                                bottom = itemSpace
                             )
-                    )
-                    IconType.values().forEach { type ->
-                        FilterChip(
-                            selected = viewModel.iconType == type,
-                            onClick = { viewModel.iconType = type },
-                            leadingIcon = { Icon(imageVector = type.example, contentDescription = "Example") },
-                            label = { Text(text = type.name) }
+                            .horizontalScroll(state = rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = 16.dp,
+                            alignment = Alignment.Start
+                        ),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier)
+                        IconData.libraryList.forEachIndexed { index, library ->
+                            FilterChip(
+                                selected = viewModel.libraryIndex == index,
+                                onClick = { viewModel.libraryIndex = index },
+                                label = { Text(text = library) }
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .width(1.5f.dp)
+                                .fillMaxHeight()
+                                .padding(vertical = 2.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.outlineVariant,
+                                    shape = CircleShape
+                                )
                         )
-                    }
-                    Spacer(modifier = Modifier)
-                }
-                
-                Spacer(modifier = Modifier.height(itemSpace))
-
-                AnimatedVisibility(
-                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(itemSpace)
-                    ) {
-                        for (rowIndex in 0..core.size / itemColumns) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = itemSpace),
-                                horizontalArrangement = Arrangement.spacedBy(
-                                    space = itemSpace,
-                                    alignment = Alignment.Start
-                                )
-                            ) {
-                                for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = core[rowIndex * itemColumns + columnIndex]
-                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                    LaunchedEffect(viewModel.iconType) {
-                                        imageVector = viewModel.iconType.get(iconData)
-                                    }
-
+                        IconType.values().forEach { type ->
+                            FilterChip(
+                                selected = viewModel.iconType == type,
+                                onClick = { viewModel.iconType = type },
+                                leadingIcon = {
                                     Icon(
-                                        imageVector = imageVector,
-                                        contentDescription = iconData.name,
-                                        modifier = Modifier.size(itemWidth)
+                                        imageVector = type.example,
+                                        contentDescription = "Example"
                                     )
+                                },
+                                label = { Text(text = type.name) }
+                            )
+                        }
+                        Spacer(modifier = Modifier)
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
+                ) {
+
+                    AnimatedVisibility(
+                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(itemSpace)
+                        ) {
+                            for (rowIndex in 0..core.size / itemColumns) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemSpace,
+                                        alignment = Alignment.Start
+                                    )
+                                ) {
+                                    for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                        val iconData = core[rowIndex * itemColumns + columnIndex]
+                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                        LaunchedEffect(viewModel.iconType) {
+                                            imageVector = viewModel.iconType.get(iconData)
+                                        }
+
+                                        Icon(
+                                            imageVector = imageVector,
+                                            contentDescription = iconData.name,
+                                            modifier = Modifier.size(itemWidth)
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                AnimatedVisibility(
-                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+                    Spacer(modifier = Modifier.height(itemSpace))
+
+                    AnimatedVisibility(
+                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
                     ) {
-                        for (rowIndex in 0..extended.size / itemColumns) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = itemSpace),
-                                horizontalArrangement = Arrangement.spacedBy(
-                                    space = itemSpace,
-                                    alignment = Alignment.Start
-                                )
-                            ) {
-                                for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = extended[rowIndex * itemColumns + columnIndex]
-                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                    LaunchedEffect(viewModel.iconType) {
-                                        imageVector = viewModel.iconType.get(iconData)
-                                    }
-
-                                    Icon(
-                                        imageVector = imageVector,
-                                        contentDescription = iconData.name,
-                                        modifier = Modifier.size(itemWidth)
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(itemSpace)
+                        ) {
+                            for (rowIndex in 0..extended.size / itemColumns) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemSpace,
+                                        alignment = Alignment.Start
                                     )
+                                ) {
+                                    for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                        val iconData = extended[rowIndex * itemColumns + columnIndex]
+                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                        LaunchedEffect(viewModel.iconType) {
+                                            imageVector = viewModel.iconType.get(iconData)
+                                        }
+
+                                        Icon(
+                                            imageVector = imageVector,
+                                            contentDescription = iconData.name,
+                                            modifier = Modifier.size(itemWidth)
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(48.dp + itemSpace * 1.5f))
                 }
             }
         }
@@ -403,6 +424,21 @@ fun TopBar(
                         Icon(
                             imageVector = Icons.Rounded.MoreVert,
                             contentDescription = stringResource(id = R.string.main_top_bar_more)
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = viewModel.isDropDownMenuShowing,
+                        onDismissRequest = { viewModel.isDropDownMenuShowing = false }
+                    ) {
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Rounded.Settings,
+                                    contentDescription = null
+                                )
+                            },
+                            text = { Text(text = "설정") },
+                            onClick = { /*TODO*/ }
                         )
                     }
                 },
