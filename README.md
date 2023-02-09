@@ -70,6 +70,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/FancyScrollController">
+                Fancy Scroll Controller (2023/02/09~)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            ⌈Fancy Scroll Controller⌋는 Jetpack Compose를 이용하여 멋진(?) ScrollState 컨르롤러를 구현하였습니다.
+        </li>
+        <h6>
+            <li>
+                Android, Jetpack Compose, Kotlin
+            </li>
+        </h6>
+    </ul>
 </ul>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved"/>
