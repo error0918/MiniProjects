@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInput
@@ -44,22 +47,42 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.taeyeon.fancyscrollcontroller.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.pow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val scrollState = rememberScrollState()
+    val systemUiController = rememberSystemUiController()
     val scope = rememberCoroutineScope()
     val hapticFeedback = LocalHapticFeedback.current
+    val statusColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
+        .copy(alpha = topAppBarScrollBehavior.state.collapsedFraction.pow(2))
+        .compositeOver(MaterialTheme.colorScheme.surface)
+    val navigationBarColor = MaterialTheme.colorScheme.background
+    val isSystemInDarkTheme = isSystemInDarkTheme()
     var scrollAreaHeight by remember { mutableStateOf(0) }
     var scrollControllerAreaHeight by remember { mutableStateOf(0) }
     var scrollControllerShowTime by remember { mutableStateOf(0L) }
     var isScrollControllerShowing by remember { mutableStateOf(false) }
 
+    LaunchedEffect(statusColor, isSystemInDarkTheme) {
+        systemUiController.setStatusBarColor(
+            color = statusColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
+    LaunchedEffect(navigationBarColor, isSystemInDarkTheme) {
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
     LaunchedEffect(scrollControllerShowTime) {
         if (scrollControllerShowTime != 0L) {
             isScrollControllerShowing = true
