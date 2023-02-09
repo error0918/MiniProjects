@@ -16,6 +16,11 @@
         </a>
     </li>
     <li>
+        <a href="https://github.com/error0918/MiniProjects/tree/main/FancyScrollController#-----다운로드">
+            ✔️ 다운로드
+        </a>
+    </li>
+    <li>
         <a href="https://github.com/error0918/MiniProjects/tree/main/FancyScrollController#-----사용%20화면">
             📱️ 사용 화면
         </a>
@@ -29,6 +34,21 @@
 </h2>
 
 ⌈Fancy Scroll Controller⌋는 Jetpack Compose를 이용하여 멋진(?) ScrollState 컨르롤러를 구현하였습니다.
+
+---
+
+<h2>
+    ✔️ 다운로드
+</h2>
+
+<div align=center>
+    <h6>
+        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/apks/Fancy%20Scroll%20Controller%20(v1.0.0).apk">
+            Fancy Scroll Controller (v1.0.0)
+        </a>
+        2023/02/019
+    </h6>
+</div>
 
 ---
 
