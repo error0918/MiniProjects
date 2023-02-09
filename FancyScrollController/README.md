@@ -37,9 +37,11 @@
 </h2>
 
 <div align="center">
-    <h3>
-        업로드 예정
-    </h3>
+    <a href="https://youtube.com/shorts/izG3MdxxcF0?feature=share">
+        <h3>
+            사용 영상
+        </h3>
+    </a>
 </div>
 
 <div align=center>
