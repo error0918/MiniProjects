@@ -58,9 +58,8 @@
 
 <div align="center">
     <a href="https://youtube.com/shorts/izG3MdxxcF0?feature=share">
-        <h4>
-            사용 영상
-        </h4>
+        사용 영상
+        <br/>
     </a>
 </div>
 
