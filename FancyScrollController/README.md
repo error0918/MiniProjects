@@ -43,7 +43,7 @@
 
 <div align=center>
     <h6>
-        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/apks/Fancy%20Scroll%20Controller%20(v1.0.0).apk">
+        <a href="https://github.com/error0918/MiniProjects/raw/main/FancyScrollController/apks/Fancy%20Scroll%20Controller%20(v1.0.0).apk">
             Fancy Scroll Controller (v1.0.0)
         </a>
         2023/02/019
