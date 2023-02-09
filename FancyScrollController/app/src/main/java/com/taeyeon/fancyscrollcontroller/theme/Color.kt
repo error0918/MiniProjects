@@ -1,4 +1,4 @@
-package com.taeyeon.fancyscrollcontroller.ui.theme
+package com.taeyeon.fancyscrollcontroller.theme
 
 import androidx.compose.ui.graphics.Color
 
