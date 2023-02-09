@@ -1,12 +1,13 @@
 package com.taeyeon.fancyscrollcontroller.ui
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -20,20 +21,33 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.taeyeon.fancyscrollcontroller.R
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
     val scrollState = rememberScrollState()
+    val scope = rememberCoroutineScope()
+
+    var scrollAreaHeight by remember { mutableStateOf(0) }
+    var scrollControllerAreaHeight by remember { mutableStateOf(0) }
 
     Scaffold(
         modifier = Modifier
@@ -57,7 +71,7 @@ fun MainScreen() {
                     .verticalScroll(state = scrollState)
             ) {
                 Text(
-                    text = "TEST DATA ".repeat(10000),
+                    text = "TEST DATA ".repeat(1000),
                     textAlign = TextAlign.Center
                 )
             }
@@ -67,6 +81,7 @@ fun MainScreen() {
                     .fillMaxHeight()
                     .align(Alignment.CenterEnd)
                     .padding(4.dp)
+                    .onSizeChanged { scrollAreaHeight = it.height }
             ) {
                 Surface(
                     color = MaterialTheme.colorScheme.primary,
@@ -75,6 +90,18 @@ fun MainScreen() {
                     modifier = Modifier
                         .width(16.dp)
                         .height(42.dp)
+                        .offset(y = LocalDensity.current.run { ((scrollAreaHeight - scrollControllerAreaHeight) * scrollState.value / scrollState.maxValue).toDp() })
+                        .onSizeChanged { scrollControllerAreaHeight = it.height }
+                        .pointerInput(Unit) {
+                            detectDragGestures(
+                                onDrag = { change, dragAmount ->
+                                    change.consume()
+                                    scope.launch {
+                                        scrollState.scrollTo(scrollState.value + (scrollState.maxValue * dragAmount.y / scrollAreaHeight).toInt())
+                                    }
+                                }
+                            )
+                        }
                 ) {
                     val contentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                     Canvas(
