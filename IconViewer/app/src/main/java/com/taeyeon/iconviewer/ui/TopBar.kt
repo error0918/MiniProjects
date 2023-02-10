@@ -63,9 +63,7 @@ import kotlin.math.pow
 fun TopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
-    val scope = rememberCoroutineScope()
     val density = LocalDensity.current
-
     val topAppBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
         .copy(alpha = if (viewModel.isSearching) 1f else viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
         .compositeOver(background = MaterialTheme.colorScheme.background)
@@ -88,208 +86,210 @@ fun TopBar(
                             initialOffsetX = {
                                 it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
                             }
-                        ) + fadeIn(
-                            animationSpec = tween(durationMillis = 250)
                         ) with
                                 slideOutHorizontally(
                                     animationSpec = tween(durationMillis = 250),
                                     targetOffsetX = {
                                         -it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
                                     }
-                                ) + fadeOut(
-                            animationSpec = tween(durationMillis = 250)
-                        )
+                                )
                     } else {
                         slideInHorizontally(
                             animationSpec = tween(durationMillis = 250),
                             initialOffsetX = {
                                 -it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
                             }
-                        ) + fadeIn(
-                            animationSpec = tween(durationMillis = 250)
                         ) with
                                 slideOutHorizontally(
                                     animationSpec = tween(durationMillis = 250),
                                     targetOffsetX = {
                                         it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
                                     }
-                                ) + fadeOut(
-                            animationSpec = tween(durationMillis = 250)
-                        )
+                                )
                     }
                 }
             },
             modifier = Modifier.background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
         ) {
-            if (it) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(64.dp)
-                        .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
-                ) {
-                    // TODO
-                    IconButton(
-                        onClick = {
-                            viewModel.isSearching = !viewModel.isSearching
-                        },
-                        modifier = Modifier
-                            .padding(
-                                start = 16.dp,
-                                end = 24.dp
-                            )
-                            .align(Alignment.CenterStart)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Search,
-                            contentDescription = stringResource(id = R.string.main_top_bar_search)
-                        )
-                    }
-                    BasicTextField(
-                        value = "TEST DATA",
-                        onValueChange = {},
-                        textStyle = MaterialTheme.typography.titleLarge.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        singleLine = true,
-                        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 48.dp + 24.dp)
-                            .align(Alignment.Center)
-                    )
-                    IconButton(
-                        onClick = { /* TODO */ },
-                        modifier = Modifier
-                            .padding(
-                                start = 24.dp,
-                                end = 16.dp
-                            )
-                            .align(Alignment.CenterEnd)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.ChevronRight,
-                            contentDescription = stringResource(id = R.string.main_top_bar_search_go)
-                        )
-                    }
-                }
-            } else {
-                MediumTopAppBar(
-                    title = { Text(text = stringResource(id = R.string.app_name)) },
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                scope.launch {
-                                    viewModel.isDropDownMenuShowing = false
-                                    viewModel.state.topAppBarScrollBehavior.state.collapse()
-                                    viewModel.isSearching = !viewModel.isSearching
-                                }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Search,
-                                contentDescription = stringResource(id = R.string.main_top_bar_search)
-                            )
-                        }
-                        IconButton(
-                            onClick = {
-                                viewModel.isDropDownMenuShowing = !viewModel.isDropDownMenuShowing
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.MoreVert,
-                                contentDescription = stringResource(id = R.string.main_top_bar_more)
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = viewModel.isDropDownMenuShowing,
-                            onDismissRequest = { viewModel.isDropDownMenuShowing = false },
-                            modifier = Modifier.background(
-                                MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                    elevation = 7.dp
-                                )
-                            )
-                        ) {
-                            DropdownMenuItem(
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Settings,
-                                        contentDescription = null
-                                    )
-                                },
-                                text = { Text(text = "설정") },
-                                onClick = { /*TODO*/ }
-                            )
-                        }
-                    },
-                    scrollBehavior = viewModel.state.topAppBarScrollBehavior
-                )
-            }
+            if (it) SearchTopBar(viewModel = viewModel)
+            else BasicTopBar(viewModel = viewModel)
         }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(topAppBarColor)
-                .padding(
-                    top = 4.dp,
-                    bottom = 8.dp
-                )
-                .horizontalScroll(state = rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(
-                space = 16.dp,
-                alignment = Alignment.Start
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier)
-            IconData.libraryList.forEachIndexed { index, library ->
-                FilterChip(
-                    selected = viewModel.libraryIndex == index,
-                    onClick = { viewModel.libraryIndex = index },
-                    label = { Text(text = library) }
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .width(1.5f.dp)
-                    .height(48.dp)
-                    .padding(vertical = 2.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.outlineVariant,
-                        shape = CircleShape
-                    )
-            )
-            IconType.values().forEach { type ->
-                FilterChip(
-                    selected = viewModel.iconType == type,
-                    onClick = { viewModel.iconType = type },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = type.example,
-                            contentDescription = "Example"
-                        )
-                    },
-                    label = { Text(text = type.name) }
-                )
-            }
-            Spacer(modifier = Modifier)
-        }
+        ChipRow(
+            viewModel = viewModel,
+            backgroundColor = topAppBarColor
+        )
     }
 }
+
 
 @Composable
 fun BasicTopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
-) {}
+) {
+    val scope = rememberCoroutineScope()
+
+    MediumTopAppBar(
+        title = { Text(text = stringResource(id = R.string.app_name)) },
+        actions = {
+            IconButton(
+                onClick = {
+                    scope.launch {
+                        viewModel.isDropDownMenuShowing = false
+                        viewModel.state.topAppBarScrollBehavior.state.collapse()
+                        viewModel.isSearching = !viewModel.isSearching
+                    }
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = stringResource(id = R.string.main_top_bar_search)
+                )
+            }
+            IconButton(
+                onClick = {
+                    viewModel.isDropDownMenuShowing = !viewModel.isDropDownMenuShowing
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.MoreVert,
+                    contentDescription = stringResource(id = R.string.main_top_bar_more)
+                )
+            }
+            DropdownMenu(
+                expanded = viewModel.isDropDownMenuShowing,
+                onDismissRequest = { viewModel.isDropDownMenuShowing = false },
+                modifier = Modifier.background(
+                    MaterialTheme.colorScheme.surfaceColorAtElevation(
+                        elevation = 7.dp
+                    )
+                )
+            ) {
+                DropdownMenuItem(
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Rounded.Settings,
+                            contentDescription = null
+                        )
+                    },
+                    text = { Text(text = "설정") },
+                    onClick = { /*TODO*/ }
+                )
+            }
+        },
+        scrollBehavior = viewModel.state.topAppBarScrollBehavior
+    )
+}
+
 
 @Composable
 fun SearchTopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
-) {}
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(64.dp)
+            .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
+    ) {
+        // TODO
+        IconButton(
+            onClick = {
+                viewModel.isSearching = !viewModel.isSearching
+            },
+            modifier = Modifier
+                .padding(
+                    start = 16.dp,
+                    end = 24.dp
+                )
+                .align(Alignment.CenterStart)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Search,
+                contentDescription = stringResource(id = R.string.main_top_bar_search)
+            )
+        }
+        BasicTextField(
+            value = "TEST DATA",
+            onValueChange = {},
+            textStyle = MaterialTheme.typography.titleLarge.copy(
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            singleLine = true,
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 48.dp + 24.dp)
+                .align(Alignment.Center)
+        )
+        IconButton(
+            onClick = { /* TODO */ },
+            modifier = Modifier
+                .padding(
+                    start = 24.dp,
+                    end = 16.dp
+                )
+                .align(Alignment.CenterEnd)
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.ChevronRight,
+                contentDescription = stringResource(id = R.string.main_top_bar_search_go)
+            )
+        }
+    }
+}
+
 
 @Composable
 fun ChipRow(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState()),
     backgroundColor: Color
-) {}
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(backgroundColor)
+            .padding(
+                top = 4.dp,
+                bottom = 8.dp
+            )
+            .horizontalScroll(state = rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(
+            space = 16.dp,
+            alignment = Alignment.Start
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier)
+        IconData.libraryList.forEachIndexed { index, library ->
+            FilterChip(
+                selected = viewModel.libraryIndex == index,
+                onClick = { viewModel.libraryIndex = index },
+                label = { Text(text = library) }
+            )
+        }
+        Box(
+            modifier = Modifier
+                .width(1.5f.dp)
+                .height(48.dp)
+                .padding(vertical = 2.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = CircleShape
+                )
+        )
+        IconType.values().forEach { type ->
+            FilterChip(
+                selected = viewModel.iconType == type,
+                onClick = { viewModel.iconType = type },
+                leadingIcon = {
+                    Icon(
+                        imageVector = type.example,
+                        contentDescription = type.example.name
+                    )
+                },
+                label = { Text(text = type.name) }
+            )
+        }
+        Spacer(modifier = Modifier)
+    }
+}
