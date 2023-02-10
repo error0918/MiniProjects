@@ -158,7 +158,7 @@ fun BasicTopBar(
                 onDismissRequest = { viewModel.isDropDownMenuShowing = false },
                 modifier = Modifier.background(
                     MaterialTheme.colorScheme.surfaceColorAtElevation(
-                        elevation = 7.dp
+                        elevation = if (viewModel.state.topAppBarScrollBehavior.state.collapsedFraction == 1f) 7.dp else 3.dp
                     )
                 )
             ) {
@@ -166,10 +166,10 @@ fun BasicTopBar(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Rounded.Settings,
-                            contentDescription = null
+                            contentDescription = stringResource(id = R.string.main_top_bar_search)
                         )
                     },
-                    text = { Text(text = "설정") },
+                    text = { Text(text = stringResource(id = R.string.main_top_bar_more_settings)) },
                     onClick = { /*TODO*/ }
                 )
             }
