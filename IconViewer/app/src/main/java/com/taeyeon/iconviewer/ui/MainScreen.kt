@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -177,7 +176,6 @@ fun MainScreen(
         ) {
             val itemWidth = 36.dp
             val itemMinSpace = 8.dp
-
             var itemColumns by remember { mutableStateOf(1) }
             var itemSpace by remember { mutableStateOf(8.dp) }
 
@@ -187,138 +185,83 @@ fun MainScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
             ) {
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(IntrinsicSize.Min)
-                        .background(topAppBarColor)
-                        .padding(
-                            top = itemSpace / 2,
-                            bottom = itemSpace
-                        )
-                        .horizontalScroll(state = rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        space = 16.dp,
-                        alignment = Alignment.Start
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
+                AnimatedVisibility(
+                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
                 ) {
-                    Spacer(modifier = Modifier)
-                    IconData.libraryList.forEachIndexed { index, library ->
-                        FilterChip(
-                            selected = viewModel.libraryIndex == index,
-                            onClick = { viewModel.libraryIndex = index },
-                            label = { Text(text = library) }
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .width(1.5f.dp)
-                            .fillMaxHeight()
-                            .padding(vertical = 2.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.outlineVariant,
-                                shape = CircleShape
-                            )
-                    )
-                    IconType.values().forEach { type ->
-                        FilterChip(
-                            selected = viewModel.iconType == type,
-                            onClick = { viewModel.iconType = type },
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = type.example,
-                                    contentDescription = "Example"
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+                    ) {
+                        for (rowIndex in 0..core.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
                                 )
-                            },
-                            label = { Text(text = type.name) }
-                        )
+                            ) {
+                                for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = core[rowIndex * itemColumns + columnIndex]
+                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+
+                                    LaunchedEffect(viewModel.iconType) {
+                                        imageVector = viewModel.iconType.get(iconData)
+                                    }
+
+                                    Icon(
+                                        imageVector = imageVector,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
+                                }
+                            }
+                        }
                     }
-                    Spacer(modifier = Modifier)
                 }
 
-                Column(
-                    modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
+                Spacer(modifier = Modifier.height(itemSpace))
+
+                AnimatedVisibility(
+                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
                 ) {
-
-                    AnimatedVisibility(
-                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(itemSpace)
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(itemSpace)
-                        ) {
-                            for (rowIndex in 0..core.size / itemColumns) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    )
-                                ) {
-                                    for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData = core[rowIndex * itemColumns + columnIndex]
-                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
+                        for (rowIndex in 0..extended.size / itemColumns) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    space = itemSpace,
+                                    alignment = Alignment.Start
+                                )
+                            ) {
+                                for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    val iconData = extended[rowIndex * itemColumns + columnIndex]
+                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
 
-                                        LaunchedEffect(viewModel.iconType) {
-                                            imageVector = viewModel.iconType.get(iconData)
-                                        }
-
-                                        Icon(
-                                            imageVector = imageVector,
-                                            contentDescription = iconData.name,
-                                            modifier = Modifier.size(itemWidth)
-                                        )
+                                    LaunchedEffect(viewModel.iconType) {
+                                        imageVector = viewModel.iconType.get(iconData)
                                     }
+
+                                    Icon(
+                                        imageVector = imageVector,
+                                        contentDescription = iconData.name,
+                                        modifier = Modifier.size(itemWidth)
+                                    )
                                 }
                             }
                         }
                     }
-
-                    Spacer(modifier = Modifier.height(itemSpace))
-
-                    AnimatedVisibility(
-                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(itemSpace)
-                        ) {
-                            for (rowIndex in 0..extended.size / itemColumns) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    )
-                                ) {
-                                    for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                        val iconData = extended[rowIndex * itemColumns + columnIndex]
-                                        var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                        LaunchedEffect(viewModel.iconType) {
-                                            imageVector = viewModel.iconType.get(iconData)
-                                        }
-
-                                        Icon(
-                                            imageVector = imageVector,
-                                            contentDescription = iconData.name,
-                                            modifier = Modifier.size(itemWidth)
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
                 }
+
             }
 
             AnimatedVisibility(
@@ -354,7 +297,8 @@ fun MainScreen(
                                         change.consume()
                                         scope.launch {
                                             viewModel.state.bodyScrollState.scrollTo(viewModel.state.bodyScrollState.value + (viewModel.state.bodyScrollState.maxValue * dragAmount.y / scrollAreaHeight).toInt())
-                                            scrollControllerShowTime = System.currentTimeMillis()
+                                            scrollControllerShowTime =
+                                                System.currentTimeMillis()
                                         }
                                     }
                                 )
@@ -394,7 +338,6 @@ fun MainScreen(
                     }
                 }
             }
-
         }
     }
 }
@@ -406,140 +349,209 @@ fun TopBar(
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
 
-    AnimatedContent(
-        targetState = viewModel.isSearching,
-        transitionSpec = {
-            density.run {
-                if (viewModel.isSearching) {
-                    slideInHorizontally(
-                        animationSpec = tween(durationMillis = 250),
-                        initialOffsetX = { it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2 }
-                    ) + fadeIn(
-                        animationSpec = tween(durationMillis = 250)
-                    ) with
-                            slideOutHorizontally(
-                                animationSpec = tween(durationMillis = 250),
-                                targetOffsetX = { - it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2  }
-                            ) + fadeOut(
-                        animationSpec = tween(durationMillis = 250)
-                            )
-                } else {
-                    slideInHorizontally(
-                        animationSpec = tween(durationMillis = 250),
-                        initialOffsetX = { - it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2 }
-                    ) + fadeIn(
-                        animationSpec = tween(durationMillis = 250)
-                    ) with
-                            slideOutHorizontally(
-                                animationSpec = tween(durationMillis = 250),
-                                targetOffsetX = { it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2  }
-                            ) + fadeOut(
-                        animationSpec = tween(durationMillis = 250)
-                            )
-                }
-            }
-        },
-        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
+    val topAppBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
+        .copy(alpha = if (viewModel.isSearching) 1f else viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
+        .compositeOver(background = MaterialTheme.colorScheme.background)
+
+    Column(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        if (it) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp)
-                    .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
-            ) {
-                // TODO
-                IconButton(
-                    onClick = {
-                        viewModel.isSearching = !viewModel.isSearching
-                    },
-                    modifier = Modifier
-                        .padding(
-                            start = 16.dp,
-                            end = 24.dp
+        AnimatedContent(
+            targetState = viewModel.isSearching,
+            transitionSpec = {
+                density.run {
+                    if (viewModel.isSearching) {
+                        slideInHorizontally(
+                            animationSpec = tween(durationMillis = 250),
+                            initialOffsetX = {
+                                it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
+                            }
+                        ) + fadeIn(
+                            animationSpec = tween(durationMillis = 250)
+                        ) with
+                                slideOutHorizontally(
+                                    animationSpec = tween(durationMillis = 250),
+                                    targetOffsetX = {
+                                        -it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
+                                    }
+                                ) + fadeOut(
+                            animationSpec = tween(durationMillis = 250)
                         )
-                        .align(Alignment.CenterStart)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Search,
-                        contentDescription = stringResource(id = R.string.main_top_bar_search)
-                    )
+                    } else {
+                        slideInHorizontally(
+                            animationSpec = tween(durationMillis = 250),
+                            initialOffsetX = {
+                                -it + Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
+                            }
+                        ) + fadeIn(
+                            animationSpec = tween(durationMillis = 250)
+                        ) with
+                                slideOutHorizontally(
+                                    animationSpec = tween(durationMillis = 250),
+                                    targetOffsetX = {
+                                        it - Icons.Rounded.Search.defaultWidth.toPx().toInt() * 2
+                                    }
+                                ) + fadeOut(
+                            animationSpec = tween(durationMillis = 250)
+                        )
+                    }
                 }
-                BasicTextField(
-                    value = "TEST DATA",
-                    onValueChange = {},
-                    textStyle = MaterialTheme.typography.titleLarge.copy(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                    singleLine = true,
-                    cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+            },
+            modifier = Modifier.background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
+        ) {
+            if (it) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 48.dp + 24.dp)
-                        .align(Alignment.Center)
-                )
-                IconButton(
-                    onClick = { /* TODO */ },
-                    modifier = Modifier
-                        .padding(
-                            start = 24.dp,
-                            end = 16.dp
-                        )
-                        .align(Alignment.CenterEnd)
+                        .height(64.dp)
+                        .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
                 ) {
-                    Icon(
-                        imageVector = Icons.Rounded.ChevronRight,
-                        contentDescription = stringResource(id = R.string.main_top_bar_search_go)
-                    )
-                }
-            }
-        } else {
-            MediumTopAppBar(
-                title = { Text(text = stringResource(id = R.string.app_name)) },
-                actions = {
+                    // TODO
                     IconButton(
                         onClick = {
-                            scope.launch {
-                                viewModel.isDropDownMenuShowing = false
-                                viewModel.state.topAppBarScrollBehavior.state.collapse()
-                                viewModel.isSearching = !viewModel.isSearching
-                            }
-                        }
+                            viewModel.isSearching = !viewModel.isSearching
+                        },
+                        modifier = Modifier
+                            .padding(
+                                start = 16.dp,
+                                end = 24.dp
+                            )
+                            .align(Alignment.CenterStart)
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Search,
                             contentDescription = stringResource(id = R.string.main_top_bar_search)
                         )
                     }
+                    BasicTextField(
+                        value = "TEST DATA",
+                        onValueChange = {},
+                        textStyle = MaterialTheme.typography.titleLarge.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        ),
+                        singleLine = true,
+                        cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurfaceVariant),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 48.dp + 24.dp)
+                            .align(Alignment.Center)
+                    )
                     IconButton(
-                        onClick = {
-                            viewModel.isDropDownMenuShowing = !viewModel.isDropDownMenuShowing
-                        }
+                        onClick = { /* TODO */ },
+                        modifier = Modifier
+                            .padding(
+                                start = 24.dp,
+                                end = 16.dp
+                            )
+                            .align(Alignment.CenterEnd)
                     ) {
                         Icon(
-                            imageVector = Icons.Rounded.MoreVert,
-                            contentDescription = stringResource(id = R.string.main_top_bar_more)
+                            imageVector = Icons.Rounded.ChevronRight,
+                            contentDescription = stringResource(id = R.string.main_top_bar_search_go)
                         )
                     }
-                    DropdownMenu(
-                        expanded = viewModel.isDropDownMenuShowing,
-                        onDismissRequest = { viewModel.isDropDownMenuShowing = false },
-                        modifier = Modifier.background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 7.dp))
-                    ) {
-                        DropdownMenuItem(
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Rounded.Settings,
-                                    contentDescription = null
+                }
+            } else {
+                MediumTopAppBar(
+                    title = { Text(text = stringResource(id = R.string.app_name)) },
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    viewModel.isDropDownMenuShowing = false
+                                    viewModel.state.topAppBarScrollBehavior.state.collapse()
+                                    viewModel.isSearching = !viewModel.isSearching
+                                }
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Search,
+                                contentDescription = stringResource(id = R.string.main_top_bar_search)
+                            )
+                        }
+                        IconButton(
+                            onClick = {
+                                viewModel.isDropDownMenuShowing = !viewModel.isDropDownMenuShowing
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.MoreVert,
+                                contentDescription = stringResource(id = R.string.main_top_bar_more)
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = viewModel.isDropDownMenuShowing,
+                            onDismissRequest = { viewModel.isDropDownMenuShowing = false },
+                            modifier = Modifier.background(
+                                MaterialTheme.colorScheme.surfaceColorAtElevation(
+                                    elevation = 7.dp
                                 )
-                            },
-                            text = { Text(text = "설정") },
-                            onClick = { /*TODO*/ }
-                        )
-                    }
-                },
-                scrollBehavior = viewModel.state.topAppBarScrollBehavior
+                            )
+                        ) {
+                            DropdownMenuItem(
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Settings,
+                                        contentDescription = null
+                                    )
+                                },
+                                text = { Text(text = "설정") },
+                                onClick = { /*TODO*/ }
+                            )
+                        }
+                    },
+                    scrollBehavior = viewModel.state.topAppBarScrollBehavior
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(topAppBarColor)
+                .padding(
+                    top = 4.dp,
+                    bottom = 8.dp
+                )
+                .horizontalScroll(state = rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 16.dp,
+                alignment = Alignment.Start
+            ),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier)
+            IconData.libraryList.forEachIndexed { index, library ->
+                FilterChip(
+                    selected = viewModel.libraryIndex == index,
+                    onClick = { viewModel.libraryIndex = index },
+                    label = { Text(text = library) }
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .width(1.5f.dp)
+                    .height(48.dp)
+                    .padding(vertical = 2.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        shape = CircleShape
+                    )
             )
+            IconType.values().forEach { type ->
+                FilterChip(
+                    selected = viewModel.iconType == type,
+                    onClick = { viewModel.iconType = type },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = type.example,
+                            contentDescription = "Example"
+                        )
+                    },
+                    label = { Text(text = type.name) }
+                )
+            }
+            Spacer(modifier = Modifier)
         }
     }
 }
