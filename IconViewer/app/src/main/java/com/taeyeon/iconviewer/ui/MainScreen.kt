@@ -124,32 +124,13 @@ fun MainScreen(
         )
     }
 
-    val systemUiController = rememberSystemUiController()
     val scope = rememberCoroutineScope()
     val hapticFeedback = LocalHapticFeedback.current
-
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-    val topAppBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
-            .copy(alpha = viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
-            .compositeOver(background = MaterialTheme.colorScheme.background)
-    val navigationBarColor = MaterialTheme.colorScheme.surface
 
     var scrollAreaHeight by remember { mutableStateOf(0) }
     var scrollControllerAreaHeight by remember { mutableStateOf(0) }
     var scrollControllerShowTime by remember { mutableStateOf(0L) }
 
-    LaunchedEffect(isSystemInDarkTheme, topAppBarColor) {
-        systemUiController.setStatusBarColor(
-            color = topAppBarColor,
-            darkIcons = !isSystemInDarkTheme
-        )
-    }
-    LaunchedEffect(isSystemInDarkTheme, navigationBarColor) {
-        systemUiController.setNavigationBarColor(
-            color = navigationBarColor,
-            darkIcons = !isSystemInDarkTheme
-        )
-    }
     LaunchedEffect(scrollControllerShowTime) {
         if (scrollControllerShowTime != 0L) {
             viewModel.isScrollControllerShowing = true
@@ -346,12 +327,28 @@ fun MainScreen(
 fun TopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
+    val systemUiController = rememberSystemUiController()
     val scope = rememberCoroutineScope()
     val density = LocalDensity.current
 
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val navigationBarColor = MaterialTheme.colorScheme.surface
     val topAppBarColor = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp)
         .copy(alpha = if (viewModel.isSearching) 1f else viewModel.state.topAppBarScrollBehavior.state.collapsedFraction.pow(2))
         .compositeOver(background = MaterialTheme.colorScheme.background)
+
+    LaunchedEffect(isSystemInDarkTheme, topAppBarColor) {
+        systemUiController.setStatusBarColor(
+            color = topAppBarColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
+    LaunchedEffect(isSystemInDarkTheme, navigationBarColor) {
+        systemUiController.setNavigationBarColor(
+            color = navigationBarColor,
+            darkIcons = !isSystemInDarkTheme
+        )
+    }
 
     Column(
         modifier = Modifier.fillMaxWidth()
