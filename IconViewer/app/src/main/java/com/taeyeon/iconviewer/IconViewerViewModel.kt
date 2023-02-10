@@ -1,8 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.taeyeon.iconviewer
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,4 +13,5 @@ class IconViewerViewModel(
     var isDropDownMenuShowing by mutableStateOf(false)
     var libraryIndex by mutableStateOf(0)
     var iconType by mutableStateOf(IconType.Filled)
+    var isScrollControllerShowing by mutableStateOf(false)
 }
