@@ -43,6 +43,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalDensity
@@ -276,3 +277,19 @@ fun TopBar(
         }
     }
 }
+
+@Composable
+fun BasicTopBar(
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
+) {}
+
+@Composable
+fun SearchTopBar(
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
+) {}
+
+@Composable
+fun ChipRow(
+    viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState()),
+    backgroundColor: Color
+) {}
