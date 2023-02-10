@@ -80,6 +80,7 @@ private val darkColorScheme = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
+
 @Composable
 fun IconViewerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
