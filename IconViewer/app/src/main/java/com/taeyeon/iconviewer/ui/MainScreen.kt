@@ -1,5 +1,6 @@
 @file:OptIn(
-    ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class
 )
 
 package com.taeyeon.iconviewer.ui
@@ -98,8 +99,8 @@ fun MainScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            val itemWidth = 36.dp
-            val itemMinSpace = 8.dp
+            val itemWidth = 48.dp
+            val itemMinSpace = 4.dp
             var itemColumns by remember { mutableStateOf(1) }
             var itemSpace by remember { mutableStateOf(8.dp) }
 
@@ -127,20 +128,15 @@ fun MainScreen(
                                 horizontalArrangement = Arrangement.spacedBy(
                                     space = itemSpace,
                                     alignment = Alignment.Start
-                                )
+                                ),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = core[rowIndex * itemColumns + columnIndex]
-                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                    LaunchedEffect(viewModel.iconType) {
-                                        imageVector = viewModel.iconType.get(iconData)
-                                    }
-
-                                    Icon(
-                                        imageVector = imageVector,
-                                        contentDescription = iconData.name,
-                                        modifier = Modifier.size(itemWidth)
+                                    IconWidget(
+                                        iconData = core[rowIndex * itemColumns + columnIndex],
+                                        iconType = viewModel.iconType,
+                                        width = itemWidth,
+                                        onClick = { /* TODO */ }
                                     )
                                 }
                             }
@@ -168,17 +164,11 @@ fun MainScreen(
                                 )
                             ) {
                                 for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    val iconData = extended[rowIndex * itemColumns + columnIndex]
-                                    var imageVector by remember { mutableStateOf(viewModel.iconType.get(iconData)) }
-
-                                    LaunchedEffect(viewModel.iconType) {
-                                        imageVector = viewModel.iconType.get(iconData)
-                                    }
-
-                                    Icon(
-                                        imageVector = imageVector,
-                                        contentDescription = iconData.name,
-                                        modifier = Modifier.size(itemWidth)
+                                    IconWidget(
+                                        iconData = extended[rowIndex * itemColumns + columnIndex],
+                                        iconType = viewModel.iconType,
+                                        width = itemWidth,
+                                        onClick = { /* TODO */ }
                                     )
                                 }
                             }
