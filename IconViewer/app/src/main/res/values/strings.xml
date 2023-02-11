@@ -8,4 +8,9 @@
 
     <string name="main_fab_go_up">Go Up</string>
     <string name="main_fab_go_down">Go Down</string>
+
+    <string name="main_core"
+        translatable="false">Core</string>
+    <string name="main_extended"
+        translatable="false">Extended</string>
 </resources>
