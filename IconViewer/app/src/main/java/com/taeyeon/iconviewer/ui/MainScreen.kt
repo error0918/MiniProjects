@@ -1,13 +1,12 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class, ExperimentalFoundationApi::class
+    ExperimentalAnimationApi::class
 )
 
 package com.taeyeon.iconviewer.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -17,9 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Add
@@ -59,36 +57,15 @@ import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.rememberIconViewerState
 import com.taeyeon.iconviewer.util.collapse
+import com.taeyeon.iconviewer.util.divideList
 import com.taeyeon.iconviewer.util.open
 import kotlinx.coroutines.launch
-import kotlin.math.ceil
 import kotlin.math.floor
 
 @Composable
 fun MainScreen(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
-    val core = List(50) {
-        IconData(
-            name = "AccountBox",
-            filled = Icons.Filled.AccountBox,
-            outlined = Icons.Outlined.AccountBox,
-            rounded = Icons.Rounded.AccountBox,
-            sharp = Icons.Sharp.AccountBox,
-            twoTone = Icons.TwoTone.AccountBox
-        )
-    }
-    val extended = List(300) {
-        IconData(
-            name = "Add",
-            filled = Icons.Filled.Add,
-            outlined = Icons.Outlined.Add,
-            rounded = Icons.Rounded.Add,
-            sharp = Icons.Sharp.Add,
-            twoTone = Icons.TwoTone.Add
-        )
-    }
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -113,81 +90,33 @@ fun MainScreen(
             }
 
             if (itemColumns > 0) {
-                val coreSubListSize = ceil(core.size.toFloat() / itemColumns).toInt()
-                val extendedSubListSize = ceil(extended.size.toFloat() / itemColumns).toInt()
-                val coreSubList = List(coreSubListSize) { index ->
-                    if (index == coreSubListSize - 1) core.subList(itemColumns * index, core.size - 1)
-                    else core.subList(itemColumns * index, itemColumns * (index + 1))
-                }
-                val extendedSubList = List(extendedSubListSize) { index ->
-                    if (index == extendedSubListSize - 1) extended.subList(itemColumns * index, extended.size - 1)
-                    else extended.subList(itemColumns * index, itemColumns * (index + 1))
-                }
+                val core = List(50) {
+                    IconData(
+                        name = "AccountBox",
+                        filled = Icons.Filled.AccountBox,
+                        outlined = Icons.Outlined.AccountBox,
+                        rounded = Icons.Rounded.AccountBox,
+                        sharp = Icons.Sharp.AccountBox,
+                        twoTone = Icons.TwoTone.AccountBox
+                    )
+                }.divideList(itemColumns)
+                val extended = List(300) {
+                    IconData(
+                        name = "Add",
+                        filled = Icons.Filled.Add,
+                        outlined = Icons.Outlined.Add,
+                        rounded = Icons.Rounded.Add,
+                        sharp = Icons.Sharp.Add,
+                        twoTone = Icons.TwoTone.Add
+                    )
+                }.divideList(itemColumns)
 
-                val data = listOf(
-                    stringResource(id = R.string.main_core) to coreSubList,
-                    stringResource(id = R.string.main_extended) to extendedSubList
-                )
-
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(itemSpace)
-                ) {
-                    if (viewModel.libraryIndex == 0) {
-                        data.forEach { library ->
-                            stickyHeader {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .background(MaterialTheme.colorScheme.surface)
-                                ) {
-                                    Text(
-                                        text = library.first,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(8.dp)
-                                    )
-                                    Divider(modifier = Modifier.fillMaxWidth())
-                                }
-                            }
-
-                            items(library.second) { iconDataList ->
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    ),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    iconDataList.forEach { iconData ->
-                                        IconWidget(
-                                            iconData = iconData,
-                                            iconType = viewModel.iconType,
-                                            width = itemWidth,
-                                            onClick = { /* TODO */ }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            // Old
-            /*
-            if (itemColumns > 0) {
                 Column(
                     modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
                 ) {
 
                     AnimatedVisibility(
-                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
+                        visible = viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1
                     ) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -205,20 +134,15 @@ fun MainScreen(
                                     .padding(horizontal = 4.dp)
                             )
 
-                            for (rowIndex in 0..core.size / itemColumns) {
+                            core.forEach { iconDataList ->
                                 Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    ),
+                                    modifier = Modifier.padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    iconDataList.forEach { iconData ->
                                         IconWidget(
-                                            iconData = core[rowIndex * itemColumns + columnIndex],
+                                            iconData = iconData,
                                             iconType = viewModel.iconType,
                                             width = itemWidth,
                                             onClick = { /* TODO */ }
@@ -238,7 +162,7 @@ fun MainScreen(
                     }
 
                     AnimatedVisibility(
-                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
+                        visible = viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2
                     ) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -256,19 +180,15 @@ fun MainScreen(
                                     .padding(horizontal = 4.dp)
                             )
 
-                            for (rowIndex in 0..extended.size / itemColumns) {
+                            extended.forEach { iconDataList ->
                                 Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(
-                                        space = itemSpace,
-                                        alignment = Alignment.Start
-                                    )
+                                    modifier = Modifier.padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                    iconDataList.forEach { iconData ->
                                         IconWidget(
-                                            iconData = extended[rowIndex * itemColumns + columnIndex],
+                                            iconData = iconData,
                                             iconType = viewModel.iconType,
                                             width = itemWidth,
                                             onClick = { /* TODO */ }
@@ -281,7 +201,6 @@ fun MainScreen(
 
                 }
             }
-             */
 
             ScrollController(viewModel = viewModel)
         }
