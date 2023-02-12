@@ -1,16 +1,16 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class
+    ExperimentalAnimationApi::class, ExperimentalFoundationApi::class
 )
 
 package com.taeyeon.iconviewer.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,8 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Add
@@ -61,6 +61,7 @@ import com.taeyeon.iconviewer.rememberIconViewerState
 import com.taeyeon.iconviewer.util.collapse
 import com.taeyeon.iconviewer.util.open
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 import kotlin.math.floor
 
 @Composable
@@ -111,12 +112,72 @@ fun MainScreen(
                 itemSpace = (maxWidth - itemWidth * itemColumns) / (itemColumns + 1)
             }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                //state =,
-                //verticalArrangement =,
-                //flingBehavior =,
-            ) {}
+            if (itemColumns > 0) {
+                val coreSubListSize = ceil(core.size.toFloat() / itemColumns).toInt()
+                val extendedSubListSize = ceil(extended.size.toFloat() / itemColumns).toInt()
+                val coreSubList = List(coreSubListSize) { index ->
+                    if (index == coreSubListSize - 1) core.subList(itemColumns * index, core.size - 1)
+                    else core.subList(itemColumns * index, itemColumns * (index + 1))
+                }
+                val extendedSubList = List(extendedSubListSize) { index ->
+                    if (index == extendedSubListSize - 1) extended.subList(itemColumns * index, extended.size - 1)
+                    else extended.subList(itemColumns * index, itemColumns * (index + 1))
+                }
+
+                val data = listOf(
+                    stringResource(id = R.string.main_core) to coreSubList,
+                    stringResource(id = R.string.main_extended) to extendedSubList
+                )
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(itemSpace)
+                ) {
+                    if (viewModel.libraryIndex == 0) {
+                        data.forEach { library ->
+                            stickyHeader {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(MaterialTheme.colorScheme.surface)
+                                ) {
+                                    Text(
+                                        text = library.first,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(8.dp)
+                                    )
+                                    Divider(modifier = Modifier.fillMaxWidth())
+                                }
+                            }
+
+                            items(library.second) { iconDataList ->
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemSpace,
+                                        alignment = Alignment.Start
+                                    ),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    iconDataList.forEach { iconData ->
+                                        IconWidget(
+                                            iconData = iconData,
+                                            iconType = viewModel.iconType,
+                                            width = itemWidth,
+                                            onClick = { /* TODO */ }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
 
             // Old
             /*
