@@ -101,111 +101,113 @@ fun MainScreen(
         ) {
             val itemWidth = 48.dp
             val itemMinSpace = 4.dp
-            var itemColumns by remember { mutableStateOf(1) }
+            var itemColumns by remember { mutableStateOf(-1) }
             var itemSpace by remember { mutableStateOf(8.dp) }
 
-            LaunchedEffect(maxWidth, true) {
+            LaunchedEffect(maxWidth) {
                 itemColumns = floor((maxWidth - itemMinSpace) / (itemWidth + itemMinSpace)).toInt()
                 itemSpace = (maxWidth - itemWidth * itemColumns) / (itemColumns + 1)
             }
 
-            Column(
-                modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
-            ) {
-
-                AnimatedVisibility(
-                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
+            if (itemColumns > 0) {
+                Column(
+                    modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(itemSpace)
+
+                    AnimatedVisibility(
+                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1)
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.main_core),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(8.dp)
-                        )
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(itemSpace)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.main_core),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(8.dp)
+                            )
 
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
-                        )
-
-                        for (rowIndex in 0..core.size / itemColumns) {
-                            Row(
+                            Divider(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = itemSpace),
-                                horizontalArrangement = Arrangement.spacedBy(
-                                    space = itemSpace,
-                                    alignment = Alignment.Start
-                                ),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    IconWidget(
-                                        iconData = core[rowIndex * itemColumns + columnIndex],
-                                        iconType = viewModel.iconType,
-                                        width = itemWidth,
-                                        onClick = { /* TODO */ }
-                                    )
+                                    .padding(horizontal = 4.dp)
+                            )
+
+                            for (rowIndex in 0..core.size / itemColumns) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemSpace,
+                                        alignment = Alignment.Start
+                                    ),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    for (columnIndex in 0 until (core.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                        IconWidget(
+                                            iconData = core[rowIndex * itemColumns + columnIndex],
+                                            iconType = viewModel.iconType,
+                                            width = itemWidth,
+                                            onClick = { /* TODO */ }
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
-                if (viewModel.libraryIndex == 0) {
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
-                    )
-                }
-
-                AnimatedVisibility(
-                    visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(itemSpace)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.main_extended),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(8.dp)
-                        )
-
+                    if (viewModel.libraryIndex == 0) {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 4.dp)
+                                .padding(vertical = 8.dp)
                         )
+                    }
 
-                        for (rowIndex in 0..extended.size / itemColumns) {
-                            Row(
+                    AnimatedVisibility(
+                        visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(itemSpace)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.main_extended),
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.padding(8.dp)
+                            )
+
+                            Divider(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(horizontal = itemSpace),
-                                horizontalArrangement = Arrangement.spacedBy(
-                                    space = itemSpace,
-                                    alignment = Alignment.Start
-                                )
-                            ) {
-                                for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
-                                    IconWidget(
-                                        iconData = extended[rowIndex * itemColumns + columnIndex],
-                                        iconType = viewModel.iconType,
-                                        width = itemWidth,
-                                        onClick = { /* TODO */ }
+                                    .padding(horizontal = 4.dp)
+                            )
+
+                            for (rowIndex in 0..extended.size / itemColumns) {
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = itemSpace),
+                                    horizontalArrangement = Arrangement.spacedBy(
+                                        space = itemSpace,
+                                        alignment = Alignment.Start
                                     )
+                                ) {
+                                    for (columnIndex in 0 until (extended.size - rowIndex * itemColumns).let { if (it <= itemColumns) it else itemColumns }) {
+                                        IconWidget(
+                                            iconData = extended[rowIndex * itemColumns + columnIndex],
+                                            iconType = viewModel.iconType,
+                                            width = itemWidth,
+                                            onClick = { /* TODO */ }
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                }
 
+                }
             }
 
             ScrollController(viewModel = viewModel)
