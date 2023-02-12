@@ -42,6 +42,8 @@ fun MainScreen(
     var itemColumns by remember { mutableStateOf(-1) }
     var itemSpace by remember { mutableStateOf(8.dp) }
 
+    LoadingPopup(visible = itemColumns < 0)
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
