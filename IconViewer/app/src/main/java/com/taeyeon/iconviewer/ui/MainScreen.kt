@@ -136,7 +136,6 @@ fun MainScreen(
 
                 }
             }
-
             ScrollController(viewModel = viewModel)
         }
     }

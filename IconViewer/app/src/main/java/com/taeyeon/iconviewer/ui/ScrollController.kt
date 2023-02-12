@@ -101,7 +101,7 @@ fun BoxScope.ScrollController(
                             onDrag = { change, dragAmount ->
                                 change.consume()
                                 scope.launch {
-                                    val offset = ceil(viewModel.state.lazyListState.firstVisibleItemScrollOffset + dragAmount.y * 18).toInt()
+                                    val offset = ceil(viewModel.state.lazyListState.firstVisibleItemScrollOffset + dragAmount.y * 20).toInt()
                                     viewModel.state.lazyListState.scrollToItem(
                                         index = viewModel.state.lazyListState.firstVisibleItemIndex + if (offset > viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size) 1 else 0,
                                         scrollOffset = offset - if (offset > viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size) viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size else 0
