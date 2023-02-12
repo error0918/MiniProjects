@@ -19,7 +19,7 @@ data class IconData(
     companion object {
         val libraryList = listOf("All", "Core", "Extended")
 
-        val core = listOf(
+        val core: List<IconData> = listOf(
             IconData(
                 name = "AccountBox",
                 filled = Icons.Filled.AccountBox,
@@ -414,7 +414,7 @@ data class IconData(
             )
         )
 
-        val extended = listOf(
+        val extended: List<IconData> = listOf(
             IconData(
                 name = "AcUnit",
                 filled = Icons.Filled.AcUnit,

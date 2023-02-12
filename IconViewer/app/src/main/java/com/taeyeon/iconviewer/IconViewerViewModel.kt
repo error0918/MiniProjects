@@ -11,7 +11,8 @@ class IconViewerViewModel(
 ) : ViewModel() {
     var isSearching by mutableStateOf(false)
     var isDropDownMenuShowing by mutableStateOf(false)
+    var isScrollControllerShowing by mutableStateOf(false)
+
     var libraryIndex by mutableStateOf(0)
     var iconType by mutableStateOf(IconType.Filled)
-    var isScrollControllerShowing by mutableStateOf(false)
 }
