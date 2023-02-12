@@ -38,8 +38,8 @@ import com.taeyeon.iconviewer.IconViewerViewModel
 import com.taeyeon.iconviewer.rememberIconViewerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.ceil
 
-// TODO...
 @Composable
 fun BoxScope.ScrollController(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
@@ -85,7 +85,13 @@ fun BoxScope.ScrollController(
                 modifier = Modifier
                     .width(16.dp)
                     .height(42.dp)
-                    .offset(y = LocalDensity.current.run { ((scrollAreaHeight - scrollControllerAreaHeight) * viewModel.state.lazyListState.firstVisibleItemIndex / viewModel.state.lazyListState.layoutInfo.totalItemsCount).toDp() })
+                    .offset(
+                        y = LocalDensity.current.run {
+                            ((scrollAreaHeight - scrollControllerAreaHeight)
+                                    * viewModel.state.lazyListState.firstVisibleItemIndex / (viewModel.state.lazyListState.layoutInfo.totalItemsCount - 1))
+                                .toDp()
+                        }
+                    )
                     .onSizeChanged { scrollControllerAreaHeight = it.height }
                     .pointerInput(Unit) {
                         detectDragGestures(
@@ -95,11 +101,12 @@ fun BoxScope.ScrollController(
                             onDrag = { change, dragAmount ->
                                 change.consume()
                                 scope.launch {
-                                    viewModel.state.lazyListState.animateScrollToItem(
-                                        index = viewModel.state.lazyListState.firstVisibleItemIndex + (viewModel.state.lazyListState.layoutInfo.totalItemsCount * dragAmount.y / scrollAreaHeight).toInt()
+                                    val offset = ceil(viewModel.state.lazyListState.firstVisibleItemScrollOffset + dragAmount.y * 18).toInt()
+                                    viewModel.state.lazyListState.scrollToItem(
+                                        index = viewModel.state.lazyListState.firstVisibleItemIndex + if (offset > viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size) 1 else 0,
+                                        scrollOffset = offset - if (offset > viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size) viewModel.state.lazyListState.layoutInfo.visibleItemsInfo[0].size else 0
                                     )
-                                    scrollControllerShowTime =
-                                        System.currentTimeMillis()
+                                    scrollControllerShowTime = System.currentTimeMillis()
                                 }
                             }
                         )
