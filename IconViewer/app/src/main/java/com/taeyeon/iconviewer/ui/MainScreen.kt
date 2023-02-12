@@ -42,8 +42,6 @@ fun MainScreen(
     var itemColumns by remember { mutableStateOf(-1) }
     var itemSpace by remember { mutableStateOf(8.dp) }
 
-    LoadingPopup(visible = itemColumns < 0)
-
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -64,8 +62,18 @@ fun MainScreen(
             }
 
             if (itemColumns > 0) {
-                val core = remember { IconData.core.divideList(itemColumns) }
-                val extended = remember { IconData.extended.divideList(itemColumns) }
+                var core by remember { mutableStateOf(IconData.core.divideList(itemColumns)) }
+                var extended by remember { mutableStateOf(IconData.extended.divideList(itemColumns)) }
+
+                LaunchedEffect(viewModel.isSearching, viewModel.searchKeyword) {
+                    if (viewModel.isSearching) {
+                        core = IconData.core.filter { it.name.lowercase().indexOf(viewModel.searchKeyword.lowercase().replace(" ", "")) > -1 }.divideList(itemColumns)
+                        extended = IconData.extended.filter { it.name.lowercase().indexOf(viewModel.searchKeyword.lowercase().replace(" ", "")) > -1 }.divideList(itemColumns)
+                    } else {
+                        core = IconData.core.divideList(itemColumns)
+                        extended = IconData.extended.divideList(itemColumns)
+                    }
+                }
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -73,7 +81,7 @@ fun MainScreen(
                     verticalArrangement = Arrangement.spacedBy(itemSpace)
                 ) {
 
-                    if (viewModel.libraryIndex == 0) {
+                    if (viewModel.libraryIndex == 0 && core.isNotEmpty()) {
                         item {
                             Column {
                                 Text(
@@ -104,7 +112,7 @@ fun MainScreen(
                         }
                     }
 
-                    if (viewModel.libraryIndex == 0) {
+                    if (viewModel.libraryIndex == 0 && extended.isNotEmpty()) {
                         item {
                             Column {
                                 Divider(Modifier.fillMaxWidth())

@@ -207,8 +207,8 @@ fun SearchTopBar(
             )
         }
         BasicTextField(
-            value = "TEST DATA",
-            onValueChange = {},
+            value = viewModel.searchKeyword,
+            onValueChange = { viewModel.searchKeyword = it },
             textStyle = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             ),

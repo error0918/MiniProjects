@@ -15,4 +15,5 @@ class IconViewerViewModel(
 
     var libraryIndex by mutableStateOf(0)
     var iconType by mutableStateOf(IconType.Filled)
+    var searchKeyword by mutableStateOf("")
 }
