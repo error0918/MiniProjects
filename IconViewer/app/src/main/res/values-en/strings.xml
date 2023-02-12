@@ -9,4 +9,11 @@
 
     <string name="main_fab_go_up">Go Up</string>
     <string name="main_fab_go_down">Go Down</string>
+
+    <string name="icon_data_dialog_title">Icon Info: %1$s</string>
+    <string name="icon_data_dialog_library">Library</string>
+    <string name="icon_data_dialog_class">Class</string>
+    <string name="icon_data_dialog_address">Address</string>
+    <string name="icon_data_dialog_copy_message">Copied %1$s</string>
+    <string name="icon_data_dialog_dismiss">Dismiss</string>
 </resources>

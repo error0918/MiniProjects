@@ -44,10 +44,10 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        viewModel.state.topAppBarScrollBehavior.state.open()
-                        viewModel.state.lazyListState.animateScrollToItem(
+                        viewModel.state.lazyListState.scrollToItem(
                             index = 0
                         )
+                        viewModel.state.topAppBarScrollBehavior.state.open()
                     }
                 },
                 modifier = Modifier.size(48.dp),
@@ -61,10 +61,10 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        viewModel.state.topAppBarScrollBehavior.state.collapse()
-                        viewModel.state.lazyListState.animateScrollToItem(
+                        viewModel.state.lazyListState.scrollToItem(
                             index = viewModel.state.lazyListState.layoutInfo.totalItemsCount
                         )
+                        viewModel.state.topAppBarScrollBehavior.state.collapse()
                     }
                 },
                 modifier = Modifier.size(48.dp),

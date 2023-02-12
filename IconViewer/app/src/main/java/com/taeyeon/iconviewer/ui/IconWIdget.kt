@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.data.IconType
 
@@ -58,9 +59,10 @@ fun IconWidget(
             )
             Text(
                 text = iconData.name,
+                fontSize = 10.sp,
+                lineHeight = 12.sp,
                 textAlign = TextAlign.Center,
-                color = LocalContentColor.current.copy(alpha = 0.6f),
-                style = MaterialTheme.typography.labelSmall
+                color = LocalContentColor.current.copy(alpha = 0.6f)
             )
         }
     }

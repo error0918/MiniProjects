@@ -9,4 +9,11 @@
 
     <string name="main_fab_go_up">맨 위로</string>
     <string name="main_fab_go_down">맨 아래로</string>
+
+    <string name="icon_data_dialog_title">아이콘 정보: %1$s</string>
+    <string name="icon_data_dialog_library">라이브러리</string>
+    <string name="icon_data_dialog_class">클래스</string>
+    <string name="icon_data_dialog_address">주소</string>
+    <string name="icon_data_dialog_copy_message">%1$s(이)가 복사되었습니다.</string>
+    <string name="icon_data_dialog_dismiss">닫기</string>
 </resources>

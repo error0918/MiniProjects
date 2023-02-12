@@ -13,4 +13,11 @@
         translatable="false">Core</string>
     <string name="main_extended"
         translatable="false">Extended</string>
+
+    <string name="icon_data_dialog_title">Icon Info: %1$s</string>
+    <string name="icon_data_dialog_library">Library</string>
+    <string name="icon_data_dialog_class">Class</string>
+    <string name="icon_data_dialog_address">Address</string>
+    <string name="icon_data_dialog_copy_message">Copied %1$s</string>
+    <string name="icon_data_dialog_dismiss">Dismiss</string>
 </resources>

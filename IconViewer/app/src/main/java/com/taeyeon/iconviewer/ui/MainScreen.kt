@@ -38,7 +38,7 @@ import com.taeyeon.iconviewer.util.divideList
 fun MainScreen(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
-    val itemWidth = 48.dp
+    val itemWidth = 54.dp
     var itemColumns by remember { mutableStateOf(-1) }
     var itemSpace by remember { mutableStateOf(8.dp) }
 

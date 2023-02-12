@@ -1,6 +1,14 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.taeyeon.iconviewer.ui
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +16,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.taeyeon.iconviewer.IconViewerViewModel
+import com.taeyeon.iconviewer.R
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.data.IconType
 import com.taeyeon.iconviewer.rememberIconViewerState
@@ -70,27 +81,40 @@ fun IconDataDialog(
                 IconType.TwoTone -> IconType.Filled
             }
         }
-
         AlertDialog(
             onDismissRequest = { viewModel.focusedIconData = null },
-            title = { Text(text = "아이콘 정보: " + viewModel.focusedIconData?.name) },
+            title = { Text(text = stringResource(id = R.string.icon_data_dialog_title, viewModel.focusedIconData?.name!!)) },
             text = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Icon(
-                        imageVector = if (viewModel.focusedIconData != null) iconType.get(viewModel.focusedIconData!!) else Icons.Default.Image,
-                        contentDescription = viewModel.focusedIconData?.name,
+                    AnimatedContent(
+                        targetState = iconType,
                         modifier = Modifier
                             .size(150.dp)
                             .background(
-                                color = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 9.dp),
-                                shape = RoundedCornerShape(12.dp)
+                                color = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 12.dp),
+                                shape = RoundedCornerShape(15.dp)
                             )
-                            .padding(12.dp)
-                    )
+                            .padding(12.dp),
+                        transitionSpec = {
+                            slideInHorizontally(
+                                initialOffsetX =  { it },
+                                animationSpec = tween(200)
+                            ) with slideOutHorizontally(
+                                targetOffsetX = { -it },
+                                animationSpec = tween(200)
+                            )
+                        }
+                    ) {
+                        Icon(
+                            imageVector = if (viewModel.focusedIconData != null) iconType.get(viewModel.focusedIconData!!) else Icons.Default.Image,
+                            contentDescription = viewModel.focusedIconData?.name,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -116,13 +140,13 @@ fun IconDataDialog(
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     listOf(
-                        "라이브러리" to when (library) {
+                        stringResource(id = R.string.icon_data_dialog_library) to when (library) {
                             "Core" -> "material-icons-core"
                             "Extended" -> "material-icons-extended"
                             else -> "undefined"
                         },
-                        "클래스" to "Icons.${iconType.name}.${viewModel.focusedIconData?.name}",
-                        "주소" to "androidx.compose.material.icons.${iconType.name.lowercase()}.${viewModel.focusedIconData?.name}"
+                        stringResource(id = R.string.icon_data_dialog_class) to "Icons.${iconType.name}.${viewModel.focusedIconData?.name}",
+                        stringResource(id = R.string.icon_data_dialog_address) to "androidx.compose.material.icons.${iconType.name.lowercase()}.${viewModel.focusedIconData?.name}"
                     ).forEach { text ->
                         Box(
                             modifier = Modifier
@@ -131,11 +155,12 @@ fun IconDataDialog(
                                 .pointerInput(Unit) {
                                     detectTapGestures(
                                         onLongPress = {
+
                                             clipboardManager.setText(AnnotatedString(text.second))
                                             Toast
                                                 .makeText(
                                                     context,
-                                                    "${text.second}(이)가 복사되었습니다.",
+                                                    context.getString(R.string.icon_data_dialog_copy_message, text.second),
                                                     Toast.LENGTH_SHORT
                                                 )
                                                 .show()
@@ -165,7 +190,7 @@ fun IconDataDialog(
                 TextButton(
                     onClick = { viewModel.focusedIconData = null }
                 ) {
-                    Text(text = "닫기")
+                    Text(text = stringResource(id = R.string.icon_data_dialog_dismiss))
                 }
             },
             properties = DialogProperties(
