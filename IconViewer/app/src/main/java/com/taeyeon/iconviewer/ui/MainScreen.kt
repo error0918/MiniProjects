@@ -105,7 +105,7 @@ fun MainScreen(
                                         iconData = iconData,
                                         iconType = viewModel.iconType,
                                         width = itemWidth,
-                                        onClick = { /* TODO */ }
+                                        onClick = { viewModel.focusedIconData = iconData }
                                     )
                                 }
                             }
@@ -137,7 +137,7 @@ fun MainScreen(
                                         iconData = iconData,
                                         iconType = viewModel.iconType,
                                         width = itemWidth,
-                                        onClick = { /* TODO */ }
+                                        onClick = { viewModel.focusedIconData = iconData }
                                     )
                                 }
                             }

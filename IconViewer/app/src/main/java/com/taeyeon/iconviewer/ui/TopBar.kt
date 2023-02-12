@@ -38,13 +38,22 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.taeyeon.iconviewer.IconViewerViewModel
@@ -183,13 +192,16 @@ fun BasicTopBar(
 fun SearchTopBar(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
+    var isFocused by rememberSaveable { mutableStateOf(false) }
+    val focusRequester by remember { mutableStateOf(FocusRequester()) }
+    val focusManager = LocalFocusManager.current
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(64.dp)
             .background(MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 3.dp))
     ) {
-        // TODO
         IconButton(
             onClick = {
                 viewModel.isSearching = !viewModel.isSearching
@@ -218,9 +230,14 @@ fun SearchTopBar(
                 .fillMaxWidth()
                 .padding(horizontal = 48.dp + 24.dp)
                 .align(Alignment.Center)
+                .focusRequester(focusRequester = focusRequester)
+                .onFocusChanged { isFocused = it.isFocused }
         )
         IconButton(
-            onClick = { /* TODO */ },
+            onClick = {
+                focusManager.clearFocus()
+            },
+            enabled = viewModel.searchKeyword.isNotBlank() && isFocused,
             modifier = Modifier
                 .padding(
                     start = 24.dp,
