@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -128,7 +126,11 @@ fun MainScreen(
                             modifier = Modifier.padding(8.dp)
                         )
 
-                        Divider()
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp)
+                        )
 
                         for (rowIndex in 0..core.size / itemColumns) {
                             Row(
@@ -154,7 +156,13 @@ fun MainScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(itemSpace))
+                if (viewModel.libraryIndex == 0) {
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                    )
+                }
 
                 AnimatedVisibility(
                     visible = itemColumns > 1 && (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2)
@@ -163,6 +171,18 @@ fun MainScreen(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(itemSpace)
                     ) {
+                        Text(
+                            text = stringResource(id = R.string.main_extended),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(8.dp)
+                        )
+
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 4.dp)
+                        )
+
                         for (rowIndex in 0..extended.size / itemColumns) {
                             Row(
                                 modifier = Modifier
