@@ -37,15 +37,14 @@
 <ul dir="auto">
     <h3>
         <li>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber">
-                Wow Phone Number (2023/01/19~)
+            <a href="https://github.com/error0918/MiniProjects/tree/main/IconViewer">
+                아이콘 뷰어 (2023/02/02~)
             </a>
         </li>
     </h3>
     <ul dir="auto">
         <li>
-            당신을 킹받게 할 수 있는 <strong>전화번호 입력 UI</strong> <br/>
-            ⌈Wow Phone Number⌋는 여러 버전의 UI를 가진 모의 전화번호 입력 애플리케이션입니다. 
+            ⌈아이콘 뷰어⌋는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
         </li>
         <h6>
             <li>
@@ -55,14 +54,15 @@
     </ul>
     <h3>
         <li>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/IconViewer">
-                아이콘 뷰어 (2023/02/02~)
+            <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber">
+                Wow Phone Number (2023/01/19~)
             </a>
         </li>
     </h3>
     <ul dir="auto">
         <li>
-            ⌈아이콘 뷰어⌋는 Jetpack Compose의 material-icons-core와 material-icons-extended의 Icon들을 보기 쉽게 정리한 애플리케이션입니다.
+            당신을 킹받게 할 수 있는 <strong>전화번호 입력 UI</strong> <br/>
+            ⌈Wow Phone Number⌋는 여러 버전의 UI를 가진 모의 전화번호 입력 애플리케이션입니다. 
         </li>
         <h6>
             <li>
