@@ -8,10 +8,10 @@ import kotlinx.coroutines.delay
 
 suspend fun TopAppBarState.open(
     step: Long = 5,
-    time: Long = 50
+    time: Long = 30
 ) {
     val append = - heightOffset / step
-    repeat(10) {
+    repeat(step.toInt()) {
         heightOffset += append
         delay(time / step)
     }
@@ -19,10 +19,10 @@ suspend fun TopAppBarState.open(
 
 suspend fun TopAppBarState.collapse(
     step: Long = 5,
-    time: Long = 50
+    time: Long = 30
 ) {
     val append = (heightOffsetLimit - heightOffset) / step
-    repeat(10) {
+    repeat(step.toInt()) {
         heightOffset += append
         delay(time / step)
     }

@@ -7,6 +7,7 @@ package com.taeyeon.iconviewer.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -212,26 +214,24 @@ fun Fab(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
 ) {
     val scope = rememberCoroutineScope()
-    val scope2 = rememberCoroutineScope()
-
     Surface(
-        shape = CircleShape,
-        color = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
+        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         tonalElevation = 6.dp,
         shadowElevation = 6.dp
     ) {
-
         Column(
             modifier = Modifier.width(48.dp)
         ) {
             IconButton(
                 onClick = {
                     scope.launch {
-                        viewModel.state.bodyScrollState.animateScrollTo(0)
-                    }
-                    scope2.launch {
                         viewModel.state.topAppBarScrollBehavior.state.open()
+                        viewModel.state.bodyScrollState.animateScrollTo(
+                            value = 0,
+                            animationSpec = tween(1000)
+                        )
                     }
                 },
                 modifier = Modifier.size(48.dp),
@@ -245,10 +245,11 @@ fun Fab(
             IconButton(
                 onClick = {
                     scope.launch {
-                        viewModel.state.bodyScrollState.animateScrollTo(viewModel.state.bodyScrollState.maxValue)
-                    }
-                    scope2.launch {
                         viewModel.state.topAppBarScrollBehavior.state.collapse()
+                        viewModel.state.bodyScrollState.animateScrollTo(
+                            value = viewModel.state.bodyScrollState.maxValue,
+                            animationSpec = tween(1000)
+                        )
                     }
                 },
                 modifier = Modifier.size(48.dp),
