@@ -2,7 +2,6 @@
 
 package com.taeyeon.iconviewer.ui
 
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -46,14 +45,13 @@ fun Fab(
                 onClick = {
                     scope.launch {
                         viewModel.state.topAppBarScrollBehavior.state.open()
-                        viewModel.state.bodyScrollState.animateScrollTo(
-                            value = 0,
-                            animationSpec = tween(1000)
+                        viewModel.state.lazyListState.animateScrollToItem(
+                            index = 0
                         )
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = viewModel.state.bodyScrollState.value != 0 || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 0f
+                enabled = viewModel.state.lazyListState.canScrollBackward || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 0f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowUp,
@@ -64,14 +62,13 @@ fun Fab(
                 onClick = {
                     scope.launch {
                         viewModel.state.topAppBarScrollBehavior.state.collapse()
-                        viewModel.state.bodyScrollState.animateScrollTo(
-                            value = viewModel.state.bodyScrollState.maxValue,
-                            animationSpec = tween(1000)
+                        viewModel.state.lazyListState.animateScrollToItem(
+                            index = viewModel.state.lazyListState.layoutInfo.totalItemsCount
                         )
                     }
                 },
                 modifier = Modifier.size(48.dp),
-                enabled = viewModel.state.bodyScrollState.value != viewModel.state.bodyScrollState.maxValue || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 1f
+                enabled = viewModel.state.lazyListState.canScrollForward || viewModel.state.topAppBarScrollBehavior.state.collapsedFraction != 1f
             ) {
                 Icon(
                     imageVector = Icons.Rounded.KeyboardArrowDown,

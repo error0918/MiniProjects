@@ -1,12 +1,7 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalAnimationApi::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package com.taeyeon.iconviewer.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -14,7 +9,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
@@ -66,92 +62,73 @@ fun MainScreen(
             }
 
             if (itemColumns > 0) {
-                val core = IconData.core.divideList(itemColumns)
-                val extended = IconData.extended.divideList(itemColumns)
+                val core = remember { IconData.core.divideList(itemColumns) }
+                val extended = remember { IconData.extended.divideList(itemColumns) }
 
-                Column(
-                    modifier = Modifier.verticalScroll(state = viewModel.state.bodyScrollState)
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    state = viewModel.state.lazyListState,
+                    verticalArrangement = Arrangement.spacedBy(itemSpace)
                 ) {
 
-                    AnimatedVisibility(
-                        visible = viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(itemSpace)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.main_core),
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(8.dp)
-                            )
-
-                            Divider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 4.dp)
-                            )
-
-                            core.forEach { iconDataList ->
-                                Row(
-                                    modifier = Modifier.padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    iconDataList.forEach { iconData ->
-                                        IconWidget(
-                                            iconData = iconData,
-                                            iconType = viewModel.iconType,
-                                            width = itemWidth,
-                                            onClick = { /* TODO */ }
-                                        )
-                                    }
+                    if (viewModel.libraryIndex == 0) {
+                        item {
+                            Column {
+                                Text(
+                                    text = stringResource(id = R.string.main_core),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.padding(8.dp)
+                                )
+                                Divider(Modifier.fillMaxWidth())
+                            }
+                        }
+                    }
+                    if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 1) {
+                        items(core) { iconDataList ->
+                            Row(
+                                modifier = Modifier.padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                iconDataList.forEach { iconData ->
+                                    IconWidget(
+                                        iconData = iconData,
+                                        iconType = viewModel.iconType,
+                                        width = itemWidth,
+                                        onClick = { /* TODO */ }
+                                    )
                                 }
                             }
                         }
                     }
 
                     if (viewModel.libraryIndex == 0) {
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp)
-                        )
+                        item {
+                            Column {
+                                Divider(Modifier.fillMaxWidth())
+                                Text(
+                                    text = stringResource(id = R.string.main_extended),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    modifier = Modifier.padding(8.dp)
+                                )
+                                Divider(Modifier.fillMaxWidth())
+                            }
+                        }
                     }
-
-                    AnimatedVisibility(
-                        visible = viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(itemSpace)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.main_extended),
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.padding(8.dp)
-                            )
-
-                            Divider(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 4.dp)
-                            )
-
-                            extended.forEach { iconDataList ->
-                                Row(
-                                    modifier = Modifier.padding(horizontal = itemSpace),
-                                    horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    iconDataList.forEach { iconData ->
-                                        IconWidget(
-                                            iconData = iconData,
-                                            iconType = viewModel.iconType,
-                                            width = itemWidth,
-                                            onClick = { /* TODO */ }
-                                        )
-                                    }
+                    if (viewModel.libraryIndex == 0 || viewModel.libraryIndex == 2) {
+                        items(extended) { iconDataList ->
+                            Row(
+                                modifier = Modifier.padding(horizontal = itemSpace),
+                                horizontalArrangement = Arrangement.spacedBy(space = itemSpace),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                iconDataList.forEach { iconData ->
+                                    IconWidget(
+                                        iconData = iconData,
+                                        iconType = viewModel.iconType,
+                                        width = itemWidth,
+                                        onClick = { /* TODO */ }
+                                    )
                                 }
                             }
                         }

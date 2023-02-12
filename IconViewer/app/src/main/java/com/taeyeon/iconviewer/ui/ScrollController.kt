@@ -39,6 +39,7 @@ import com.taeyeon.iconviewer.rememberIconViewerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// TODO...
 @Composable
 fun BoxScope.ScrollController(
     viewModel: IconViewerViewModel = IconViewerViewModel(state = rememberIconViewerState())
@@ -58,8 +59,8 @@ fun BoxScope.ScrollController(
             if (scrollControllerShowTime + 1500 < System.currentTimeMillis()) viewModel.isScrollControllerShowing = false
         }
     }
-    LaunchedEffect(viewModel.state.bodyScrollState.isScrollInProgress) {
-        if (viewModel.state.bodyScrollState.isScrollInProgress) scrollControllerShowTime = System.currentTimeMillis()
+    LaunchedEffect(viewModel.state.lazyListState.isScrollInProgress) {
+        if (viewModel.state.lazyListState.isScrollInProgress) scrollControllerShowTime = System.currentTimeMillis()
     }
 
     AnimatedVisibility(
@@ -84,7 +85,7 @@ fun BoxScope.ScrollController(
                 modifier = Modifier
                     .width(16.dp)
                     .height(42.dp)
-                    .offset(y = LocalDensity.current.run { ((scrollAreaHeight - scrollControllerAreaHeight) * viewModel.state.bodyScrollState.value / viewModel.state.bodyScrollState.maxValue).toDp() })
+                    .offset(y = LocalDensity.current.run { ((scrollAreaHeight - scrollControllerAreaHeight) * viewModel.state.lazyListState.firstVisibleItemIndex / viewModel.state.lazyListState.layoutInfo.totalItemsCount).toDp() })
                     .onSizeChanged { scrollControllerAreaHeight = it.height }
                     .pointerInput(Unit) {
                         detectDragGestures(
@@ -94,7 +95,9 @@ fun BoxScope.ScrollController(
                             onDrag = { change, dragAmount ->
                                 change.consume()
                                 scope.launch {
-                                    viewModel.state.bodyScrollState.scrollTo(viewModel.state.bodyScrollState.value + (viewModel.state.bodyScrollState.maxValue * dragAmount.y / scrollAreaHeight).toInt())
+                                    viewModel.state.lazyListState.animateScrollToItem(
+                                        index = viewModel.state.lazyListState.firstVisibleItemIndex + (viewModel.state.lazyListState.layoutInfo.totalItemsCount * dragAmount.y / scrollAreaHeight).toInt()
+                                    )
                                     scrollControllerShowTime =
                                         System.currentTimeMillis()
                                 }

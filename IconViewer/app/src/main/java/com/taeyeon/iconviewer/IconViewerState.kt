@@ -2,8 +2,8 @@
 
 package com.taeyeon.iconviewer
 
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 @Composable
 fun rememberIconViewerState() = IconViewerState(
     topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
-    bodyScrollState = rememberScrollState()
+    lazyListState = rememberLazyListState()
 )
 
 data class IconViewerState(
     val topAppBarScrollBehavior: TopAppBarScrollBehavior,
-    val bodyScrollState: ScrollState
+    val lazyListState: LazyListState
 )
