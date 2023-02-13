@@ -16,4 +16,6 @@
     <string name="icon_data_dialog_address">주소</string>
     <string name="icon_data_dialog_copy_message">%1$s(이)가 복사되었습니다.</string>
     <string name="icon_data_dialog_dismiss">닫기</string>
+
+    <string name="info_dialog_dismiss">닫기</string>
 </resources>

@@ -20,4 +20,6 @@
     <string name="icon_data_dialog_address">Address</string>
     <string name="icon_data_dialog_copy_message">Copied %1$s</string>
     <string name="icon_data_dialog_dismiss">Dismiss</string>
+
+    <string name="info_dialog_dismiss">Dismiss</string>
 </resources>
