@@ -24,9 +24,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -174,12 +174,12 @@ fun BasicTopBar(
                 DropdownMenuItem(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Rounded.Settings,
-                            contentDescription = stringResource(id = R.string.main_top_bar_search)
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = stringResource(id = R.string.main_top_bar_more_info)
                         )
                     },
-                    text = { Text(text = stringResource(id = R.string.main_top_bar_more_settings)) },
-                    onClick = { /*TODO*/ }
+                    text = { Text(text = stringResource(id = R.string.main_top_bar_more_info)) },
+                    onClick = { viewModel.isInfoShowing = !viewModel.isInfoShowing }
                 )
             }
         },

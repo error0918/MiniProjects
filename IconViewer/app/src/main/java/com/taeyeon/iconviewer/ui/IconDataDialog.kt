@@ -83,7 +83,7 @@ fun IconDataDialog(
         }
         AlertDialog(
             onDismissRequest = { viewModel.focusedIconData = null },
-            title = { Text(text = stringResource(id = R.string.icon_data_dialog_title, viewModel.focusedIconData?.name!!)) },
+            title = { Text(text = stringResource(id = R.string.icon_data_dialog_title, viewModel.focusedIconData?.name ?: "")) },
             text = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),

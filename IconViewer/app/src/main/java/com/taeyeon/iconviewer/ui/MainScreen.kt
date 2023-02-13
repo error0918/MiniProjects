@@ -43,6 +43,7 @@ fun MainScreen(
     var itemSpace by remember { mutableStateOf(8.dp) }
 
     IconDataDialog(viewModel = viewModel)
+    InfoDialog(viewModel = viewModel)
 
     Scaffold(
         modifier = Modifier
@@ -89,7 +90,10 @@ fun MainScreen(
                                 Text(
                                     text = stringResource(id = R.string.main_core),
                                     style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(8.dp)
+                                    modifier = Modifier.padding(
+                                        vertical = 8.dp,
+                                        horizontal = 16.dp
+                                    )
                                 )
                                 Divider(Modifier.fillMaxWidth())
                             }
@@ -121,7 +125,10 @@ fun MainScreen(
                                 Text(
                                     text = stringResource(id = R.string.main_extended),
                                     style = MaterialTheme.typography.titleMedium,
-                                    modifier = Modifier.padding(8.dp)
+                                    modifier = Modifier.padding(
+                                        vertical = 8.dp,
+                                        horizontal = 16.dp
+                                    )
                                 )
                                 Divider(Modifier.fillMaxWidth())
                             }
