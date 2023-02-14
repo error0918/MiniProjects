@@ -77,6 +77,9 @@
     <li>
         ⌈아이콘 뷰어⌋는 Jetpack Compose를 이용하여 제작되었습니다.
     </li>
+    <li>
+        현재 라이브러리 버전은 1.3.1입니다.
+    </li>
 </ul>
 
 <div align=center>

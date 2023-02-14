@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.taeyeon.iconviewer.data.IconData
 import com.taeyeon.iconviewer.data.IconType
+import com.taeyeon.iconviewer.data.License
 
 class IconViewerViewModel(
     val state: IconViewerState
@@ -19,6 +20,7 @@ class IconViewerViewModel(
     var libraryIndex by mutableStateOf(0)
     var iconType by mutableStateOf(IconType.Filled)
     var searchKeyword by mutableStateOf("")
+    var detailedLicense by mutableStateOf<License?>(null)
 
     var focusedIconData by mutableStateOf<IconData?>(null)
 }

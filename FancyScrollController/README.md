@@ -38,6 +38,19 @@
 ---
 
 <h2>
+    📱️ 사용 화면
+</h2>
+
+<div align="center">
+    <a href="https://youtube.com/shorts/izG3MdxxcF0?feature=share">
+        사용 영상
+        <br/>
+    </a>
+</div>
+
+---
+
+<h2>
     ✔️ 다운로드
 </h2>
 
@@ -48,19 +61,6 @@
         </a>
         2023/02/019
     </h6>
-</div>
-
----
-
-<h2>
-    📱️ 사용 화면
-</h2>
-
-<div align="center">
-    <a href="https://youtube.com/shorts/izG3MdxxcF0?feature=share">
-        사용 영상
-        <br/>
-    </a>
 </div>
 
 <div align=center>

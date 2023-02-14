@@ -30,6 +30,7 @@
     <string name="info_dialog_dismiss">Dismiss</string>
 
     <string name="license_dialog_title">Open Source License</string>
-
     <string name="license_dialog_dismiss">Dismiss</string>
+
+    <string name="detailed_license_dialog_dismiss">Dismiss</string>
 </resources>
