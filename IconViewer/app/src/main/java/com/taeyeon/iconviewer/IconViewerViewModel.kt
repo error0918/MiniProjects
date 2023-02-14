@@ -13,6 +13,7 @@ class IconViewerViewModel(
     var isSearching by mutableStateOf(false)
     var isDropDownMenuShowing by mutableStateOf(false)
     var isInfoShowing by mutableStateOf(false)
+    var isLicenseShowing by mutableStateOf(false)
     var isScrollControllerShowing by mutableStateOf(false)
 
     var libraryIndex by mutableStateOf(0)

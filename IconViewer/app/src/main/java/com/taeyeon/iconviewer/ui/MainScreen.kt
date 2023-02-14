@@ -44,6 +44,7 @@ fun MainScreen(
 
     IconDataDialog(viewModel = viewModel)
     InfoDialog(viewModel = viewModel)
+    LicenseDialog(viewModel = viewModel)
 
     Scaffold(
         modifier = Modifier

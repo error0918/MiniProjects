@@ -17,5 +17,11 @@
     <string name="icon_data_dialog_copy_message">%1$s(이)가 복사되었습니다.</string>
     <string name="icon_data_dialog_dismiss">닫기</string>
 
+    <string name="info_dialog_app_info">앱 정보</string>
+    <string name="info_dialog_app_explanation">Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended에 포함되어있는 아이콘들을 보여주는 애플리케이션입니다.\n현재 라이브러리의 버전은 1.3.1입니다.</string>
+    <string name="info_dialog_action_system_settings">시스템 설정</string>
+    <string name="info_dialog_action_source">소스 코드</string>
+    <string name="info_dialog_action_email">이메일</string>
+    <string name="info_dialog_action_license">오픈소스 라이선스</string>
     <string name="info_dialog_dismiss">닫기</string>
 </resources>

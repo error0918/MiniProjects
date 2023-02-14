@@ -2,6 +2,9 @@
 
 package com.taeyeon.iconviewer.ui
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -64,7 +68,7 @@ fun InfoDialog(
                         .onSizeChanged { height = it.height }
                 ) {
                     Text(
-                        text = "앱 정보",
+                        text = stringResource(id = R.string.info_dialog_app_info),
                         maxLines = 1,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -95,10 +99,7 @@ fun InfoDialog(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = """
-                            Icon Viewer는 Jetpack Compose의 material-icons-core와 material-icons-extended에 포함되어있는 아이콘들을 보여주는 애플리케이션입니다.
-                            현재 라이브러리의 버전은 1.3.1입니다.
-                        """.trimIndent()
+                        text = stringResource(id = R.string.info_dialog_app_explanation)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Surface(
@@ -113,23 +114,51 @@ fun InfoDialog(
                             verticalArrangement = Arrangement.spacedBy(space = 4.dp)
                         ) {
                             val hapticFeedback = LocalHapticFeedback.current
+                            val context = LocalContext.current
                             listOf(
                                 Triple(
                                     Icons.Rounded.Settings,
-                                    "시스템 설정"
-                                ) { },
+                                    stringResource(id = R.string.info_dialog_action_system_settings)
+                                ) {
+                                    context.startActivity(
+                                        Intent(
+                                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                            Uri.parse("package:${context.packageName}")
+                                        ).apply {
+                                            addCategory(Intent.CATEGORY_DEFAULT)
+                                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                        }
+                                    )
+                                },
                                 Triple(
                                     Icons.Rounded.Source,
-                                    "소스 코드"
-                                ) { },
+                                    stringResource(id = R.string.info_dialog_action_source)
+                                ) {
+                                    context.startActivity(
+                                        Intent(
+                                            Intent.ACTION_VIEW,
+                                            Uri.parse("https://github.com/error0918/MiniProjects/tree/main/IconViewer")
+                                        )
+                                    )
+                                },
                                 Triple(
                                     Icons.Rounded.Email,
-                                    "이메일"
-                                ) { },
+                                    stringResource(id = R.string.info_dialog_action_email)
+                                ) {
+                                    context.startActivity(
+                                        Intent(Intent.ACTION_SEND).apply {
+                                            type = "plain/text"
+                                            putExtra(Intent.EXTRA_EMAIL, arrayOf("developer.taeyeon@gmail.com"))
+                                            putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name))
+                                        }
+                                    )
+                                },
                                 Triple(
                                     Icons.Rounded.Info,
-                                    "오픈소스 라이선스"
-                                ) { }
+                                    stringResource(id = R.string.info_dialog_action_license)
+                                ) {
+                                    viewModel.isLicenseShowing = true
+                                }
                             ).forEach { action ->
                                 Surface(
                                     modifier = Modifier.fillMaxWidth(),
