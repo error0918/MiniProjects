@@ -104,7 +104,7 @@ fun InfoDialog(
                     Spacer(modifier = Modifier.height(8.dp))
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 12.dp),
+                        color = MaterialTheme.colorScheme.surfaceColorAtElevation(elevation = 15.dp),
                         shape = RoundedCornerShape(size = 8.dp)
                     ) {
                         Column(

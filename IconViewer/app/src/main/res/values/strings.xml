@@ -28,4 +28,8 @@
     <string name="info_dialog_action_email">Email</string>
     <string name="info_dialog_action_license">Open Source License</string>
     <string name="info_dialog_dismiss">Dismiss</string>
+
+    <string name="license_dialog_title">Open Source License</string>
+
+    <string name="license_dialog_dismiss">Dismiss</string>
 </resources>

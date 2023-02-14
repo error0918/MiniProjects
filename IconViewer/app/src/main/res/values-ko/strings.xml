@@ -24,4 +24,8 @@
     <string name="info_dialog_action_email">이메일</string>
     <string name="info_dialog_action_license">오픈소스 라이선스</string>
     <string name="info_dialog_dismiss">닫기</string>
+
+    <string name="license_dialog_title">오픈소스 라이선스</string>
+
+    <string name="license_dialog_dismiss">닫기</string>
 </resources>
