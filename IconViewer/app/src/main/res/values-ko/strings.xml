@@ -28,5 +28,8 @@
     <string name="license_dialog_title">오픈소스 라이선스</string>
     <string name="license_dialog_dismiss">닫기</string>
 
+    <string name="detailed_license_dialog_can_not_load_message">라이선스 정보를 불러올 수 없습니다 :(</string>
+    <string name="detailed_license_dialog_not_provide_message">라이선스 전문이 제공되지 않습니다.\n아래 버튼을 통해 전문을 보시기 바랍니다.</string>
+    <string name="detailed_license_dialog_view_full">원본 보기</string>
     <string name="detailed_license_dialog_dismiss">닫기</string>
 </resources>

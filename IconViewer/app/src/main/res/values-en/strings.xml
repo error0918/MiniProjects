@@ -28,5 +28,8 @@
     <string name="license_dialog_title">Open Source License</string>
     <string name="license_dialog_dismiss">Dismiss</string>
 
+    <string name="detailed_license_dialog_can_not_load_message"> Unable to retrieve license information:(</string>
+    <string name="detailed_license_dialog_not_provide_message">License full text is not available.\nPlease see the full text through the button below.</string>
+    <string name="detailed_license_dialog_view_full">View Full</string>
     <string name="detailed_license_dialog_dismiss">Dismiss</string>
 </resources>

@@ -25,7 +25,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
@@ -60,7 +59,7 @@ fun DetailedLicenseDialog(
                     ) {
                         if (license.license == null && license.link == null) {
                             Text(
-                                text = "라이선스 정보를 불러올 수 없습니다 :(",
+                                text = stringResource(id = R.string.detailed_license_dialog_can_not_load_message),
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.fillMaxWidth()
@@ -68,7 +67,7 @@ fun DetailedLicenseDialog(
                         } else {
                             if (license.license == null) {
                                 Text(
-                                    text = "라이선스 전문이 제공되지 않습니다.\n아래 버튼을 통해 전문을 보시기 바랍니다.",
+                                    text = stringResource(id = R.string.detailed_license_dialog_not_provide_message),
                                     textAlign = TextAlign.Center,
                                     style = MaterialTheme.typography.labelSmall,
                                     modifier = Modifier.fillMaxWidth()
@@ -99,7 +98,7 @@ fun DetailedLicenseDialog(
                                     },
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text(text = "원본 보기")
+                                    Text(text = stringResource(id = R.string.detailed_license_dialog_view_full))
                                 }
                             }
                         }
