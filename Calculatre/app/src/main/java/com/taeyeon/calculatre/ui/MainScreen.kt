@@ -68,21 +68,9 @@ fun MainScreen(
                 )
             ),
             listOf(
-                DialButtonDefaults.dialButtonData(
-                    text = "4",
-                    size = size,
-                    onClick = { viewModel.addToCalc("4") }
-                ),
-                DialButtonDefaults.dialButtonData(
-                    text = "5",
-                    size = size,
-                    onClick = { viewModel.addToCalc("5") }
-                ),
-                DialButtonDefaults.dialButtonData(
-                    text = "6",
-                    size = size,
-                    onClick = { viewModel.addToCalc("6") }
-                ),
+                numberKey("4"),
+                numberKey("5"),
+                numberKey("6"),
                 DialButtonDefaults.dialButtonData(
                     text = "-",
                     size = size,
@@ -91,21 +79,9 @@ fun MainScreen(
                 )
             ),
             listOf(
-                DialButtonDefaults.dialButtonData(
-                    text = "1",
-                    size = size,
-                    onClick = { viewModel.addToCalc("1") }
-                ),
-                DialButtonDefaults.dialButtonData(
-                    text = "2",
-                    size = size,
-                    onClick = { viewModel.addToCalc("2") }
-                ),
-                DialButtonDefaults.dialButtonData(
-                    text = "3",
-                    size = size,
-                    onClick = { viewModel.addToCalc("3") }
-                ),
+                numberKey("1"),
+                numberKey("2"),
+                numberKey("3"),
                 DialButtonDefaults.dialButtonData(
                     text = "*",
                     size = size,
@@ -115,22 +91,13 @@ fun MainScreen(
             ),
             listOf(
                 DialButtonDefaults.dialButtonData(
-                    text = "0",
-                    size = size,
-                    onClick = { viewModel.addToCalc("0") }
-                ),
-                DialButtonDefaults.dialButtonData(
                     text = "1",
                     size = size,
                     colors = functionKeyColors,
                     onClick = { viewModel.addToCalc("1") }
                 ),
-                DialButtonDefaults.dialButtonData(
-                    text = "1",
-                    size = size,
-                    colors = functionKeyColors,
-                    onClick = { viewModel.addToCalc("1") }
-                ),
+                numberKey("00"),
+                numberKey("0"),
                 DialButtonDefaults.dialButtonData(
                     text = "=",
                     size = size,
