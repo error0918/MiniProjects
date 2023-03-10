@@ -9,9 +9,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import com.taeyeon.calculatre.data.DialButtonColors
 import com.taeyeon.calculatre.data.DialButtonData
 import com.taeyeon.calculatre.data.DialButtonDefaults
@@ -62,7 +64,8 @@ fun DialButton(
         )
     ) {
         Text(
-            text = text
+            text = text,
+            fontSize = LocalDensity.current.run { min(size.width, size.height).toSp() / 3 }
         )
     }
 }

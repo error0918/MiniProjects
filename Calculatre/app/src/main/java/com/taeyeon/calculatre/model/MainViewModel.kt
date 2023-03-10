@@ -10,4 +10,9 @@ class MainViewModel(
     val context: Context
 ): ViewModel() {
     var calc by mutableStateOf("")
+        private set
+
+    fun addToCalc(string: String) {
+        calc += string
+    }
 }

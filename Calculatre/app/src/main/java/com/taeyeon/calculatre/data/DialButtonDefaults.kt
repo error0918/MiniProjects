@@ -2,6 +2,7 @@ package com.taeyeon.calculatre.data
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -52,7 +53,7 @@ object DialButtonDefaults {
         text: String,
         enabled: Boolean = true,
         size: DpSize = DpSize.Zero,
-        shape: Shape = CircleShape,
+        shape: Shape = RoundedCornerShape(percent = 30),
         colors: DialButtonColors = dialButtonColors(),
         borderWidth: Dp = 2.dp,
         onClick: () -> Unit
