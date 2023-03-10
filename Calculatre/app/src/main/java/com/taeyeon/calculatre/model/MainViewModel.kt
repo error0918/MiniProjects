@@ -1,4 +1,13 @@
 package com.taeyeon.calculatre.model
 
-class MainViewModel {
+import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+
+class MainViewModel(
+    val context: Context
+): ViewModel() {
+    var calc by mutableStateOf("")
 }

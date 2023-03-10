@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.taeyeon.calculatre.data.DialButtonColors
 import com.taeyeon.calculatre.data.DialButtonData
+import com.taeyeon.calculatre.data.DialButtonDefaults
 
 
 @Composable
@@ -37,7 +38,7 @@ fun DialButton(
     enabled: Boolean = true,
     size: DpSize = DpSize.Zero,
     shape: Shape = CircleShape,
-    colors: DialButtonColors = DialButtonColors(),
+    colors: DialButtonColors = DialButtonDefaults.dialButtonColors(),
     borderWidth: Dp = 2.dp,
     onClick: () -> Unit
 ) {

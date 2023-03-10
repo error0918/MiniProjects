@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.taeyeon.calculatre.model.MainViewModel
 import com.taeyeon.calculatre.theme.CalculatreTheme
 import com.taeyeon.calculatre.ui.MainScreen
 
@@ -18,7 +20,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
-                    content = { MainScreen() }
+                    content = { MainScreen(viewModel = MainViewModel(LocalContext.current)) }
                 )
             }
         }
