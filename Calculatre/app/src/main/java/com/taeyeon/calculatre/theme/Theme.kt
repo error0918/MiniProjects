@@ -1,4 +1,4 @@
-package com.taeyeon.calculatre.ui.theme
+package com.taeyeon.calculatre.theme
 
 import android.app.Activity
 import android.os.Build

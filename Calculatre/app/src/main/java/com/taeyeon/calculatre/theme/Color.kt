@@ -1,4 +1,4 @@
-package com.taeyeon.calculatre.ui.theme
+package com.taeyeon.calculatre.theme
 
 import androidx.compose.ui.graphics.Color
 
