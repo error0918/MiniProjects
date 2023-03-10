@@ -1,6 +1,8 @@
 package com.taeyeon.calculatre.data
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -30,16 +32,15 @@ data class DialButtonData(
 object DialButtonDefaults {
     @Composable
     fun dialButtonColors(
-        contentColor: Color = Color.Black,
-        containerColor: Color = Color.LightGray,
-        borderColor: Color = Color.DarkGray,
-        disabledContentColor: Color = Color.Black,
-        disabledContainerColor: Color = Color.LightGray,
-        disabledBorderColor: Color = Color.DarkGray
+        contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+        containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
+        borderColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+        disabledContentColor: Color = Color.Gray,
+        disabledContainerColor: Color = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
+        disabledBorderColor: Color = if (isSystemInDarkTheme()) Color.LightGray else Color.DarkGray
     ) = DialButtonColors(
         contentColor = contentColor,
-        containerColor = containerColor
-        ,
+        containerColor = containerColor,
         borderColor = borderColor,
         disabledContentColor = disabledContentColor,
         disabledContainerColor = disabledContainerColor,
