@@ -33,18 +33,12 @@ fun MainScreen(
         val functionKeyColors = DialButtonDefaults.dialButtonColors(
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            disabledContentColor = Color.Gray,
-            disabledContainerColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
-            disabledBorderColor = if (isSystemInDarkTheme()) Color.LightGray else Color.DarkGray
+            borderColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
         val calculationKeyColors = DialButtonDefaults.dialButtonColors(
             contentColor = MaterialTheme.colorScheme.onPrimary,
             containerColor = MaterialTheme.colorScheme.primary,
-            borderColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContentColor = Color.Gray,
-            disabledContainerColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
-            disabledBorderColor = if (isSystemInDarkTheme()) Color.LightGray else Color.DarkGray
+            borderColor = MaterialTheme.colorScheme.onPrimary
         )
 
         val numberKey = @Composable { number: String ->
@@ -56,6 +50,17 @@ fun MainScreen(
         }
 
         val dialList = listOf(
+            listOf(
+                numberKey("7"),
+                numberKey("8"),
+                numberKey("9"),
+                DialButtonDefaults.dialButtonData(
+                    text = "+",
+                    size = size,
+                    colors = functionKeyColors,
+                    onClick = { viewModel.addToCalc("+") }
+                )
+            ),
             listOf(
                 numberKey("7"),
                 numberKey("8"),
@@ -91,13 +96,18 @@ fun MainScreen(
             ),
             listOf(
                 DialButtonDefaults.dialButtonData(
-                    text = "1",
+                    text = "+/-",
                     size = size,
                     colors = functionKeyColors,
                     onClick = { viewModel.addToCalc("1") }
                 ),
-                numberKey("00"),
                 numberKey("0"),
+                DialButtonDefaults.dialButtonData(
+                    text = ".",
+                    size = size,
+                    colors = functionKeyColors,
+                    onClick = { viewModel.addToCalc("1") }
+                ),
                 DialButtonDefaults.dialButtonData(
                     text = "=",
                     size = size,
