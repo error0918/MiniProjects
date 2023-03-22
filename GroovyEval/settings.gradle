@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Groovy Eval"
-include(":app")
+include ':app'
