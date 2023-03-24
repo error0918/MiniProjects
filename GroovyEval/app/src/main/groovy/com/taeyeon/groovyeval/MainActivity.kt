@@ -9,7 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.taeyeon.groovyeval.ui.theme.GroovyEvalTheme
+import com.taeyeon.groovyeval.theme.GroovyEvalTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Content()
                 }
             }
         }
@@ -28,9 +28,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Content() {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = "Hello ${0}"
     )
 }

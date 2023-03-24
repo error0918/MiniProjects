@@ -1,4 +1,4 @@
-package com.taeyeon.groovyeval.ui.theme
+package com.taeyeon.groovyeval.theme
 
 import android.app.Activity
 import android.os.Build

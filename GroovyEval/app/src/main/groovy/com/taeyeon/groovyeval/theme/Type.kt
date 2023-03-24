@@ -1,4 +1,4 @@
-package com.taeyeon.groovyeval.ui.theme
+package com.taeyeon.groovyeval.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
