@@ -9,18 +9,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.taeyeon.groovyeval.theme.GroovyEvalTheme
+import androidx.compose.ui.tooling.preview.Preview
+import com.taeyeon.groovyeval.ui.theme.GroovyEvalTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GroovyEvalTheme {
+                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Content()
+                    Greeting("Android")
                 }
             }
         }
@@ -28,8 +30,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content() {
+fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello ${0}"
+        text = "Hello $name!",
+        modifier = modifier
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    GroovyEvalTheme {
+        Greeting("Android")
+    }
 }
