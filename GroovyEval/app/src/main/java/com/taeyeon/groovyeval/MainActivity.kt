@@ -11,13 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.taeyeon.groovyeval.ui.theme.GroovyEvalTheme
+import groovy.lang.Binding
+import groovy.lang.GroovyShell
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GroovyEvalTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -32,15 +33,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello ${a()}!",
         modifier = modifier
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    GroovyEvalTheme {
-        Greeting("Android")
-    }
+fun a(): Any {
+    val script = """
+        def a = 10
+        def b = 20
+        println("a + b = ${'$'}{a + b}")
+    """
+    val binding = Binding()
+    val shell = GroovyShell(binding)
+    return shell.evaluate(script)
 }
