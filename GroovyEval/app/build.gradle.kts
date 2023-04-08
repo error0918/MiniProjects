@@ -5,14 +5,15 @@ plugins {
 
 android {
     namespace = "com.taeyeon.groovyeval"
-    compileSdk = 33
+    compileSdkPreview = "UpsideDownCake"
 
     defaultConfig {
         applicationId = "com.taeyeon.groovyeval"
-        minSdk = 26
+        minSdk = 29
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -30,8 +31,12 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    dexOptions {
+        jumboMode = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -45,20 +50,27 @@ android {
     packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/groovy-release-info.properties"
+            excludes += "META-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule"
         }
-        excludes += "META-INF/INDEX.LIST"
-        excludes += "META-INF/LICENSE.md"
-        excludes += "META-INF/LICENSE-notice.md"
-        excludes += "META-INF/groovy-release-info.properties"
-        excludes += "META-INF/groovy/org.codehaus.groovy.runtime.ExtensionModule"
     }
 }
 
 dependencies {
-    implementation("org.codehaus.groovy:groovy-all:3.0.17")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
-    implementation("androidx.core:core:1.9.0")
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("org.codehaus.groovy:groovy:2.5.22")
+    implementation("org.codehaus.groovy:groovy-all:2.5.22")
+    implementation("org.ow2.asm:asm:9.5")
+    //implementation("org.codehaus.groovy:groovy:3.0.17")
+    //implementation("org.codehaus.groovy:groovy-all:3.0.17")
+    //implementation("org.apache.groovy:groovy:4.0.11")
+    //testImplementation(platform("org.apache.groovy:groovy-all:4.0.11"))
+
+    implementation("androidx.core:core-ktx:1.10.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")
     implementation("androidx.compose.ui:ui")
