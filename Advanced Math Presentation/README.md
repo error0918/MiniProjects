@@ -24,7 +24,7 @@
                     👀 헤비사이드 함수
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Advanced%20Math%20Presentation#-----코드">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Advanced%20Math%20Presentation#-코드">
                 <li>
                     🖥️ 코드
                 </li>
