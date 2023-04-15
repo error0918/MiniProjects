@@ -1,4 +1,4 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음" alt="Start"/>
 
 <div align=right>
     <h6>
@@ -38,7 +38,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/IconViewer">
-                아이콘 뷰어 (2023/02/02~)
+                아이콘 뷰어 (2023/02/02)
             </a>
         </li>
     </h3>
@@ -55,7 +55,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/WowPhoneNumber">
-                Wow Phone Number (2023/01/19~)
+                Wow Phone Number (2023/01/19)
             </a>
         </li>
     </h3>
@@ -73,7 +73,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/FancyScrollController">
-                Fancy Scroll Controller (2023/02/09~)
+                Fancy Scroll Controller (2023/02/09)
             </a>
         </li>
     </h3>
@@ -87,6 +87,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Advanced%20Math%20Presentation">
+                헤드사이드 함수 (2023/04/14)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            심화수학 I 발표 자료로, 여러 헤비사이드 함수를 파이썬으로 구현했습니다.
+        </li>
+        <h6>
+            <li>
+                Python
+            </li>
+        </h6>
+    </ul>
 </ul>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
