@@ -9,6 +9,8 @@ group = "com.taeyeon"
 version = "1.0-SNAPSHOT"
 
 
+@OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+@Suppress("OPT_IN_IS_NOT_ENABLED")
 kotlin {
     jvm {
         jvmToolchain(11)
@@ -19,6 +21,9 @@ kotlin {
             dependencies {
                 implementation(project(":common"))
                 implementation(compose.desktop.currentOs)
+
+                implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
             }
         }
         val jvmTest by getting

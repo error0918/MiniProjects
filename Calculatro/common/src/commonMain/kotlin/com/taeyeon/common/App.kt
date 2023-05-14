@@ -4,53 +4,29 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Backspace
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import net.objecthunter.exp4j.ExpressionBuilder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun App() {
-    var pre by rememberSaveable { mutableStateOf("이전기록") }
+    var pre by rememberSaveable { mutableStateOf("") }
     var text by rememberSaveable { mutableStateOf("") }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Calculatro") },
-                actions = {
-                    IconButton(
-                        onClick = {
-                            pre = "이전기록"
-                            text = ""
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Clear,
-                            contentDescription = "초기화"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        },
+        topBar = { TopBar() },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -69,7 +45,7 @@ fun App() {
                     contentColor = LocalContentColor.current
                 ) {
                     Text(
-                        text = pre,
+                        text = pre.ifEmpty { "이전 기록" },
                         style = MaterialTheme.typography.labelMedium,
                         color = LocalContentColor.current.copy(alpha = 0.5f),
                         modifier = Modifier
@@ -80,7 +56,7 @@ fun App() {
                                         true
                                     } catch (_: Exception) {
                                         false
-                                    }
+                                    } && pre.isNotEmpty()
                                 ) {
                                     it.clickable {
                                         text = pre
@@ -95,25 +71,25 @@ fun App() {
 
                 SelectionContainer {
                     Text(
-                        text = text,
-                        style = MaterialTheme.typography.displayMedium,
+                        text = buildAnnotatedString {
+                            append(text)
+                            withStyle(
+                                SpanStyle(
+                                    color = LocalContentColor.current.copy(alpha = 0.5f)
+                                )
+                            ) {
+                                append(")".repeat(text.split("(").size - text.split(")").size))
+                                if (text.isEmpty()) append("계산식")
+                            }
+                        },
+                        style = MaterialTheme.typography.displaySmall,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(4.dp)
                     )
                 }
 
-                IconButton(
-                    onClick = {
-                        if (text.isNotEmpty()) text = text.substring(0..text.length - 2)
-                    },
-                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Backspace,
-                        contentDescription = "지우기"
-                    )
-                }
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Row(
                     modifier = Modifier
@@ -122,22 +98,59 @@ fun App() {
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     CalcButton(
+                        text = "e",
+                        onClick = { text += "e" }
+                    )
+                    CalcButton(
+                        text = "π",
+                        onClick = { text += "π" }
+                    )
+                    CalcButton(
+                        text = "φ",
+                        onClick = { text += "φ" }
+                    )
+                    CalcButton(
                         text = "C",
-                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
                         onClick = { text = "" }
                     )
                     CalcButton(
-                        text = "(",
+                        text = "⌫",
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        onClick = { if (text.isNotEmpty()) text = text.substring(0..text.length - 2) }
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    CalcButton(
+                        text = "sin",
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                        onClick = { text += "(" }
+                        onClick = { text += "sin(" }
                     )
                     CalcButton(
-                        text = ")",
+                        text = "cos",
                         containerColor = MaterialTheme.colorScheme.tertiaryContainer,
                         contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                        onClick = { text += ")" }
+                        onClick = { text += "cos(" }
+                    )
+                    CalcButton(
+                        text = "tan",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += "tan(" }
+                    )
+                    CalcButton(
+                        text = "%",
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        onClick = { text += "%" }
                     )
                     CalcButton(
                         text = "/",
@@ -152,6 +165,12 @@ fun App() {
                         .weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    CalcButton(
+                        text = "|x|",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += "abs(" }
+                    )
                     CalcButton(
                         text = "7",
                         onClick = { text += "7" }
@@ -178,6 +197,12 @@ fun App() {
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     CalcButton(
+                        text = "√x",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += "sqrt(" }
+                    )
+                    CalcButton(
                         text = "4",
                         onClick = { text += "4" }
                     )
@@ -202,6 +227,12 @@ fun App() {
                         .weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
+                    CalcButton(
+                        text = "log",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += "log10(" }
+                    )
                     CalcButton(
                         text = "1",
                         onClick = { text += "1" }
@@ -228,8 +259,16 @@ fun App() {
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     CalcButton(
-                        text = "00",
-                        onClick = { text += "00" }
+                        text = "(",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += "(" }
+                    )
+                    CalcButton(
+                        text = ")",
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                        onClick = { text += ")" }
                     )
                     CalcButton(
                         text = "0",
@@ -245,10 +284,14 @@ fun App() {
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                         onClick = {
                             try {
-                                text = ExpressionBuilder(text).build().evaluate().toString().let {
-                                    if (it.endsWith(".0")) it.substring(0 until it.length - 2)
-                                    else it
-                                }
+                                text = ExpressionBuilder(text + ")".repeat(text.split("(").size - text.split(")").size))
+                                    .build()
+                                    .evaluate()
+                                    .toString()
+                                    .let {
+                                        if (it.endsWith(".0")) it.substring(0 until it.length - 2)
+                                        else it
+                                    }
                                 pre = text
                             } catch (_: Exception) {
                                 // TODO
@@ -262,35 +305,4 @@ fun App() {
 }
 
 @Composable
-fun RowScope.CalcButton(
-    text: String,
-    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
-    onClick: () -> Unit
-) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .weight(1f)
-            .let {
-                it.layout { measurable, constraints ->
-                    val placeable = measurable.measure(
-                        constraints.copy(minHeight = constraints.maxHeight)
-                    )
-                    layout(placeable.width, placeable.height) {
-                        placeable.placeRelative(0, 0)
-                    }
-                }
-            },
-        shape = RectangleShape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        )
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp
-        )
-    }
-}
+expect fun TopBar()
