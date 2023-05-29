@@ -52,7 +52,6 @@ String ohMyGodKorean(String original) {
   var result = "";
   original.runes.forEach((code) {
     final koreanType = detectKoreanTypeCode(code);
-    // TODO
     switch (koreanType) {
       case KoreanType.Full:
         result += ohMyGodFull(code);
@@ -70,14 +69,15 @@ String ohMyGodKorean(String original) {
 String ohMyGodFull(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
+    // TODO
     _ => char
   };
 }
 
 String ohMyGodConsonant(int code) {
   final char = String.fromCharCode(code);
-  //["ㅁㄴ", "ㄴㅇ", "ㅇ"].
   return switch (char) {
+    // TODO
     _ => char
   };
 }
@@ -85,6 +85,7 @@ String ohMyGodConsonant(int code) {
 String ohMyGodVowel(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
+    // TODO
     _ => char
   };
 }
