@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
-
 final start = "가".codeUnitAt(0), end = "힣".codeUnitAt(0);
 
 const firstList = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]; // 초성
@@ -78,6 +74,36 @@ String ohMyGodConsonant(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
     // TODO
+    "ㄱ" => "ㄱ",
+    "ㄲ" => "ㄲ",
+    "ㄳ" => "ㄳ",
+    "ㄴ" => "ㄴ",
+    "ㄵ" => "ㄵ",
+    "ㄶ" => "ㄶ",
+    "ㄷ" => "ㄷ",
+    "ㄸ" => "ㄸ",
+    "ㄹ" => "ㄹ",
+    "ㄺ" => "ㄺ",
+    "ㄻ" => "ㄻ",
+    "ㄼ" => "ㄼ",
+    "ㄽ" => "ㄽ",
+    "ㄾ" => "ㄾ",
+    "ㄿ" => "ㄿ",
+    "ㅀ" => "ㅀ",
+    "ㅁ" => "ㅁ",
+    "ㅂ" => "ㅂ",
+    "ㅃ" => "ㅃ",
+    "ㅄ" => "ㅄ",
+    "ㅅ" => "ㅅ",
+    "ㅆ" => "ㅆ",
+    "ㅇ" => "ㅇ",
+    "ㅈ" => "ㅈ",
+    "ㅉ" => "ㅉ",
+    "ㅊ" => "ㅊ",
+    "ㅋ" => "ㅋ",
+    "ㅌ" => "ㅌ",
+    "ㅍ" => "ㅍ",
+    "ㅎ" => "ㅎ",
     _ => char
   };
 }
@@ -85,14 +111,27 @@ String ohMyGodConsonant(int code) {
 String ohMyGodVowel(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
-    // TODO
+    "ㅏ" => "ㅏ",
+    "ㅐ" => "ㅐ",
+    "ㅑ" => "ㅑ",
+    "ㅒ" => "ㅒ",
+    "ㅓ" => "ㅓ",
+    "ㅔ" => "ㅔ",
+    "ㅕ" => "ㅕ",
+    "ㅖ" => "ㅖ",
+    "ㅗ" => "ㅗ",
+    "ㅘ" => "ㅘ",
+    "ㅙ" => "ㅙ",
+    "ㅚ" => "ㅚ",
+    "ㅛ" => "ㅛ",
+    "ㅜ" => "ㅜ",
+    "ㅝ" => "ㅝ",
+    "ㅞ" => "ㅞ",
+    "ㅟ" => "ㅟ",
+    "ㅠ" => "ㅠ",
+    "ㅡ" => "ㅡ",
+    "ㅢ" => "ㅢ",
+    "ㅣ" => "ㅣ",
     _ => char
   };
-}
-
-
-void main() {
-  stdout.write("텍스트를 입력하세요.\n >> ");
-  final input = stdin.readLineSync(encoding: utf8);
-  print(ohMyGodKorean(input ?? ""));
 }
