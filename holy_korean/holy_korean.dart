@@ -12,51 +12,86 @@ const lastList = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "�
 enum KoreanType { Full, Consonant, Vowel, None } // 완전한 글자, 자음, 모음, 한글이 아닌 글자
 
 
-KoreanType detectKoreanType(int code) {
+KoreanType detectKoreanType(String char) => detectKoreanTypeCode(char.codeUnitAt(0));
+
+KoreanType detectKoreanTypeCode(int code) {
   if ("가".codeUnitAt(0) <= code && code <= "힣".codeUnitAt(0)) return KoreanType.Full;
   else if ("ㄱ".codeUnitAt(0) <= code && code <= "ㅎ".codeUnitAt(0)) return KoreanType.Consonant;
   else if ("ㅏ".codeUnitAt(0) <= code && code <= "ㅣ".codeUnitAt(0)) return KoreanType.Vowel;
   else return KoreanType.None;
 }
 
+
 String combineKorean({
   required String first,
   required String middle,
   String? last
-}) {
-  return combineKoreanCode(
+}) => combineKoreanCode(
     first: firstList.indexOf(first),
     middle: middleList.indexOf(middle),
     last: lastList.indexOf(last ?? "")
   );
-}
 
 String combineKoreanCode({
   required int first,
   required int middle,
   int last = 0
-}) {
-  return String.fromCharCode((first * 21 + middle) * 28 + last + start);
-}
+}) => String.fromCharCode((first * 21 + middle) * 28 + last + start);
 
-(String first, String middle, String? last) disassembleKorean({
-  required String char
-}) {
-  return disassembleKoreanCode(code: char.codeUnitAt(0));
-}
 
-(String first, String middle, String? last) disassembleKoreanCode({
-  required int code
-}) {
-  return
+(String first, String middle, String? last) disassembleKorean(String char) =>
+    disassembleKoreanCode(char.codeUnitAt(0));
+
+(String first, String middle, String? last) disassembleKoreanCode(int code) =>
     (firstList[(code - start) ~/ 28 ~/ 21],
     middleList[(code - start) ~/ 28 % 21],
     lastList[(code - start) % 28] == "" ? null : lastList[(code - start) % 28]);
+
+
+String ohMyGodKorean(String original) {
+  var result = "";
+  original.runes.forEach((code) {
+    final koreanType = detectKoreanTypeCode(code);
+    // TODO
+    switch (koreanType) {
+      case KoreanType.Full:
+        result += ohMyGodFull(code);
+      case KoreanType.Consonant:
+        result += ohMyGodConsonant(code);
+      case KoreanType.Vowel:
+        result += ohMyGodVowel(code);
+      case KoreanType.None:
+        result += String.fromCharCode(code);
+    }
+  });
+  return result;
 }
 
+String ohMyGodFull(int code) {
+  final char = String.fromCharCode(code);
+  return switch (char) {
+    _ => char
+  };
+}
+
+String ohMyGodConsonant(int code) {
+  final char = String.fromCharCode(code);
+  //["ㅁㄴ", "ㄴㅇ", "ㅇ"].
+  return switch (char) {
+    _ => char
+  };
+}
+
+String ohMyGodVowel(int code) {
+  final char = String.fromCharCode(code);
+  return switch (char) {
+    _ => char
+  };
+}
 
 
 void main() {
   stdout.write("텍스트를 입력하세요.\n >> ");
   final input = stdin.readLineSync(encoding: utf8);
+  print(ohMyGodKorean(input ?? ""));
 }
