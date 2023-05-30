@@ -1,47 +1,5 @@
-final start = "가".codeUnitAt(0), end = "힣".codeUnitAt(0);
-
-const firstList = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]; // 초성
-const middleList = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"]; // 중성
-const lastList = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]; // 종성
-
-
-enum KoreanType { Full, Consonant, Vowel, None } // 완전한 글자, 자음, 모음, 한글이 아닌 글자
-
-
-KoreanType detectKoreanType(String char) => detectKoreanTypeCode(char.codeUnitAt(0));
-
-KoreanType detectKoreanTypeCode(int code) {
-  if ("가".codeUnitAt(0) <= code && code <= "힣".codeUnitAt(0)) return KoreanType.Full;
-  else if ("ㄱ".codeUnitAt(0) <= code && code <= "ㅎ".codeUnitAt(0)) return KoreanType.Consonant;
-  else if ("ㅏ".codeUnitAt(0) <= code && code <= "ㅣ".codeUnitAt(0)) return KoreanType.Vowel;
-  else return KoreanType.None;
-}
-
-
-String combineKorean({
-  required String first,
-  required String middle,
-  String? last
-}) => combineKoreanCode(
-    first: firstList.indexOf(first),
-    middle: middleList.indexOf(middle),
-    last: lastList.indexOf(last ?? "")
-  );
-
-String combineKoreanCode({
-  required int first,
-  required int middle,
-  int last = 0
-}) => String.fromCharCode((first * 21 + middle) * 28 + last + start);
-
-
-(String first, String middle, String? last) disassembleKorean(String char) =>
-    disassembleKoreanCode(char.codeUnitAt(0));
-
-(String first, String middle, String? last) disassembleKoreanCode(int code) =>
-    (firstList[(code - start) ~/ 28 ~/ 21],
-    middleList[(code - start) ~/ 28 % 21],
-    lastList[(code - start) % 28] == "" ? null : lastList[(code - start) % 28]);
+import 'korean_util.dart';
+import 'list_extension.dart';
 
 
 String ohMyGodKorean(String original) {
@@ -50,11 +8,11 @@ String ohMyGodKorean(String original) {
     final koreanType = detectKoreanTypeCode(code);
     switch (koreanType) {
       case KoreanType.Full:
-        result += ohMyGodFull(code);
+        result += ohMyGodFullCode(code);
       case KoreanType.Consonant:
-        result += ohMyGodConsonant(code);
+        result += ohMyGodConsonantCode(code);
       case KoreanType.Vowel:
-        result += ohMyGodVowel(code);
+        result += ohMyGodVowelCode(code);
       case KoreanType.None:
         result += String.fromCharCode(code);
     }
@@ -62,76 +20,88 @@ String ohMyGodKorean(String original) {
   return result;
 }
 
-String ohMyGodFull(int code) {
+
+String ohMyGodFull(String char) => ohMyGodConsonantCode(char.codeUnitAt(0));
+
+String ohMyGodFullCode(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
     // TODO
+    "무" => ["무", "無"].random()!,
+    "미" => ["미", "美"].random()!,
+    "와" => ["와", "Wa"].random()!,
     _ => char
   };
 }
 
-String ohMyGodConsonant(int code) {
+
+String ohMyGodConsonant(String char) => ohMyGodConsonantCode(char.codeUnitAt(0));
+
+String ohMyGodConsonantCode(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
     // TODO
-    "ㄱ" => "ㄱ",
-    "ㄲ" => "ㄲ",
-    "ㄳ" => "ㄳ",
-    "ㄴ" => "ㄴ",
-    "ㄵ" => "ㄵ",
-    "ㄶ" => "ㄶ",
-    "ㄷ" => "ㄷ",
-    "ㄸ" => "ㄸ",
-    "ㄹ" => "ㄹ",
-    "ㄺ" => "ㄺ",
-    "ㄻ" => "ㄻ",
-    "ㄼ" => "ㄼ",
-    "ㄽ" => "ㄽ",
-    "ㄾ" => "ㄾ",
-    "ㄿ" => "ㄿ",
-    "ㅀ" => "ㅀ",
-    "ㅁ" => "ㅁ",
-    "ㅂ" => "ㅂ",
-    "ㅃ" => "ㅃ",
-    "ㅄ" => "ㅄ",
-    "ㅅ" => "ㅅ",
-    "ㅆ" => "ㅆ",
-    "ㅇ" => "ㅇ",
-    "ㅈ" => "ㅈ",
-    "ㅉ" => "ㅉ",
-    "ㅊ" => "ㅊ",
-    "ㅋ" => "ㅋ",
-    "ㅌ" => "ㅌ",
-    "ㅍ" => "ㅍ",
-    "ㅎ" => "ㅎ",
+    "ㄱ" => ["ㄱ", ">", "⁊", "⌝"].random()!,
+    "ㄲ" => ["ㄲ" "⨠"].random()!, // TODO
+    "ㄳ" => ["ㄳ"].random()!, // TODO
+    "ㄴ" => ["ㄴ", "L", "<", "⌞", "Ⅼ"].random()!,
+    "ㄵ" => ["ㄵ"].random()!, // TODO
+    "ㄶ" => ["ㄶ"].random()!, // TODO
+    "ㄷ" => ["ㄷ", "[", "ɽ", "⫍", "Ϲ", "ϲ", "⊏"].random()!,
+    "ㄸ" => ["ㄸ"].random()!, // TODO
+    "ㄹ" => ["ㄹ"].random()!, // TODO
+    "ㄺ" => ["ㄺ"].random()!, // TODO
+    "ㄻ" => ["ㄻ"].random()!, // TODO
+    "ㄼ" => ["ㄼ"].random()!, // TODO
+    "ㄽ" => ["ㄽ"].random()!, // TODO
+    "ㄾ" => ["ㄾ"].random()!, // TODO
+    "ㄿ" => ["ㄿ"].random()!, // TODO
+    "ㅀ" => ["ㅀ"].random()!, // TODO
+    "ㅁ" => ["ㅁ", "[]", "▢", "▥", "▨", "▬", "▭", "▣", "▦", "▩", "▮", "▯", "▤", "▧","□", "■", "◻", "■", "◩", "◪"].random()!,
+    "ㅂ" => ["ㅂ"].random()!, // TODO
+    "ㅃ" => ["ㅃ"].random()!, // TODO
+    "ㅄ" => ["ㅄ"].random()!, // TODO
+    "ㅅ" => ["ㅅ", "^", "⁁", "∧", "⋀", "⋏", "⋌", "⩘"].random()!, // TODO
+    "ㅆ" => ["ㅆ"].random()!, // TODO
+    "ㅇ" => ["ㅇ", "O", "o", "●", "○", "◍", "◓", "◉", "◎", "◒", "◐", "◑", "◕", "◔", "◯", "⨀", "⨁", "⨂"].random()!, // TODO
+    "ㅈ" => ["ㅈ"].random()!, // TODO
+    "ㅉ" => ["ㅉ"].random()!, // TODO
+    "ㅊ" => ["ㅊ"].random()!, // TODO
+    "ㅋ" => ["ㅋ"].random()!, // TODO
+    "ㅌ" => ["ㅌ"].random()!, // TODO
+    "ㅍ" => ["ㅍ"].random()!, // TODO
+    "ㅎ" => ["ㅎ"].random()!, // TODO
     _ => char
   };
 }
 
-String ohMyGodVowel(int code) {
+
+String ohMyGodVowel(String char) => ohMyGodVowelCode(char.codeUnitAt(0));
+
+String ohMyGodVowelCode(int code) {
   final char = String.fromCharCode(code);
   return switch (char) {
-    "ㅏ" => "ㅏ",
-    "ㅐ" => "ㅐ",
-    "ㅑ" => "ㅑ",
-    "ㅒ" => "ㅒ",
-    "ㅓ" => "ㅓ",
-    "ㅔ" => "ㅔ",
-    "ㅕ" => "ㅕ",
-    "ㅖ" => "ㅖ",
-    "ㅗ" => "ㅗ",
-    "ㅘ" => "ㅘ",
-    "ㅙ" => "ㅙ",
-    "ㅚ" => "ㅚ",
-    "ㅛ" => "ㅛ",
-    "ㅜ" => "ㅜ",
-    "ㅝ" => "ㅝ",
-    "ㅞ" => "ㅞ",
-    "ㅟ" => "ㅟ",
-    "ㅠ" => "ㅠ",
-    "ㅡ" => "ㅡ",
-    "ㅢ" => "ㅢ",
-    "ㅣ" => "ㅣ",
+    "ㅏ" => ["ㅏ"].random()!,
+    "ㅐ" => ["ㅐ"].random()!,
+    "ㅑ" => ["ㅑ"].random()!,
+    "ㅒ" => ["ㅒ"].random()!,
+    "ㅓ" => ["ㅓ"].random()!,
+    "ㅔ" => ["ㅔ"].random()!,
+    "ㅕ" => ["ㅕ"].random()!,
+    "ㅖ" => ["ㅖ"].random()!,
+    "ㅗ" => ["ㅗ"].random()!,
+    "ㅘ" => ["ㅘ"].random()!,
+    "ㅙ" => ["ㅙ"].random()!,
+    "ㅚ" => ["ㅚ"].random()!,
+    "ㅛ" => ["ㅛ"].random()!,
+    "ㅜ" => ["ㅜ"].random()!,
+    "ㅝ" => ["ㅝ"].random()!,
+    "ㅞ" => ["ㅞ"].random()!,
+    "ㅟ" => ["ㅟ"].random()!,
+    "ㅠ" => ["ㅠ"].random()!,
+    "ㅡ" => ["ㅡ"].random()!,
+    "ㅢ" => ["ㅢ"].random()!,
+    "ㅣ" => ["ㅣ"].random()!,
     _ => char
   };
 }
