@@ -90,7 +90,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/Advanced%20Math%20Presentation">
-                헤드사이드 함수 (2023/04/14)
+                심화수학 발표 (2023/04/14)
             </a>
         </li>
     </h3>
@@ -101,6 +101,24 @@
         <h6>
             <li>
                 Python
+            </li>
+        </h6>
+    </ul>
+    <!-- TODO -->
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath">
+                인공지능 수학 수행평가 (2023/06/15)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            인공지능 수학 수행평가 자료로, "코틀린 검색량 데이터를 코틀린을 이용해 추세선 최적화 및 시각화하기"를 주제로 한 보고서에 사용된 코드입니다.
+        </li>
+        <h6>
+            <li>
+                Kotlin (XChart)
             </li>
         </h6>
     </ul>
