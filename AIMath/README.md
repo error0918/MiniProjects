@@ -125,7 +125,7 @@ fun getTrendInclination(data: Map<Double, Double>): Double {
 </h3>
 
 <div align=center>
-    <img src="https://github.com/error0918/MiniProjects/tree/main/AIMath/image/Graph.png" alt="시각화 결과"/>
+    <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/AIMath/image/Graph.png" alt="시각화 결과"/>
 </div>
 
 <div align=center>
