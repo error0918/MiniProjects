@@ -14,7 +14,7 @@
         </a>
     </li>
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/#----프로젝트%20목록">
+        <a href="https://github.com/error0918/MiniProjects/tree/main#----%EF%B8%8F-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%AA%A9%EB%A1%9D">
             🖥️ 프로젝트 목록
         </a>
     </li>
