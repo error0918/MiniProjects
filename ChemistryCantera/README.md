@@ -20,6 +20,16 @@
                     📜 소개
                 </li>
             </a>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera//ChemistryCantera/#-----화학-평형">
+                <li>
+                    🤔 화학 평형
+                </li>
+            </a>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera//ChemistryCantera/#-----Cantera">
+                <li>
+                    🧐 Cantera
+                </li>
+            </a>
             <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera//ChemistryCantera/#----%EF%B8%8F-코드">
                 <li>
                     🖥️ 코드
@@ -27,7 +37,7 @@
             </a>
             <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera//ChemistryCantera/#-----결과">
                 <li>
-                    🧐 결과
+                    📱 결과
                 </li>
             </a>
         </ul>
@@ -40,23 +50,50 @@
     📜 소개
 </h2>
 
-TODO
+화학 II 수행평가 자료로, Cantera를 이용해 "2H2 + 02 <-> 2H20"의 화학 평형을 Cantera 라이브러리를 이용해 조사했습니다. 
 
 ---
 
 <h2>
-    📜 TODO
+    🤔 화학 평형
 </h2>
 
-TODO
+<h3>
+    화학 평형
+</h3>
+
+> 가역 반응에서 반응물과 생성물의 농도가 달라지지 않고 일정하게 유지되는 상태
+> <br/>
+> <div align=end> ⟪비상교육 화학 II 교과서⟫ 中 </div>
+
+가역 반응에서 일어나는 화학 평형 상태에서는 반응물이 생성물로, 생성물의 반응물로 변화하는 화학 반응이 끝없이 일어나지만, 그 속도가 같아 반응물과 생성물의 농도가 더이상 변하지 않는다.
+
+<h3>
+    평형 상수
+</h3>
+
+> 반응물의 농도 곱에 대한 생성물의 농도 곱의 비
+> <br/>
+> <div align=end> ⟪비상교육 화학 II 교과서⟫ 中 </div>
+
+평형 상수는 일정한 온도와 압력에서 화학 평형을 나타낼 수 있는 고유의 수로, 반응물과 생성물의 초기 농도에 관련없이 항상 같은 값을 가진다. 이 값이 클수록 생성물이 반응물보다 많이 존재함을 의미한다.
+
+평형 상수은 다음과 같이 정의된다. 예를 들어 "aA + bB <-> dD + dD" (a, b, c, d는 계수 / A, B, C, D는 화학식) 반응이 있다고 하면, 이 식에서 평형 상수 K는 다음과 같다.
+
+<li>
+    K = ([C]^c * [D]*d) / ([A]^a * [B]*b)
+</li>
+
+이 식에서 [A], [B], [C], [D]는 각각 A, B, C, D의 몰농도이다.
 
 ---
 
 <h2>
-    📜 TODO
+    🧐 Cantera
 </h2>
 
-TODO
+<a href="https://cantera.org/">Cantera</a>는 화학 동역학, 열역학 및 수송 과정과 관련된 문제를 해결하기 위한 오픈 소스 도구 모음, 다르게 말하면 화학 반응을 처리시켜 주는 라이브러리이다. Cantera는 Matlab, C++, Python에서 사용 가능하고, 이를 이용해 화학 평형, 점화 실험, 전기 화학 실험 등을 계산할 수 있다.
+
 
 ---
 
@@ -95,13 +132,13 @@ for i, reaction in enumerate(gas.reaction_equations()):
     # 여덟 번쨰 자리까지 출력
 ```
 <div align=end>
-    참고: https://cantera.org/
+    참고: <a href="https://cantera.org/">cantera.org/</a>
 </div>
 
 ---
 
 <h2>
-    🧐 결과
+    📱 결과
 </h2>
 
 ```
