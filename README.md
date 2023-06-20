@@ -104,7 +104,23 @@
             </li>
         </h6>
     </ul>
-    <!-- TODO -->
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera">
+                화학 II 수행평가 (2023/06/12)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            화학 II 수행평가 자료로, Cantera를 이용해 "2H2 + 02 <-> 2H20"의 화학 평형을 Cantera 라이브러리를 이용해 조사했습니다. 
+        </li>
+        <h6>
+            <li>
+                Python (Cantera)
+            </li>
+        </h6>
+    </ul>
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath">
