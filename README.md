@@ -122,6 +122,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/TESTPercentColor">
+                TEST-PercentColor (2023/07/10)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            Jetpack Compose에서 컨테이너 색에 따라 텍스트의 컬러가 부분적으로 변하는 슬라이더를 구현했습니다.
+        </li>
+        <h6>
+            <li>
+                Android, Jetpack Compose, Kotlin
+            </li>
+        </h6>
+    </ul>
 </ul>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
