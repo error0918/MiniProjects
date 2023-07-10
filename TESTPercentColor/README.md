@@ -60,7 +60,7 @@ Jetpack Compose에서 컨테이너 색에 따라 텍스트의 컬러가 부분�
 
 <div align=center>
     <h6>
-        <a href="https://github.com/error0918/MiniProjects/raw/main/WowPhoneNumber/apks/TESTPercentColor%20(v1.0.0).apk">
+        <a href="https://github.com/error0918/MiniProjects/raw/main/TESTPercentColor/apks/TESTPercentColor%20(v1.0.0).apk">
             TEST-PercentColor (v1.0.0)
         </a>
         2023/07/10
