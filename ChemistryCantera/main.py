@@ -12,7 +12,7 @@ gas.equilibrate("TP", solver="gibbs")
 print("\n화학 평형 계산 결과 - 30818 정태연\n")
 
 print("온도: %.5fK" % gas.T)
-print("압력: %.5fatm" % gas.P)
+print("압력: %.5fatm" % (gas.P / ct.one_atm))
 print()
 
 print("몰 분율:")

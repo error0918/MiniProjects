@@ -1,4 +1,6 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음" alt="Start"/>
+<div align=center>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음" alt="Start"/>
+</div>
 
 <div align=right>
     <h6>
@@ -14,7 +16,7 @@
         </a>
     </li>
     <li>
-        <a href="https://github.com/error0918/MiniProjects/tree/#----프로젝트%20목록">
+        <a href="https://github.com/error0918/MiniProjects/tree/main#----%EF%B8%8F-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EB%AA%A9%EB%A1%9D">
             🖥️ 프로젝트 목록
         </a>
     </li>
@@ -104,7 +106,23 @@
             </li>
         </h6>
     </ul>
-    <!-- TODO -->
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/ChemistryCantera">
+                화학 II 수행평가 (2023/06/12)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            화학 II 수행평가 자료로, Cantera를 이용해 "2H2 + 02 <-> 2H20"의 화학 평형을 Cantera 라이브러리를 이용해 조사했습니다. 
+        </li>
+        <h6>
+            <li>
+                Python (Cantera)
+            </li>
+        </h6>
+    </ul>
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath">
@@ -141,4 +159,6 @@
     </ul>
 </ul>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
+<div align=center>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
+</div>
