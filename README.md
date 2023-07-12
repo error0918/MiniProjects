@@ -157,6 +157,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub">
+                MathClub (2023/07/13)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            동산고등학교 매쓰터리 동아리 독서 탐구 활동 코드입니다.
+        </li>
+        <h6>
+            <li>
+                Python, SymPy
+            </li>
+        </h6>
+    </ul>
 </ul>
 
 <div align=center>
