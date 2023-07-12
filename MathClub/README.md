@@ -14,27 +14,27 @@
     <summary>목차</summary>
     <h6>
         <ul dir="auto">
-            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath/MathClub#-----소개">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub/MathClub#-----소개">
                 <li>
                     📜 소개
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath/MathClub#-----SymPy">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub/MathClub#-----SymPy">
                 <li>
                     👀 SymPy
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath/MathClub#-----구조도">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub/MathClub#-----구조도">
                 <li>
                     📱️ 구조도
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath/MathClub#----%EF%B8%8F-mySymbol">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub/MathClub#----%EF%B8%8F-mySymbol">
                 <li>
                     🖥️ mySymbol
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/AIMath/MathClub#----%EF%B8%8F-mySolve">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub/MathClub#----%EF%B8%8F-mySolve">
                 <li>
                     🖥️ mySolve
                 </li>
