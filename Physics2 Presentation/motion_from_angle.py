@@ -28,7 +28,7 @@ def motion_from_angle(
 
     time_n = numpy.linspace(0, time, 100)
     make_graph(
-        title="수평 방향으로 던진 물체의 포물선 운동",
+        title="비스듬히 던진 물체의 포물선 운동",
         x=time_n * vx,
         y=time_n * vy - 0.5 * 9.8 * (time_n ** 2),
         v=numpy.sqrt(vx ** 2 + (vy - 9.8 * time_n) ** 2),
