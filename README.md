@@ -160,7 +160,7 @@
     <h3>
         <li>
             <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub">
-                MathClub (2023/07/13)
+                매쓰터리 독서 탐구 (2023/07/13)
             </a>
         </li>
     </h3>
