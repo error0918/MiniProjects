@@ -1,4 +1,6 @@
-<img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음" alt="Start"/>
+<div align=center>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=280&fontSize=70&fontAlignY=40&descAlignY=60&color=gradient&customColorList=14&section=header&text=MiniProjects&desc=작은%20개발%20프로젝트%20모음" alt="Start"/>
+</div>
 
 <div align=right>
     <h6>
@@ -138,6 +140,42 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/TESTPercentColor">
+                TEST-PercentColor (2023/07/10)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            Jetpack Compose에서 컨테이너 색에 따라 텍스트의 컬러가 부분적으로 변하는 슬라이더를 구현했습니다.
+        </li>
+        <h6>
+            <li>
+                Android, Jetpack Compose, Kotlin
+            </li>
+        </h6>
+    </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/MathClub">
+                매쓰터리 독서 탐구 (2023/07/13)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            동산고등학교 매쓰터리 동아리 독서 탐구 활동 코드입니다.
+        </li>
+        <h6>
+            <li>
+                Python, SymPy
+            </li>
+        </h6>
+    </ul>
 </ul>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
+<div align=center>
+    <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=gradient&customColorList=14&section=footer&desc=Copyright%202023.%20jtaeyeon05%20all%20rights%20reserved" alt="End"/>
+</div>
