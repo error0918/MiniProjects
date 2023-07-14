@@ -10,6 +10,9 @@ def make_graph(
         v: numpy.ndarray,
         vx: numpy.ndarray,
         vy: numpy.ndarray,
+        potential_energy: numpy.ndarray,
+        kinetic_energy: numpy.ndarray,
+        mechanical_energy: numpy.ndarray,
         angle: numpy.ndarray,
         time: numpy.ndarray
 ):
@@ -19,6 +22,9 @@ def make_graph(
         "V": v,
         "Vx": vx,
         "Vy": vy,
+        "Potential Energy": potential_energy,
+        "Kinetic Energy": kinetic_energy,
+        "Mechanical Energy": mechanical_energy,
         "Angle": angle,
         "Time": time
     })
@@ -27,7 +33,10 @@ def make_graph(
         dff,
         x="X",
         y="Y",
-        hover_data=["X", "Y", "V", "Vx", "Vy", "Angle", "Time"]
+        hover_data=["X", "Y",
+                    "V", "Vx", "Vy",
+                    "Potential Energy", "Kinetic Energy", "Mechanical Energy",
+                    "Angle", "Time"]
     )
     fig.update_layout(
         title=dict(
