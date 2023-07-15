@@ -20,10 +20,11 @@ def motion_from_horizontality(
         "최대 속력: " + str(math.sqrt(vy_max ** 2 + velocity ** 2)) + "m/s\n"
         "수평 방향 속력: " + str(velocity) + "m/s\n"
         "수직 방향 최대 속력: " + str(vy_max) + "m/s\n"
-        "역학적 에너지: " + str(9.8 * weight * height) + "J"
+        "역학적 에너지: " + str(9.8 * weight * height) + "J\n"
     )
+    print("곧 그래프가 표시됩니다.")
 
-    time_n = numpy.linspace(0, time, 100)
+    time_n = numpy.linspace(0, time, 200)
     make_graph(
         title="수평 방향으로 던진 물체의 포물선 운동",
 
@@ -31,7 +32,7 @@ def motion_from_horizontality(
         y=height - 0.5 * 9.8 * (time_n ** 2),
 
         v=numpy.sqrt(velocity ** 2 + (time_n * 9.8) ** 2),
-        vx=numpy.full(100, velocity),
+        vx=numpy.full(200, velocity),
         vy=time_n * 9.8,
 
         potential_energy=9.8 * weight * (height - 0.5 * 9.8 * (time_n ** 2)),
@@ -41,3 +42,4 @@ def motion_from_horizontality(
         angle=numpy.arctan(time_n * 9.8 / velocity) * 180 / math.pi,
         time=time_n
     )
+    print("지금까지 운동의 분석 결과 및 개형이었습니다.")

@@ -24,10 +24,11 @@ def motion_from_angle(
         "최대 속력: " + str(velocity) + "m/s\n"
         "수평 방향 속력: " + str(vx) + "m/s\n"
         "수직 방향 최대 속력: " + str(vy) + "m/s\n"
-        "역학적 에너지: " + str(0.5 * weight * velocity ** 2) + "J"
+        "역학적 에너지: " + str(0.5 * weight * velocity ** 2) + "J\n"
     )
+    print("곧 그래프가 표시됩니다.")
 
-    time_n = numpy.linspace(0, time, 100)
+    time_n = numpy.linspace(0, time, 200)
     make_graph(
         title="비스듬히 던진 물체의 포물선 운동",
 
@@ -35,7 +36,7 @@ def motion_from_angle(
         y=time_n * vy - 0.5 * 9.8 * (time_n ** 2),
 
         v=numpy.sqrt(vx ** 2 + (vy - 9.8 * time_n) ** 2),
-        vx=numpy.full(100, vx),
+        vx=numpy.full(200, vx),
         vy=vy - 9.8 * time_n,
 
         potential_energy=weight * 9.8 * (time_n * vy - 0.5 * 9.8 * (time_n ** 2)),
@@ -45,3 +46,4 @@ def motion_from_angle(
         angle=numpy.arctan((vy - 9.8 * time_n) / vx) * 180 / math.pi,
         time=time_n
     )
+    print("지금까지 운동의 분석 결과 및 개형이었습니다.")
