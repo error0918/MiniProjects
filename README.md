@@ -174,6 +174,23 @@
             </li>
         </h6>
     </ul>
+    <h3>
+        <li>
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation">
+                물리학 II 발표 (2023/07/14)
+            </a>
+        </li>
+    </h3>
+    <ul dir="auto">
+        <li>
+            물리학 II 발표 코드로, 포물선 운동을 분석하고 Plotly (+ Pandas, Numpy)를 이용해 인터랙티브하게 시각화했습니다.
+        </li>
+        <h6>
+            <li>
+                Python, Plotly (Pandas, Numpy)
+            </li>
+        </h6>
+    </ul>
 </ul>
 
 <div align=center>
