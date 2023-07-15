@@ -270,7 +270,7 @@ def motion_from_angle(
 </h4>
 
 <div align=center>
-    <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/Physics2%20Presentation/image/motion_from_angle.png" alt="비스듬히 던진 물체의 운동"/>
+    <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/Physics2%20Presentation/image/motion_from_horizontality.png" alt="수평으로 던진 물체의 포물선 운동"/>
 </div>
 
 <h3>
@@ -315,7 +315,7 @@ def motion_from_angle(
 </h4>
 
 <div align=center>
-    <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/Physics2%20Presentation/image/motion_from_horizontality.png" alt="수평으로 던진 물체의 포물선 운동"/>
+    <img src="https://raw.githubusercontent.com/error0918/MiniProjects/main/Physics2%20Presentation/image/motion_from_angle.png" alt="비스듬히 던진 물체의 운동"/>
 </div>
 
 <div align=center>
