@@ -14,32 +14,32 @@
     <summary>목차</summary>
     <h6>
         <ul dir="auto">
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#-----소개">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----소개">
                 <li>
                     📜 소개
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#-----포물선-운동">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----포물선-운동">
                 <li>
                     👀 포물선 운동
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#-----역학적-에너지-보존">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----역학적-에너지-보존">
                 <li>
                     👀 역학적 에너지 보존
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#-----구조">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----구조">
                 <li>
                     📱️ 구조
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#----%EF%B8%8F-주요-코드">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#----%EF%B8%8F-주요-코드">
                 <li>
                     🖥️ 주요 코드
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation/Physics2%20Presentation#-----결과">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----결과">
                 <li>
                     🧐 결과
                 </li>
