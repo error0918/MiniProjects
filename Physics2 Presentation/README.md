@@ -19,17 +19,17 @@
                     📜 소개
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----포물선-운동">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----%ED%8F%AC%EB%AC%BC%EC%84%A0-%EC%9A%B4%EB%8F%99">
                 <li>
                     👀 포물선 운동
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----역학적-에너지-보존">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----%EC%97%AD%ED%95%99%EC%A0%81-%EC%97%90%EB%84%88%EC%A7%80-%EB%B3%B4%EC%A1%B4">
                 <li>
                     👀 역학적 에너지 보존
                 </li>
             </a>
-            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#-----구조">
+            <a href="https://github.com/error0918/MiniProjects/tree/main/Physics2%20Presentation#----%EF%B8%8F-%EA%B5%AC%EC%A1%B0">
                 <li>
                     📱️ 구조
                 </li>
