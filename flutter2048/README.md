@@ -1,4 +1,4 @@
-# flutter2048
+# Flutter2048
 
 <div align=right>
         jtaeyeon05 (2025/07)
