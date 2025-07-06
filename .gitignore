@@ -29,4 +29,21 @@ google-services.json
 *.hprof
 *.pyc
 
+# Flutter
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.fvm/flutter_sdk
+.packages
+.pub-cache/
+.pub/
+.idea
+build/
+coverage/
+lib/generated_plugin_registrant.dart
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
