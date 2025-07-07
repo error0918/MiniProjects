@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import './theme.dart' as theme;
@@ -40,9 +41,7 @@ class MyHomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                if (kDebugMode) {
-                  print("Icon Button Pressed");
-                }
+                print("Icon Button Pressed");
               },
               icon: Row(
                 spacing: 4.0,
@@ -64,16 +63,16 @@ class MyHomePage extends StatelessWidget {
                   return Column(
                     spacing: 16.0,
                     children: [
-                      BoardWidget(size: width < height - 150 ? width : height - 150),
-                      ControllerWidget(),
+                      BoardWidget(size: min(width, height - 180 - 16)),
+                      ControllerWidget(size: min(max(height - width - 16, 180.0), width)),
                     ],
                   );
                 } else {
                   return Row(
                     spacing: 16.0,
                     children: [
-                      BoardWidget(size: height < width - 150 ? height : width - 150),
-                      ControllerWidget(),
+                      BoardWidget(size: min(height, width - 180 - 16)),
+                      ControllerWidget(size: min(max(width - height - 16, 180.0), height)),
                     ],
                   );
                 }
@@ -111,7 +110,9 @@ class _BoardWidgetState extends State<BoardWidget> {
 
 
 class ControllerWidget extends StatefulWidget {
-  const ControllerWidget({super.key});
+  const ControllerWidget({super.key, this.size = 0.0});
+
+  final double size;
 
   @override
   createState() => _ControllerWidgetState();
@@ -120,14 +121,132 @@ class ControllerWidget extends StatefulWidget {
 class _ControllerWidgetState extends State<ControllerWidget> {
   @override
   Widget build(BuildContext context) {
+    final iconSize = 24.0 * (0.75 + widget.size / 600.0);
+
     return Expanded(
         child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(12.0),
-          ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainer,
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Transform.translate(
+                  offset: Offset(0, 0.5),
+                  child: ControlButton(
+                    onPressed: () {
+                      print("Up Button Pressed");
+                    },
+                    icon: Icons.arrow_drop_up,
+                    iconSize: iconSize,
+                    radiusTopLeft: 12,
+                    radiusTopRight: 12,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.translate(
+                      offset: Offset(0.5, 0),
+                      child: ControlButton(
+                        onPressed: () {
+                          print("Left Button Pressed");
+                        },
+                        icon: Icons.arrow_left,
+                        iconSize: iconSize,
+                        radiusTopLeft: 12,
+                        radiusBottomLeft: 12,
+                      ),
+                    ),
+                    ControlButton(
+                      onPressed: () {
+                        print("Center Button Pressed");
+                      },
+                      icon: Icons.circle,
+                      iconSize: iconSize * 0.75,
+                      paddingSize: iconSize * 11.0 / 24.0,
+                    ),
+                    Transform.translate(
+                      offset: Offset(-0.5, 0),
+                      child: ControlButton(
+                        onPressed: () {
+                          print("Right Button Pressed");
+                        },
+                        icon: Icons.arrow_right,
+                        iconSize: iconSize,
+                        radiusTopRight: 12,
+                        radiusBottomRight: 12,
+                      ),
+                    ),
+                  ],
+                ),
+                Transform.translate(
+                  offset: Offset(0, -0.5),
+                  child: ControlButton(
+                    onPressed: () {
+                      print("Down Button Pressed");
+                    },
+                    icon: Icons.arrow_drop_down,
+                    iconSize: iconSize,
+                    radiusBottomLeft: 12,
+                    radiusBottomRight: 12,
+                  ),
+                ),
+              ],
+            ),
         )
     );
   }
 }
 
+
+class ControlButton extends StatelessWidget {
+  const ControlButton({
+    super.key,
+    required this.onPressed,
+    required this.icon,
+    required this.iconSize,
+    this.paddingSize,
+    this.radiusTopLeft = 0.0,
+    this.radiusTopRight = 0.0,
+    this.radiusBottomLeft = 0.0,
+    this.radiusBottomRight = 0.0,
+  });
+
+  final VoidCallback? onPressed;
+  final IconData icon;
+  final double iconSize;
+  final double? paddingSize;
+  final double radiusTopLeft, radiusTopRight, radiusBottomLeft, radiusBottomRight;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        disabledForegroundColor: Theme.of(context).colorScheme.primaryContainer,
+        disabledBackgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+        minimumSize: Size(0, 0),
+        padding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(radiusTopLeft),
+              topRight: Radius.circular(radiusTopRight),
+              bottomLeft: Radius.circular(radiusBottomLeft),
+              bottomRight: Radius.circular(radiusBottomRight),
+            )
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(paddingSize ?? iconSize / 3.0),
+        child: Icon(
+          icon,
+          size: iconSize,
+        ),
+      ),
+    );
+  }
+}
