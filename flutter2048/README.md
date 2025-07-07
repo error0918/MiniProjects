@@ -5,6 +5,6 @@
 </div>
 
 > 2048 implemented int flutter    
-> Dart, Flutter
+> Dart, Flutter, MVVM
 
 Dart + Flutter 공부용

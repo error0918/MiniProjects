@@ -345,9 +345,27 @@ enum ExtendedColor {
     required this.dark,
   });
 
+  static const _map = {
+    2: color2,
+    4: color4,
+    8: color8,
+    16: color16,
+    32: color32,
+    64: color64,
+    128: color128,
+    256: color256,
+    512: color512,
+    1024: color1024,
+    2048: color2048,
+  };
+
   final Color value;
   final ColorFamily light;
   final ColorFamily dark;
+
+  static ExtendedColor get(int block) {
+    return _map[block] ?? colorBig;
+  }
 
   ColorFamily of(BuildContext context) =>
       Theme.of(context).brightness == Brightness.light ? light : dark;
