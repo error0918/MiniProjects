@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter2048/viewmodel/game_view_model.dart';
 import 'package:provider/provider.dart';
 
-import 'theme.dart' as theme;
+import '/viewmodel/game_view_model.dart';
+import '/view/theme.dart' as theme;
 
 
 class BoardWidget extends StatefulWidget {
@@ -14,14 +14,15 @@ class BoardWidget extends StatefulWidget {
   createState() => _BoardWidgetState();
 }
 
+
 class _BoardWidgetState extends State<BoardWidget> {
-  final int _itemNumber = 4;
+  late GameViewModel _gameViewModel;
   late double _itemSize;
   late double _itemPadding;
   late double _itemFontSize;
 
   void _calculateSizes() {
-    _itemSize = widget.size / (_itemNumber + 0.2 * (_itemNumber + 1));
+    _itemSize = widget.size / (_gameViewModel.size + 0.2 * (_gameViewModel.size + 1));
     _itemPadding = 0.2 * _itemSize;
     _itemFontSize = 1.0 / 3.0 * _itemSize;
   }
@@ -29,6 +30,7 @@ class _BoardWidgetState extends State<BoardWidget> {
   @override
   void initState() {
     super.initState();
+    _gameViewModel = Provider.of<GameViewModel>(context, listen: false);
     _calculateSizes();
   }
 
@@ -55,10 +57,10 @@ class _BoardWidgetState extends State<BoardWidget> {
         child: Consumer<GameViewModel>(builder: (context, provider, child) {
           return Row(
             spacing: _itemPadding,
-            children: List<Widget>.generate(_itemNumber, (int rowIndex) {
+            children: List<Widget>.generate(_gameViewModel.size, (int rowIndex) {
               return Column(
                   spacing: _itemPadding,
-                  children: List<Widget>.generate(_itemNumber, (int colIndex) {
+                  children: List<Widget>.generate(_gameViewModel.size, (int colIndex) {
                     final block = provider.board[rowIndex][colIndex];
                     if (block != 0) {
                       return Container(

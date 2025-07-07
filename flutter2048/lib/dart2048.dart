@@ -73,7 +73,6 @@ class G2048 {
   }
 
   void _move(Direction direction) {
-
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
         final row = direction == Direction.down ? size - i - 1 : i;

@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter2048/viewmodel/game_view_model.dart';
+import 'package:provider/provider.dart';
 
-import 'board_widget.dart';
-import 'controller_widget.dart';
+import '/view/board_widget.dart';
+import '/view/controller_widget.dart';
 
 
 class GameHomePage extends StatelessWidget {
@@ -23,7 +25,7 @@ class GameHomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                print("Icon Button Pressed");
+                Provider.of<GameViewModel>(context, listen: false).playNewGame();
               },
               icon: Row(
                 spacing: 4.0,

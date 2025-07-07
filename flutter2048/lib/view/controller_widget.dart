@@ -1,92 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '/model/game.dart';
+import '/viewmodel/game_view_model.dart';
 
 
 class ControllerWidget extends StatefulWidget {
-  const ControllerWidget({super.key, this.size = 0.0});
-
   final double size;
+
+  const ControllerWidget({super.key, this.size = 0.0});
 
   @override
   createState() => _ControllerWidgetState();
 }
 
+
 class _ControllerWidgetState extends State<ControllerWidget> {
   @override
   Widget build(BuildContext context) {
     final iconSize = 28.0 * (0.75 + widget.size / 600.0);
-
     return Expanded(
         child: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainer,
             borderRadius: BorderRadius.circular(12.0),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Transform.translate(
-                offset: Offset(0, 0.5),
-                child: ControlButton(
-                  onPressed: () {
-                    print("Up Button Pressed");
-                  },
-                  icon: Icons.arrow_drop_up,
-                  iconSize: iconSize,
-                  radiusTopLeft: 12,
-                  radiusTopRight: 12,
+          child: Consumer<GameViewModel>(builder: (context, provider, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Transform.translate(
+                  offset: Offset(0, 0.5),
+                  child: ControlButton(
+                    onPressed: !provider.ableCol ? null : () => provider.process(Direction.up),
+                    icon: Icons.arrow_drop_up,
+                    iconSize: iconSize,
+                    radiusTopLeft: 12,
+                    radiusTopRight: 12,
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Transform.translate(
-                    offset: Offset(0.5, 0),
-                    child: ControlButton(
-                      onPressed: () {
-                        print("Left Button Pressed");
-                      },
-                      icon: Icons.arrow_left,
-                      iconSize: iconSize,
-                      radiusTopLeft: 12,
-                      radiusBottomLeft: 12,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.translate(
+                      offset: Offset(0.5, 0),
+                      child: ControlButton(
+                        onPressed: !provider.ableRow ? null : () => provider.process(Direction.left),
+                        icon: Icons.arrow_left,
+                        iconSize: iconSize,
+                        radiusTopLeft: 12,
+                        radiusBottomLeft: 12,
+                      ),
                     ),
-                  ),
-                  ControlButton(
-                    onPressed: () {
-                      print("Center Button Pressed");
-                    },
-                    icon: Icons.circle,
-                    iconSize: iconSize * 0.75,
-                    paddingSize: iconSize * 11.0 / 24.0,
-                  ),
-                  Transform.translate(
-                    offset: Offset(-0.5, 0),
-                    child: ControlButton(
-                      onPressed: () {
-                        print("Right Button Pressed");
-                      },
-                      icon: Icons.arrow_right,
-                      iconSize: iconSize,
-                      radiusTopRight: 12,
-                      radiusBottomRight: 12,
+                    ControlButton(
+                      onPressed: !provider.free ? null : () => provider.add(),
+                      icon: Icons.circle,
+                      iconSize: iconSize * 0.75,
+                      paddingSize: iconSize * 11.0 / 24.0,
                     ),
-                  ),
-                ],
-              ),
-              Transform.translate(
-                offset: Offset(0, -0.5),
-                child: ControlButton(
-                  onPressed: () {
-                    print("Down Button Pressed");
-                  },
-                  icon: Icons.arrow_drop_down,
-                  iconSize: iconSize,
-                  radiusBottomLeft: 12,
-                  radiusBottomRight: 12,
+                    Transform.translate(
+                      offset: Offset(-0.5, 0),
+                      child: ControlButton(
+                        onPressed: !provider.ableRow ? null : () => provider.process(Direction.right),
+                        icon: Icons.arrow_right,
+                        iconSize: iconSize,
+                        radiusTopRight: 12,
+                        radiusBottomRight: 12,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
+                Transform.translate(
+                  offset: Offset(0, -0.5),
+                  child: ControlButton(
+                    onPressed: !provider.ableCol ? null : () => provider.process(Direction.down),
+                    icon: Icons.arrow_drop_down,
+                    iconSize: iconSize,
+                    radiusBottomLeft: 12,
+                    radiusBottomRight: 12,
+                  ),
+                ),
+              ],
+            );
+          })
         )
     );
   }
