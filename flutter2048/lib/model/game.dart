@@ -76,8 +76,7 @@ class Game {
           case Direction.up:
             for (int k = row - 1; k > -1; k--) {
               final compareItem = _game[k][column];
-              if (compareItem.ticket == _ticket) continue;
-              if (compareItem == targetItem) {
+              if (compareItem.ticket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
                 _game[k][column].number *= 2;
                 _game[k][column].ticket = _ticket;
@@ -97,8 +96,7 @@ class Game {
           case Direction.down:
             for (int k = row + 1; k < size; k++) {
               final compareItem = _game[k][column];
-              if (compareItem.ticket == _ticket) continue;
-              if (compareItem == targetItem) {
+              if (compareItem.ticket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
                 _game[k][column].number *= 2;
                 _game[k][column].ticket = _ticket;
@@ -118,8 +116,7 @@ class Game {
           case Direction.left:
             for (int k = column - 1; k > -1; k--) {
               final compareItem = _game[row][k];
-              if (compareItem.ticket == _ticket) continue;
-              if (compareItem == targetItem) {
+              if (compareItem.ticket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
                 _game[row][k].number *= 2;
                 _game[row][k].ticket = _ticket;
@@ -139,8 +136,7 @@ class Game {
           case Direction.right:
             for (int k = column + 1; k < size; k++) {
               final compareItem = _game[row][k];
-              if (compareItem.ticket == _ticket) continue;
-              if (compareItem == targetItem) {
+              if (compareItem.ticket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
                 _game[row][k].number *= 2;
                 _game[row][k].ticket = _ticket;
