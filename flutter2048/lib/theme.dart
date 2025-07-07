@@ -1,5 +1,14 @@
 import "package:flutter/material.dart";
 
+/*
+ * Primary: #927451
+ * Secondary: #CD9000
+ * Tertiary: #FF734E
+ * Error: #FF5449
+ * Neutral: #F9EFEA
+ * Neutral Variant: #FFC295
+ */
+
 
 ThemeData theme(ColorScheme colorScheme, TextTheme textTheme) => ThemeData(
   useMaterial3: true,
@@ -26,102 +35,124 @@ ThemeData dark({TextTheme textTheme = const TextTheme()}) {
 ColorScheme lightScheme() {
   return const ColorScheme(
     brightness: Brightness.light,
-    primary: Color(0xff835414),
-    surfaceTint: Color(0xff835414),
+
+    primary: Color(0xff684c38),
+    surfaceTint: Color(0xff755843),
     onPrimary: Color(0xffffffff),
-    primaryContainer: Color(0xffffddb9),
-    onPrimaryContainer: Color(0xff663e00),
-    secondary: Color(0xff8f4b39),
+    primaryContainer: Color(0xff82644e),
+    onPrimaryContainer: Color(0xffffe7d7),
+
+    secondary: Color(0xff7e5700),
     onSecondary: Color(0xffffffff),
-    secondaryContainer: Color(0xffffdbd2),
-    onSecondaryContainer: Color(0xff723524),
-    tertiary: Color(0xff7c580d),
+    secondaryContainer: Color(0xffcd9000),
+    onSecondaryContainer: Color(0xff462f00),
+
+    tertiary: Color(0xffaa3616),
     onTertiary: Color(0xffffffff),
-    tertiaryContainer: Color(0xffffdeab),
-    onTertiaryContainer: Color(0xff5f4100),
-    error: Color(0xff904a43),
+    tertiaryContainer: Color(0xffff734e),
+    onTertiaryContainer: Color(0xff691500),
+
+    error: Color(0xffb41c1b),
     onError: Color(0xffffffff),
-    errorContainer: Color(0xffffdad6),
-    onErrorContainer: Color(0xff73332d),
+    errorContainer: Color(0xffd83831),
+    onErrorContainer: Color(0xfffffbff),
+
     surface: Color(0xfffff8f5),
-    onSurface: Color(0xff221a15),
-    onSurfaceVariant: Color(0xff52443c),
-    outline: Color(0xff84746b),
-    outlineVariant: Color(0xffd7c2b8),
+    onSurface: Color(0xff221a14),
+    onSurfaceVariant: Color(0xff51443b),
+
+    outline: Color(0xff7f7669),
+    outlineVariant: Color(0xffd1c5b6),
+
     shadow: Color(0xff000000),
     scrim: Color(0xff000000),
-    inverseSurface: Color(0xff382e29),
-    inversePrimary: Color(0xfff9bb72),
-    primaryFixed: Color(0xffffddb9),
-    onPrimaryFixed: Color(0xff2b1700),
-    primaryFixedDim: Color(0xfff9bb72),
-    onPrimaryFixedVariant: Color(0xff663e00),
-    secondaryFixed: Color(0xffffdbd2),
-    onSecondaryFixed: Color(0xff3a0a01),
-    secondaryFixedDim: Color(0xffffb4a1),
-    onSecondaryFixedVariant: Color(0xff723524),
-    tertiaryFixed: Color(0xffffdeab),
-    onTertiaryFixed: Color(0xff271900),
-    tertiaryFixedDim: Color(0xffefbf6d),
-    onTertiaryFixedVariant: Color(0xff5f4100),
-    surfaceDim: Color(0xffe7d7cf),
+
+    inverseSurface: Color(0xff362f27),
+    inversePrimary: Color(0xffe5bfa5),
+    primaryFixed: Color(0xffffdcc4),
+    onPrimaryFixed: Color(0xff2b1706),
+    primaryFixedDim: Color(0xffe5bfa5),
+    onPrimaryFixedVariant: Color(0xff5b412d),
+
+    secondaryFixed: Color(0xffffdeac),
+    onSecondaryFixed: Color(0xff281900),
+    secondaryFixedDim: Color(0xfffeba39),
+    onSecondaryFixedVariant: Color(0xff5f4100),
+
+    tertiaryFixed: Color(0xffffdbd2),
+    onTertiaryFixed: Color(0xff3c0800),
+    tertiaryFixedDim: Color(0xffffb4a1),
+    onTertiaryFixedVariant: Color(0xff891f00),
+
+    surfaceDim: Color(0xffe7d7ce),
     surfaceBright: Color(0xfffff8f5),
     surfaceContainerLowest: Color(0xffffffff),
-    surfaceContainerLow: Color(0xfffff1ea),
-    surfaceContainer: Color(0xfffceae2),
-    surfaceContainerHigh: Color(0xfff6e5dd),
-    surfaceContainerHighest: Color(0xfff0dfd7),
+    surfaceContainerLow: Color(0xfffff1e9),
+    surfaceContainer: Color(0xfffbebe1),
+    surfaceContainerHigh: Color(0xfff5e5db),
+    surfaceContainerHighest: Color(0xffefdfd6),
   );
 }
 
 ColorScheme darkScheme() {
   return const ColorScheme(
     brightness: Brightness.dark,
-    primary: Color(0xfff9bb72),
-    surfaceTint: Color(0xfff9bb72),
-    onPrimary: Color(0xff472a00),
-    primaryContainer: Color(0xff663e00),
-    onPrimaryContainer: Color(0xffffddb9),
-    secondary: Color(0xffffb4a1),
-    onSecondary: Color(0xff561f10),
-    secondaryContainer: Color(0xff723524),
-    onSecondaryContainer: Color(0xffffdbd2),
-    tertiary: Color(0xffefbf6d),
-    onTertiary: Color(0xff422c00),
-    tertiaryContainer: Color(0xff5f4100),
-    onTertiaryContainer: Color(0xffffdeab),
+
+    primary: Color(0xffe5bfa5),
+    surfaceTint: Color(0xffe5bfa5),
+    onPrimary: Color(0xff422b19),
+    primaryContainer: Color(0xff82644e),
+    onPrimaryContainer: Color(0xffffe7d7),
+
+    secondary: Color(0xfffeba39),
+    onSecondary: Color(0xff422c00),
+    secondaryContainer: Color(0xffcd9000),
+    onSecondaryContainer: Color(0xff462f00),
+
+    tertiary: Color(0xffffb4a1),
+    onTertiary: Color(0xff611300),
+    tertiaryContainer: Color(0xffff734e),
+    onTertiaryContainer: Color(0xff691500),
+
     error: Color(0xffffb4ab),
-    onError: Color(0xff561e19),
-    errorContainer: Color(0xff73332d),
-    onErrorContainer: Color(0xffffdad6),
-    surface: Color(0xff1a120d),
-    onSurface: Color(0xfff0dfd7),
-    onSurfaceVariant: Color(0xffd7c2b8),
-    outline: Color(0xff9f8d83),
-    outlineVariant: Color(0xff52443c),
+    onError: Color(0xff690005),
+    errorContainer: Color(0xffff5449),
+    onErrorContainer: Color(0xff5c0004),
+
+    surface: Color(0xff19120d),
+    onSurface: Color(0xffefdfd6),
+    onSurfaceVariant: Color(0xffd6c3b7),
+
+    outline: Color(0xff9a8f82),
+    outlineVariant: Color(0xff4e463a),
+
     shadow: Color(0xff000000),
     scrim: Color(0xff000000),
-    inverseSurface: Color(0xfff0dfd7),
-    inversePrimary: Color(0xff835414),
-    primaryFixed: Color(0xffffddb9),
-    onPrimaryFixed: Color(0xff2b1700),
-    primaryFixedDim: Color(0xfff9bb72),
-    onPrimaryFixedVariant: Color(0xff663e00),
-    secondaryFixed: Color(0xffffdbd2),
-    onSecondaryFixed: Color(0xff3a0a01),
-    secondaryFixedDim: Color(0xffffb4a1),
-    onSecondaryFixedVariant: Color(0xff723524),
-    tertiaryFixed: Color(0xffffdeab),
-    onTertiaryFixed: Color(0xff271900),
-    tertiaryFixedDim: Color(0xffefbf6d),
-    onTertiaryFixedVariant: Color(0xff5f4100),
-    surfaceDim: Color(0xff1a120d),
-    surfaceBright: Color(0xff413732),
+
+    inverseSurface: Color(0xffe7e1df),
+    inversePrimary: Color(0xff755843),
+    primaryFixed: Color(0xffffdcc4),
+    onPrimaryFixed: Color(0xff2b1706),
+    primaryFixedDim: Color(0xffe5bfa5),
+    onPrimaryFixedVariant: Color(0xff5b412d),
+
+    secondaryFixed: Color(0xffffdeac),
+    onSecondaryFixed: Color(0xff281900),
+    secondaryFixedDim: Color(0xfffeba39),
+    onSecondaryFixedVariant: Color(0xff5f4100),
+
+    tertiaryFixed: Color(0xffffdbd2),
+    onTertiaryFixed: Color(0xff3c0800),
+    tertiaryFixedDim: Color(0xffffb4a1),
+    onTertiaryFixedVariant: Color(0xff891f00),
+
+    surfaceDim: Color(0xff19120d),
+    surfaceBright: Color(0xff413731),
     surfaceContainerLowest: Color(0xff140d08),
-    surfaceContainerLow: Color(0xff221a15),
-    surfaceContainer: Color(0xff261e19),
-    surfaceContainerHigh: Color(0xff312823),
-    surfaceContainerHighest: Color(0xff3d332d),
+    surfaceContainerLow: Color(0xff221a14),
+    surfaceContainer: Color(0xff261e18),
+    surfaceContainerHigh: Color(0xff312822),
+    surfaceContainerHighest: Color(0xff3c332d),
   );
 }
 
@@ -130,8 +161,8 @@ enum ExtendedColor {
   color2(
     value: Color(0xffffdfce),
     light: ColorFamily(
-      color: Color(0xff8c4f26),
-      onColor: Color(0xffffffff),
+      color: Color(0xffffdfce),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdbc8),
       onColorContainer: Color(0xff6f3811),
     ),
@@ -145,8 +176,8 @@ enum ExtendedColor {
   color4(
     value: Color(0xffd59874),
     light: ColorFamily(
-      color: Color(0xff8c4f27),
-      onColor: Color(0xffffffff),
+      color: Color(0xffd59874),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdbc8),
       onColorContainer: Color(0xff6f3811),
     ),
@@ -160,7 +191,7 @@ enum ExtendedColor {
   color8(
     value: Color(0xffde6d4f),
     light: ColorFamily(
-      color: Color(0xff8f4b39),
+      color: Color(0xffde6d4f),
       onColor: Color(0xffffffff),
       colorContainer: Color(0xffffdbd2),
       onColorContainer: Color(0xff723524),
@@ -175,7 +206,7 @@ enum ExtendedColor {
   color16(
     value: Color(0xffff6841),
     light: ColorFamily(
-      color: Color(0xff8f4b3a),
+      color: Color(0xffff6841),
       onColor: Color(0xffffffff),
       colorContainer: Color(0xffffdbd2),
       onColorContainer: Color(0xff723524),
@@ -190,7 +221,7 @@ enum ExtendedColor {
   color32(
     value: Color(0xfff65429),
     light: ColorFamily(
-      color: Color(0xff8f4b39),
+      color: Color(0xfff65429),
       onColor: Color(0xffffffff),
       colorContainer: Color(0xffffdbd2),
       onColorContainer: Color(0xff723524),
@@ -205,7 +236,7 @@ enum ExtendedColor {
   color64(
     value: Color(0xffc02e00),
     light: ColorFamily(
-      color: Color(0xff8f4b39),
+      color: Color(0xffc02e00),
       onColor: Color(0xffffffff),
       colorContainer: Color(0xffffdbd2),
       onColorContainer: Color(0xff723524),
@@ -220,7 +251,7 @@ enum ExtendedColor {
   color128(
     value: Color(0xff9e2400),
     light: ColorFamily(
-      color: Color(0xff8f4b3a),
+      color: Color(0xff9e2400),
       onColor: Color(0xffffffff),
       colorContainer: Color(0xffffdbd2),
       onColorContainer: Color(0xff723524),
@@ -235,8 +266,8 @@ enum ExtendedColor {
   color256(
     value: Color(0xffebcea1),
     light: ColorFamily(
-      color: Color(0xff7b580d),
-      onColor: Color(0xffffffff),
+      color: Color(0xffebcea1),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdeaa),
       onColorContainer: Color(0xff5f4100),
     ),
@@ -250,8 +281,8 @@ enum ExtendedColor {
   color512(
     value: Color(0xffddbf92),
     light: ColorFamily(
-      color: Color(0xff7c580d),
-      onColor: Color(0xffffffff),
+      color: Color(0xffddbf92),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdeac),
       onColorContainer: Color(0xff604100),
     ),
@@ -265,8 +296,8 @@ enum ExtendedColor {
   color1024(
     value: Color(0xfff0bb60),
     light: ColorFamily(
-      color: Color(0xff7c580d),
-      onColor: Color(0xffffffff),
+      color: Color(0xfff0bb60),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdeac),
       onColorContainer: Color(0xff5f4100),
     ),
@@ -280,8 +311,8 @@ enum ExtendedColor {
   color2048(
     value: Color(0xffe8a400),
     light: ColorFamily(
-      color: Color(0xff7c580d),
-      onColor: Color(0xffffffff),
+      color: Color(0xffe8a400),
+      onColor: Color(0xff382f28),
       colorContainer: Color(0xffffdeab),
       onColorContainer: Color(0xff5f4100),
     ),
@@ -293,18 +324,18 @@ enum ExtendedColor {
     ),
   ),
   colorBig(
-    value: Color(0xff654500),
+    value: Color(0xffEFBF6D),
     light: ColorFamily(
-      color: Color(0xff7c580d),
-      onColor: Color(0xffffffff),
-      colorContainer: Color(0xffffdeac),
+      color: Color(0xffEFBF6D),
+      onColor: Color(0xff382f28),
+      colorContainer: Color(0xffffdeab),
       onColorContainer: Color(0xff5f4100),
     ),
     dark: ColorFamily(
-      color: Color(0xfff0bf6d),
-      onColor: Color(0xff432c00),
+      color: Color(0xffefbf6d),
+      onColor: Color(0xff422c00),
       colorContainer: Color(0xff5f4100),
-      onColorContainer: Color(0xffffdeac),
+      onColorContainer: Color(0xffffdeab),
     ),
   );
 
@@ -317,6 +348,9 @@ enum ExtendedColor {
   final Color value;
   final ColorFamily light;
   final ColorFamily dark;
+
+  ColorFamily of(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.light ? light : dark;
 }
 
 

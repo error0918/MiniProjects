@@ -1,7 +1,7 @@
 import 'dart:math';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import './theme.dart' as theme;
+import './theme.dart' show ExtendedColor;
 
 
 void main() => runApp(const MyApp());
@@ -99,10 +99,12 @@ class _BoardWidgetState extends State<BoardWidget> {
   final int _itemNumber = 4;
   late double _itemSize;
   late double _itemPadding;
+  late double _itemFontSize;
 
   void _calculateSizes() {
-    _itemSize = widget.size / (_itemNumber + 0.25 * (_itemNumber + 1));
-    _itemPadding = 0.25 * _itemSize;
+    _itemSize = widget.size / (_itemNumber + 0.2 * (_itemNumber + 1));
+    _itemPadding = 0.2 * _itemSize;
+    _itemFontSize = 1.0 / 3.0 * _itemSize;
   }
 
   @override
@@ -126,7 +128,7 @@ class _BoardWidgetState extends State<BoardWidget> {
       width: widget.size,
       height: widget.size,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
+        color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Padding(
@@ -142,7 +144,12 @@ class _BoardWidgetState extends State<BoardWidget> {
                       width: _itemSize,
                       height: _itemSize,
                       decoration: BoxDecoration(
-                        color: theme.ExtendedColor.color16.light.color,
+                        color: ExtendedColor.color16.of(context).color,
+                        border: Border.all(
+                            width: 4,
+                            color: Theme.of(context).brightness == Brightness.light ? Colors.transparent
+                                : Theme.of(context).colorScheme.onPrimary
+                        ),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Center(
@@ -150,8 +157,8 @@ class _BoardWidgetState extends State<BoardWidget> {
                           "16",
                           maxLines: 1,
                           style: TextStyle(
-                              color: theme.ExtendedColor.color16.light.onColor,
-                              fontSize: 24.0,
+                              color: ExtendedColor.color16.of(context).onColor,
+                              fontSize: _itemFontSize,
                               fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -162,7 +169,12 @@ class _BoardWidgetState extends State<BoardWidget> {
                       width: _itemSize,
                       height: _itemSize,
                       decoration: BoxDecoration(
-                        color: theme.ExtendedColor.color2.light.color,
+                        color: ExtendedColor.color2.of(context).color,
+                        border: Border.all(
+                          width: 4,
+                          color: Theme.of(context).brightness == Brightness.light ? Colors.transparent
+                              : Theme.of(context).colorScheme.onPrimary
+                        ),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Center(
@@ -170,8 +182,8 @@ class _BoardWidgetState extends State<BoardWidget> {
                           "2",
                           maxLines: 1,
                           style: TextStyle(
-                            color: theme.ExtendedColor.color2.light.onColor,
-                            fontSize: 24.0,
+                            color: ExtendedColor.color2.of(context).onColor,
+                            fontSize: _itemFontSize,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -182,7 +194,7 @@ class _BoardWidgetState extends State<BoardWidget> {
                       width: _itemSize,
                       height: _itemSize,
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+                        color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(31),
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                     );
