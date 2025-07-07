@@ -95,6 +95,31 @@ class BoardWidget extends StatefulWidget {
 }
 
 class _BoardWidgetState extends State<BoardWidget> {
+
+  final int _itemNumber = 4;
+  late double _itemSize;
+  late double _itemPadding;
+
+  void _calculateSizes() {
+    _itemSize = widget.size / (_itemNumber + 0.25 * (_itemNumber + 1));
+    _itemPadding = 0.25 * _itemSize;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateSizes();
+  }
+
+  @override
+  void didUpdateWidget(BoardWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.size != oldWidget.size) {
+      _calculateSizes();
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,6 +128,69 @@ class _BoardWidgetState extends State<BoardWidget> {
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(_itemPadding),
+        child: Row(
+          spacing: _itemPadding,
+          children: List<Widget>.generate(_itemNumber, (int rowIndex) {
+            return Column(
+                spacing: _itemPadding,
+                children: List<Widget>.generate(_itemNumber, (int colIndex) {
+                  if (rowIndex == 2 && colIndex == 3) {
+                    return Container(
+                      width: _itemSize,
+                      height: _itemSize,
+                      decoration: BoxDecoration(
+                        color: theme.ExtendedColor.color16.light.color,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "16",
+                          maxLines: 1,
+                          style: TextStyle(
+                              color: theme.ExtendedColor.color16.light.onColor,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (rowIndex == 0 && colIndex == 2) {
+                    return Container(
+                      width: _itemSize,
+                      height: _itemSize,
+                      decoration: BoxDecoration(
+                        color: theme.ExtendedColor.color2.light.color,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "2",
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: theme.ExtendedColor.color2.light.onColor,
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      width: _itemSize,
+                      height: _itemSize,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                    );
+                  }
+                })
+            );
+          }),
+        ),
       ),
     );
   }
