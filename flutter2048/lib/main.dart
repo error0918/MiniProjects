@@ -61,6 +61,9 @@ class _MyAppState extends State<MyApp> {
               case LogicalKeyboardKey.shiftLeft:
               case LogicalKeyboardKey.shiftRight:
                 if (_gameViewModel.free) _gameViewModel.add();
+              case LogicalKeyboardKey.keyQ:
+              case LogicalKeyboardKey.slash:
+                _gameViewModel.autoProcess();
             }
           }
         },

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import '/model/game.dart';
@@ -17,6 +18,17 @@ class GameViewModel extends ChangeNotifier {
   void playNewGame({ int size = 4 }) {
     _game = Game(size: size);
     notifyListeners();
+  }
+
+  void autoProcess() {
+    final (ableCol_, ableRow_) = (ableCol, ableRow);
+    if (ableCol_ && ableRow_) {
+      process([Direction.up, Direction.down, Direction.left, Direction.right][Random().nextInt(4)]);
+    } else if (ableCol_) {
+      process([Direction.up, Direction.down][Random().nextInt(2)]);
+    } else if (ableRow_) {
+      process([Direction.left, Direction.right][Random().nextInt(2)]);
+    }
   }
 
   void process(Direction direction) {

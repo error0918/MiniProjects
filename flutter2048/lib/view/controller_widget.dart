@@ -26,59 +26,87 @@ class _ControllerWidgetState extends State<ControllerWidget> {
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: Consumer<GameViewModel>(builder: (context, provider, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            return Stack(
+              alignment: Alignment.center,
               children: [
-                Transform.translate(
-                  offset: Offset(0, 0.5),
+                Positioned(
+                  top: 12.0,
+                  right: 12.0,
                   child: ControlButton(
-                    onPressed: !provider.ableCol ? null : () => provider.process(Direction.up),
-                    icon: Icons.arrow_drop_up,
+                    onPressed: !provider.able ? null : () => provider.autoProcess(),
+                    icon: Icons.play_arrow,
                     iconSize: iconSize,
                     radiusTopLeft: 12,
                     radiusTopRight: 12,
+                    radiusBottomLeft: 12,
+                    radiusBottomRight: 12,
                   ),
                 ),
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.translate(
-                      offset: Offset(0.5, 0),
+                      offset: Offset(0, 0.5),
                       child: ControlButton(
-                        onPressed: !provider.ableRow ? null : () => provider.process(Direction.left),
-                        icon: Icons.arrow_left,
+                        onPressed: !provider.ableCol ? null : () => provider.process(Direction.up),
+                        icon: Icons.arrow_drop_up,
                         iconSize: iconSize,
                         radiusTopLeft: 12,
-                        radiusBottomLeft: 12,
+                        radiusTopRight: 12,
                       ),
                     ),
-                    ControlButton(
-                      onPressed: !provider.free ? null : () => provider.add(),
-                      icon: Icons.circle,
-                      iconSize: iconSize * 0.75,
-                      paddingSize: iconSize * 11.0 / 24.0,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Transform.translate(
+                          offset: Offset(0.5, 0),
+                          child: ControlButton(
+                            onPressed: !provider.ableRow ? null : () => provider.process(Direction.left),
+                            icon: Icons.arrow_left,
+                            iconSize: iconSize,
+                            radiusTopLeft: 12,
+                            radiusBottomLeft: 12,
+                          ),
+                        ),
+                        ControlButton(
+                          onPressed: !provider.free ? null : () => provider.add(),
+                          icon: Icons.circle,
+                          iconSize: iconSize * 0.75,
+                          paddingSize: iconSize * 11.0 / 24.0,
+                        ),
+                        Transform.translate(
+                          offset: Offset(-0.5, 0),
+                          child: ControlButton(
+                            onPressed: !provider.ableRow ? null : () => provider.process(Direction.right),
+                            icon: Icons.arrow_right,
+                            iconSize: iconSize,
+                            radiusTopRight: 12,
+                            radiusBottomRight: 12,
+                          ),
+                        ),
+                      ],
                     ),
                     Transform.translate(
-                      offset: Offset(-0.5, 0),
+                      offset: Offset(0, -0.5),
                       child: ControlButton(
-                        onPressed: !provider.ableRow ? null : () => provider.process(Direction.right),
-                        icon: Icons.arrow_right,
+                        onPressed: !provider.ableCol ? null : () => provider.process(Direction.down),
+                        icon: Icons.arrow_drop_down,
                         iconSize: iconSize,
-                        radiusTopRight: 12,
+                        radiusBottomLeft: 12,
                         radiusBottomRight: 12,
                       ),
                     ),
                   ],
                 ),
-                Transform.translate(
-                  offset: Offset(0, -0.5),
-                  child: ControlButton(
-                    onPressed: !provider.ableCol ? null : () => provider.process(Direction.down),
-                    icon: Icons.arrow_drop_down,
-                    iconSize: iconSize,
-                    radiusBottomLeft: 12,
-                    radiusBottomRight: 12,
-                  ),
+                Positioned(
+                    bottom: 12.0,
+                    child: Text(
+                      "Max: ${provider.max}, Score: ${provider.score}",
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(127),
+                      ),
+                    )
                 ),
               ],
             );
