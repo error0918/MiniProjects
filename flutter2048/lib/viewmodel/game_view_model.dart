@@ -5,8 +5,9 @@ import '/model/game.dart';
 
 class GameViewModel extends ChangeNotifier {
   Game _game = Game(size: 4);
+  Set<int> showedTiles = {};
 
-  List<List<int>> get board => _game.board;
+  List<List<Tile>> get board => _game.board;
   int get size => _game.size;
   int get max => _game.max;
   int get score => _game.score;
