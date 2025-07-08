@@ -25,7 +25,12 @@ class GameHomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                Provider.of<GameViewModel>(context, listen: false).playNewGame();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return NewGameDialog();
+                    }
+                );
               },
               icon: Row(
                 spacing: 4.0,
@@ -64,6 +69,64 @@ class GameHomePage extends StatelessWidget {
             ),
           )
       ),
+    );
+  }
+}
+
+
+class NewGameDialog extends StatefulWidget {
+  const NewGameDialog({super.key});
+
+  @override
+  createState() => _NewGameDialogState();
+}
+
+
+class _NewGameDialogState extends State<NewGameDialog> {
+  late GameViewModel _gameViewModel;
+  int sliderValue = 4;
+
+  @override
+  void initState() {
+    super.initState();
+    _gameViewModel = Provider.of<GameViewModel>(context, listen: false);
+    sliderValue = _gameViewModel.size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Play New Game"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: 24.0,
+          ),
+          Slider(
+            value: sliderValue.toDouble(),
+            min: 4,
+            max: 8,
+            divisions: 4,
+            year2023: false,
+            label: sliderValue.toString(),
+            onChanged: (value) { setState(() { sliderValue = value.toInt(); }); },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text("Cancel")
+        ),
+        TextButton(
+            onPressed: () {
+              _gameViewModel.playNewGame(size: sliderValue);
+              Navigator.of(context).pop();
+            },
+            child: Text("Play")
+        )
+      ],
     );
   }
 }

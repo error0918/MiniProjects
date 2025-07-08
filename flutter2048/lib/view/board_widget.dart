@@ -52,10 +52,11 @@ class _BoardWidgetState extends State<BoardWidget> {
         color: Theme.of(context).colorScheme.primary,
         borderRadius: BorderRadius.circular(12.0),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(_itemPadding),
-        child: Consumer<GameViewModel>(builder: (context, provider, child) {
-          return Row(
+      child: Consumer<GameViewModel>(builder: (context, provider, child) {
+        _calculateSizes();
+        return Padding(
+          padding: EdgeInsets.all(_itemPadding),
+          child: Row(
             spacing: _itemPadding,
             children: List<Widget>.generate(_gameViewModel.size, (int rowIndex) {
               return Column(
@@ -80,7 +81,7 @@ class _BoardWidgetState extends State<BoardWidget> {
                             maxLines: 1,
                             style: TextStyle(
                               color: theme.ExtendedColor.get(block).of(context).onColor,
-                              fontSize: _itemFontSize,
+                              fontSize: _itemFontSize * (block.toString().length < 4 ? 1.0 : 3.0 / block.toString().length),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -99,9 +100,9 @@ class _BoardWidgetState extends State<BoardWidget> {
                   })
               );
             }),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
