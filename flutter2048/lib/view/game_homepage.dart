@@ -1,10 +1,11 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter2048/viewmodel/game_view_model.dart';
 import 'package:provider/provider.dart';
 
 import '/view/board_widget.dart';
 import '/view/controller_widget.dart';
+import '/view/dialog.dart';
+import '/viewmodel/game_view_model.dart';
 
 
 class GameHomePage extends StatelessWidget {
@@ -12,6 +13,26 @@ class GameHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gameViewModel = Provider.of<GameViewModel>(context, listen: false);
+    gameViewModel.addListener(() {
+      if (gameViewModel.showClear) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return ClearDialog();
+            }
+        );
+      }
+      if (gameViewModel.showGameOver) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return GameOverDialog();
+            }
+        );
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,16 +73,16 @@ class GameHomePage extends StatelessWidget {
                     return Column(
                       spacing: 16.0,
                       children: [
-                        BoardWidget(size: min(width, height - 180 - 16)),
-                        ControllerWidget(size: min(max(height - width - 16, 180.0), width)),
+                        BoardWidget(size: min(width, height - 200 - 16)),
+                        ControllerWidget(size: min(max(height - width - 16, 200.0), width)),
                       ],
                     );
                   } else {
                     return Row(
                       spacing: 16.0,
                       children: [
-                        BoardWidget(size: min(height, width - 180 - 16)),
-                        ControllerWidget(size: min(max(width - height - 16, 180.0), height)),
+                        BoardWidget(size: min(height, width - 200 - 16)),
+                        ControllerWidget(size: min(max(width - height - 16, 200.0), height)),
                       ],
                     );
                   }
@@ -69,64 +90,6 @@ class GameHomePage extends StatelessWidget {
             ),
           )
       ),
-    );
-  }
-}
-
-
-class NewGameDialog extends StatefulWidget {
-  const NewGameDialog({super.key});
-
-  @override
-  createState() => _NewGameDialogState();
-}
-
-
-class _NewGameDialogState extends State<NewGameDialog> {
-  late GameViewModel _gameViewModel;
-  int sliderValue = 4;
-
-  @override
-  void initState() {
-    super.initState();
-    _gameViewModel = Provider.of<GameViewModel>(context, listen: false);
-    sliderValue = _gameViewModel.size;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text("Play New Game"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            height: 24.0,
-          ),
-          Slider(
-            value: sliderValue.toDouble(),
-            min: 4,
-            max: 8,
-            divisions: 4,
-            year2023: false,
-            label: sliderValue.toString(),
-            onChanged: (value) { setState(() { sliderValue = value.toInt(); }); },
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text("Cancel")
-        ),
-        TextButton(
-            onPressed: () {
-              _gameViewModel.playNewGame(size: sliderValue);
-              Navigator.of(context).pop();
-            },
-            child: Text("Play")
-        )
-      ],
     );
   }
 }

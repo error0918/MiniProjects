@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter2048',
+      debugShowCheckedModeBanner: false,
       theme: theme.light(),
       darkTheme: theme.dark(),
       home: KeyboardListener(
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
                 if (_gameViewModel.ableRow) _gameViewModel.process(Direction.right);
               case LogicalKeyboardKey.shiftLeft:
               case LogicalKeyboardKey.shiftRight:
-                if (_gameViewModel.free) _gameViewModel.add();
+                if (_gameViewModel.free) _gameViewModel.process();
               case LogicalKeyboardKey.keyQ:
               case LogicalKeyboardKey.slash:
                 _gameViewModel.autoProcess();

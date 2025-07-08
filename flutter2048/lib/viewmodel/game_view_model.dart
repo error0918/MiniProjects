@@ -3,9 +3,12 @@ import 'package:flutter/foundation.dart';
 
 import '/model/game.dart';
 
+
 class GameViewModel extends ChangeNotifier {
   Game _game = Game(size: 4);
-  Set<int> showedTiles = {};
+  bool _showGameOver = false;
+  bool _showedClear = false;
+  bool _showClear = false;
 
   List<List<Tile>> get board => _game.board;
   int get size => _game.size;
@@ -15,9 +18,20 @@ class GameViewModel extends ChangeNotifier {
   bool get ableCol => _game.ableCol;
   bool get ableRow => _game.ableRow;
   bool get able => _game.able;
+  bool get showClear {
+    final tmp = _showClear;
+    _showClear = false;
+    return tmp;
+  }
+  bool get showGameOver {
+    final tmp = _showGameOver;
+    _showGameOver = false;
+    return tmp;
+  }
 
   void playNewGame({ int size = 4 }) {
     _game = Game(size: size);
+    _showedClear = false;
     notifyListeners();
   }
 
@@ -32,9 +46,14 @@ class GameViewModel extends ChangeNotifier {
     }
   }
 
-  void process(Direction direction) {
-    _game.move(direction);
+  void process([Direction? direction]) {
+    if (direction != null) _game.move(direction);
     _game.add();
+    if (!able) _showGameOver = true;
+    if (!_showedClear && max == 2048) {
+      _showedClear = true;
+      _showClear = true;
+    }
     notifyListeners();
   }
 

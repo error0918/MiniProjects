@@ -69,7 +69,7 @@ class _ControllerWidgetState extends State<ControllerWidget> {
                           ),
                         ),
                         ControlButton(
-                          onPressed: !provider.free ? null : () => provider.add(),
+                          onPressed: !provider.free ? null : () => provider.process(),
                           icon: Icons.circle,
                           iconSize: iconSize * 0.75,
                           paddingSize: iconSize * 11.0 / 24.0,
@@ -99,11 +99,12 @@ class _ControllerWidgetState extends State<ControllerWidget> {
                   ],
                 ),
                 Positioned(
-                    bottom: 12.0,
+                    bottom: 4.0,
                     child: Text(
                       "Max: ${provider.max}, Score: ${provider.score}",
                       maxLines: 1,
                       style: TextStyle(
+                        fontSize: 12.0,
                         color: Theme.of(context).colorScheme.onSurfaceVariant.withAlpha(127),
                       ),
                     )
