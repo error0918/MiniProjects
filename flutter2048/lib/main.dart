@@ -36,40 +36,44 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter2048',
-      debugShowCheckedModeBanner: false,
-      theme: theme.light(),
-      darkTheme: theme.dark(),
-      home: KeyboardListener(
-        focusNode: _focusNode,
-        autofocus: true,
-        onKeyEvent: (event) {
-          if (event is KeyDownEvent) {
-            switch (event.logicalKey) {
-              case LogicalKeyboardKey.keyW:
-              case LogicalKeyboardKey.arrowUp:
-                if (_gameViewModel.ableCol) _gameViewModel.process(Direction.up);
-              case LogicalKeyboardKey.keyD:
-              case LogicalKeyboardKey.arrowDown:
-                if (_gameViewModel.ableCol) _gameViewModel.process(Direction.down);
-              case LogicalKeyboardKey.keyA:
-              case LogicalKeyboardKey.arrowLeft:
-                if (_gameViewModel.ableRow) _gameViewModel.process(Direction.left);
-              case LogicalKeyboardKey.keyD:
-              case LogicalKeyboardKey.arrowRight:
-                if (_gameViewModel.ableRow) _gameViewModel.process(Direction.right);
-              case LogicalKeyboardKey.shiftLeft:
-              case LogicalKeyboardKey.shiftRight:
-                if (_gameViewModel.free) _gameViewModel.process();
-              case LogicalKeyboardKey.keyQ:
-              case LogicalKeyboardKey.slash:
-                _gameViewModel.autoProcess();
+    _gameViewModel.initThemeMode(MediaQuery.of(context).platformBrightness == Brightness.light ? ThemeMode.light : ThemeMode.dark);
+    return Consumer<GameViewModel>(builder: (context, provider, child) {
+      return MaterialApp(
+        title: 'Flutter2048',
+        debugShowCheckedModeBanner: false,
+        theme: theme.light(),
+        darkTheme: theme.dark(),
+        themeMode: provider.themeMode,
+        home: KeyboardListener(
+          focusNode: _focusNode,
+          autofocus: true,
+          onKeyEvent: (event) {
+            if (event is KeyDownEvent) {
+              switch (event.logicalKey) {
+                case LogicalKeyboardKey.keyW:
+                case LogicalKeyboardKey.arrowUp:
+                  if (_gameViewModel.ableCol) _gameViewModel.process(Direction.up);
+                case LogicalKeyboardKey.keyD:
+                case LogicalKeyboardKey.arrowDown:
+                  if (_gameViewModel.ableCol) _gameViewModel.process(Direction.down);
+                case LogicalKeyboardKey.keyA:
+                case LogicalKeyboardKey.arrowLeft:
+                  if (_gameViewModel.ableRow) _gameViewModel.process(Direction.left);
+                case LogicalKeyboardKey.keyD:
+                case LogicalKeyboardKey.arrowRight:
+                  if (_gameViewModel.ableRow) _gameViewModel.process(Direction.right);
+                case LogicalKeyboardKey.shiftLeft:
+                case LogicalKeyboardKey.shiftRight:
+                  if (_gameViewModel.free) _gameViewModel.process();
+                case LogicalKeyboardKey.keyQ:
+                case LogicalKeyboardKey.slash:
+                  _gameViewModel.autoProcess();
+              }
             }
-          }
-        },
-        child: GameHomePage(),
-      ),
-    );
+          },
+          child: GameHomePage(),
+        ),
+      );
+    });
   }
 }

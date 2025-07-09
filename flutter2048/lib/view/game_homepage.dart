@@ -59,8 +59,17 @@ class GameHomePage extends StatelessWidget {
                   Text("New"),
                   Icon(Icons.add_circle_outline_sharp)
                 ],
-              )
-          )
+              ),
+          ),
+          Consumer<GameViewModel>(builder: (context, provider, child) {
+            return IconButton(
+              onPressed: () => gameViewModel.changeThemeMode(),
+              icon: Icon(
+                  provider.themeMode == ThemeMode.light ? Icons.brightness_7_rounded :Icons.brightness_2_rounded
+              ),
+            );
+          }),
+          SizedBox(width: 12.0),
         ],
       ),
       body: Padding(

@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '/model/game.dart';
 
@@ -9,6 +9,7 @@ class GameViewModel extends ChangeNotifier {
   bool _showGameOver = false;
   bool _showedClear = false;
   bool _showClear = false;
+  ThemeMode _themeMode = ThemeMode.light;
 
   List<List<Tile>> get board => _game.board;
   int get size => _game.size;
@@ -28,6 +29,7 @@ class GameViewModel extends ChangeNotifier {
     _showGameOver = false;
     return tmp;
   }
+  ThemeMode get themeMode => _themeMode;
 
   void playNewGame({ int size = 4 }) {
     _game = Game(size: size);
@@ -64,6 +66,15 @@ class GameViewModel extends ChangeNotifier {
 
   void move(Direction direction) {
     _game.move(direction);
+    notifyListeners();
+  }
+
+  void initThemeMode(ThemeMode themeMode) {
+    _themeMode = themeMode;
+  }
+
+  void changeThemeMode() {
+    _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
     notifyListeners();
   }
 }
