@@ -7,6 +7,7 @@ class Game {
   final int size;
   late final List<List<Tile>> _board;
   int _max = 0;
+  int _score = 0;
   int _ticket = 0;
 
   Game({required this.size}) {
@@ -16,7 +17,7 @@ class Game {
 
   List<List<Tile>> get board => List.generate(size, (i) => List.generate(size, (j) => _board[i][j].clone()));
   int get max => _max;
-  int get score => _board.expand((inner) => inner).fold(0, (sum, tile) => sum + tile.number);
+  int get score => _score;
   bool get free => _board.map((inner) => inner.any((it) => it.number == 0)).any((it) => it);
   bool get ableCol {
     if (free) return true;
@@ -58,6 +59,7 @@ class Game {
     _board[swapPosition.$1][swapPosition.$2].number = swapItem;
     _board[swapPosition.$1][swapPosition.$2].changeTicket = _ticket;
 
+    _score += swapItem;
     if (swapItem > _max) _max = swapItem;
     if (time > 1) add(item: item, time: time - 1);
   }

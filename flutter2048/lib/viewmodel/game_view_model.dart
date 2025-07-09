@@ -9,7 +9,7 @@ class GameViewModel extends ChangeNotifier {
   bool _showGameOver = false;
   bool _showedClear = false;
   bool _showClear = false;
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode? _themeMode;
 
   List<List<Tile>> get board => _game.board;
   int get size => _game.size;
@@ -29,7 +29,7 @@ class GameViewModel extends ChangeNotifier {
     _showGameOver = false;
     return tmp;
   }
-  ThemeMode get themeMode => _themeMode;
+  ThemeMode get themeMode => _themeMode ?? ThemeMode.light;
 
   void playNewGame({ int size = 4 }) {
     _game = Game(size: size);
@@ -70,7 +70,7 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void initThemeMode(ThemeMode themeMode) {
-    _themeMode = themeMode;
+    _themeMode ??= themeMode;
   }
 
   void changeThemeMode() {
