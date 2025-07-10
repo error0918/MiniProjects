@@ -16,9 +16,7 @@ class GameViewModel extends ChangeNotifier {
   int get max => _game.max;
   int get score => _game.score;
   bool get free => _game.free;
-  bool get ableCol => _game.ableCol;
-  bool get ableRow => _game.ableRow;
-  bool get able => _game.able;
+  bool get playable => _game.playable;
   bool get showClear {
     final tmp = _showClear;
     _showClear = false;
@@ -38,25 +36,30 @@ class GameViewModel extends ChangeNotifier {
   }
 
   void autoProcess() {
-    final (ableCol_, ableRow_) = (ableCol, ableRow);
-    if (ableCol_ && ableRow_) {
-      process([Direction.up, Direction.down, Direction.left, Direction.right][Random().nextInt(4)]);
-    } else if (ableCol_) {
-      process([Direction.up, Direction.down][Random().nextInt(2)]);
-    } else if (ableRow_) {
-      process([Direction.left, Direction.right][Random().nextInt(2)]);
+    final (ableUp, ableDown, ableLeft, ableRight) = (able(Direction.up), able(Direction.down), able(Direction.left), able(Direction.right));
+    if (ableUp || ableDown || ableLeft || ableRight) {
+      final List<Direction> directions = [];
+      if (ableUp) directions.add(Direction.up);
+      if (ableDown) directions.add(Direction.down);
+      if (ableLeft) directions.add(Direction.left);
+      if (ableRight) directions.add(Direction.right);
+      process(directions[Random().nextInt(directions.length)]);
     }
   }
 
   void process([Direction? direction]) {
     if (direction != null) _game.move(direction);
     _game.add();
-    if (!able) _showGameOver = true;
+    if (!playable) _showGameOver = true;
     if (!_showedClear && max == 2048) {
       _showedClear = true;
       _showClear = true;
     }
     notifyListeners();
+  }
+
+  bool able(Direction direction) {
+    return _game.able(direction);
   }
 
   void add() {

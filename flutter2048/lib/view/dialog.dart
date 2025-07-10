@@ -107,6 +107,7 @@ class _ClearDialogState extends State<ClearDialog> {
           Container(
             height: 100.0,
             decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/wow.gif')
@@ -160,6 +161,7 @@ class _GameOverDialogState extends State<GameOverDialog> {
           Container(
             height: 250.0,
             decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: AssetImage('assets/rickroll.gif')

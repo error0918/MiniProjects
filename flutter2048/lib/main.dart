@@ -52,16 +52,16 @@ class _MyAppState extends State<MyApp> {
               switch (event.logicalKey) {
                 case LogicalKeyboardKey.keyW:
                 case LogicalKeyboardKey.arrowUp:
-                  if (_gameViewModel.ableCol) _gameViewModel.process(Direction.up);
+                  if (_gameViewModel.able(Direction.up)) _gameViewModel.process(Direction.up);
                 case LogicalKeyboardKey.keyD:
                 case LogicalKeyboardKey.arrowDown:
-                  if (_gameViewModel.ableCol) _gameViewModel.process(Direction.down);
+                  if (_gameViewModel.able(Direction.down)) _gameViewModel.process(Direction.down);
                 case LogicalKeyboardKey.keyA:
                 case LogicalKeyboardKey.arrowLeft:
-                  if (_gameViewModel.ableRow) _gameViewModel.process(Direction.left);
+                  if (_gameViewModel.able(Direction.left)) _gameViewModel.process(Direction.left);
                 case LogicalKeyboardKey.keyD:
                 case LogicalKeyboardKey.arrowRight:
-                  if (_gameViewModel.ableRow) _gameViewModel.process(Direction.right);
+                  if (_gameViewModel.able(Direction.right)) _gameViewModel.process(Direction.right);
                 case LogicalKeyboardKey.shiftLeft:
                 case LogicalKeyboardKey.shiftRight:
                   if (_gameViewModel.free) _gameViewModel.process();

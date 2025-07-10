@@ -19,31 +19,38 @@ class Game {
   int get max => _max;
   int get score => _score;
   bool get free => _board.map((inner) => inner.any((it) => it.number == 0)).any((it) => it);
-  bool get ableCol {
-    if (free) return true;
-    for (int i = 0; i < size; i++) {
-      var lastItem = _board[0][i];
-      for (int j = 1; j < size; j++) {
-        if (_board[j][i] == lastItem) return true;
-        lastItem = _board[j][i];
-      }
-    }
-    return false;
-  }
-  bool get ableRow {
-    if (free) return true;
-    for (int i = 0; i < size; i++) {
-      var lastItem = _board[i][0];
-      for (int j = 1; j < size; j++) {
-        if (_board[i][j] == lastItem) return true;
-        lastItem = _board[i][j];
-      }
-    }
-    return false;
-  }
-  bool get able => ableCol || ableRow;
+  bool get playable => free || able(Direction.up) || able(Direction.down) || able(Direction.left) || able(Direction.right);
 
-  void add({ List<int> item = const [2, 4], int time = 1 }) {
+  bool able(Direction direction) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size - 1; j++) {
+        int target, next;
+        switch (direction) {
+          case Direction.up:
+            target = _board[j][i].number;
+            next = _board[j + 1][i].number;
+            break;
+          case Direction.down:
+            target = _board[j + 1][i].number;
+            next = _board[j][i].number;
+            break;
+          case Direction.left:
+            target = _board[i][j].number;
+            next = _board[i][j + 1].number;
+            break;
+          case Direction.right:
+            target = _board[i][j + 1].number;
+            next = _board[i][j].number;
+            break;
+        }
+        if (target == 0 && next != 0) return true;
+        if (target != 0 && target == next) return true;
+      }
+    }
+    return false;
+  }
+
+  void add({List<int> item = const [2, 4], int time = 1}) {
     if (!free) return;
     _ticket++;
 
@@ -76,7 +83,7 @@ class Game {
 
         switch (direction) {
           case Direction.up:
-            for (int k = row - 1; k > -1; k--) {
+            for (int k = row - 1; k >= 0; k--) {
               final compareItem = _board[k][column];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
@@ -116,7 +123,7 @@ class Game {
               }
             }
           case Direction.left:
-            for (int k = column - 1; k > -1; k--) {
+            for (int k = column - 1; k >= 0; k--) {
               final compareItem = _board[row][k];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
