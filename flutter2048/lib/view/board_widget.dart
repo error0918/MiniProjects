@@ -85,15 +85,21 @@ class _BoardWidgetState extends State<BoardWidget> {
                 .where((item) => item.$1.number != 0)
                 .map((item) {
               final tile = item.$1;
+              final isNew = provider.isNew(item.$2, item.$3);
               return AnimatedPositioned(
                 key: ValueKey(tile.id),
                 top: _itemSize * item.$2 + _itemPadding * (item.$2 + 1),
                 left: _itemSize * item.$3 + _itemPadding * (item.$3 + 1),
                 duration: Duration(milliseconds: 100),
                 curve: Curves.easeOutBack,
-                child: _tileWidget(tile),
+                child: AnimatedScale(
+                  scale: isNew ? 0.0 : 1.0,
+                  duration: Duration(milliseconds: 100),
+                  curve: Curves.easeOutBack,
+                  child: _tileWidget(tile),
+                ),
               );
-            })
+            }),
           ],
         );
       }),
@@ -104,6 +110,7 @@ class _BoardWidgetState extends State<BoardWidget> {
     return Container(
       width: _itemSize,
       height: _itemSize,
+      padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: theme.ExtendedColor.get(tile.number).of(context).color,
         border: Border.all(
@@ -113,15 +120,17 @@ class _BoardWidgetState extends State<BoardWidget> {
         borderRadius: BorderRadius.circular(12.0),
       ),
       child: Center(
-        child: Text(
-          tile.number.toString(),
-          maxLines: 1,
-          style: TextStyle(
-            color: theme.ExtendedColor.get(tile.number).of(context).onColor,
-            fontSize: _itemFontSize * (tile.number.toString().length < 4 ? 1.0 : 3.0 / tile.number.toString().length),
-            fontWeight: FontWeight.bold,
+        child: FittedBox(
+          child: Text(
+            tile.number.toString(),
+            maxLines: 1,
+            style: TextStyle(
+              color: theme.ExtendedColor.get(tile.number).of(context).onColor,
+              fontSize: _itemFontSize,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
+        )
       ),
     );
   }

@@ -21,6 +21,10 @@ class Game {
   bool get free => _board.map((inner) => inner.any((it) => it.number == 0)).any((it) => it);
   bool get playable => free || able(Direction.up) || able(Direction.down) || able(Direction.left) || able(Direction.right);
 
+  bool isNew(int row, int column) {
+    return _board[row][column].isNew;
+  }
+
   bool able(Direction direction) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size - 1; j++) {
@@ -186,14 +190,21 @@ class Game {
 class Tile {
   static int _idTicket = 0;
   int _id = _idTicket++;
+  bool _isNew = true;
   int number;
   int changeTicket = 0;
+
   int get id => _id;
+  bool get isNew {
+    final temp = _isNew;
+    _isNew = false;
+    return temp;
+  } // 복제됨..
 
   Tile(this.number);
-  Tile._(this.number, this.changeTicket, this._id);
+  Tile._(this.number, this.changeTicket, this._id, this._isNew);
 
-  Tile clone() => Tile._(number, changeTicket, _id);
+  Tile clone() => Tile._(number, changeTicket, _id, _isNew);
 
   @override
   bool operator ==(Object other) => runtimeType == other.runtimeType && number == (other as Tile).number;

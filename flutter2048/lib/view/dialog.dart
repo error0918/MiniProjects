@@ -306,7 +306,9 @@ class _SetBoardDialogState extends State<SetBoardDialog> {
                   onPressed: targetNumber == 0 ? null
                       : () {
                     setState(() {
-                      newBoard[targetIndex] = targetNumber == 2 ? (0, selectedRow, selectedColumn) : ((targetNumber / 2).toInt(), selectedRow, selectedColumn);
+                      newBoard[targetIndex] = targetNumber == 2
+                          ? (0, selectedRow, selectedColumn)
+                          : ((targetNumber / 2).toInt(), selectedRow, selectedColumn);
                     });
                   },
                   child: Text("-"),
@@ -316,7 +318,9 @@ class _SetBoardDialogState extends State<SetBoardDialog> {
                   onPressed: targetNumber == pow(2, 31) ? null
                       : () {
                     setState(() {
-                      newBoard[targetIndex] = targetNumber == 0 ? (2, selectedRow, selectedColumn) : (targetNumber * 2, selectedRow, selectedColumn);
+                      newBoard[targetIndex] = targetNumber == 0
+                          ? (2, selectedRow, selectedColumn)
+                          : (targetNumber * 2, selectedRow, selectedColumn);
                     });
                   },
                   child: Text("+"),

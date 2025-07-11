@@ -61,6 +61,16 @@ class GameViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isNew(int row, int column) {
+    final isNew = _game.isNew(row, column);
+    if (isNew) {
+      Future.delayed(Duration(milliseconds: 5), () {
+        notifyListeners();
+      });
+    }
+    return isNew;
+  }
+
   bool able(Direction direction) {
     return _game.able(direction);
   }
