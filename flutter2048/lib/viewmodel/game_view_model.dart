@@ -9,6 +9,7 @@ class GameViewModel extends ChangeNotifier {
   bool _showGameOver = false;
   bool _showedClear = false;
   bool _showClear = false;
+  bool _edited = false;
   ThemeMode? _themeMode;
 
   List<List<Tile>> get board => _game.board;
@@ -27,11 +28,13 @@ class GameViewModel extends ChangeNotifier {
     _showGameOver = false;
     return tmp;
   }
+  bool get edited => _edited;
   ThemeMode get themeMode => _themeMode ?? ThemeMode.light;
 
   void playNewGame({ int size = 4 }) {
     _game = Game(size: size);
     _showedClear = false;
+    _edited = false;
     notifyListeners();
   }
 
@@ -69,6 +72,12 @@ class GameViewModel extends ChangeNotifier {
 
   void move(Direction direction) {
     _game.move(direction);
+    notifyListeners();
+  }
+
+  void set(List<(int number, int row, int column)> targets, [bool edited = false]) {
+    _game.set(targets);
+    if (!_edited) _edited = edited;
     notifyListeners();
   }
 

@@ -166,6 +166,20 @@ class Game {
       }
     }
   }
+
+  void set(List<(int number, int row, int column)> targets) {
+    _ticket++;
+    final powersOfTwo = List.generate(32, (i) => i == 0 ? 0 : pow(2, i));
+    for (final (number, row, column) in targets) {
+      if (powersOfTwo.contains(number)
+          && 0 <= row && row < size
+          && 0 <= column && column < size) {
+        if (number > _max) _max = number;
+        _score += number - _board[row][column].number;
+        _board[row][column] = Tile(number)..changeTicket = _ticket;
+      }
+    }
+  }
 }
 
 

@@ -101,7 +101,7 @@ class _ControllerWidgetState extends State<ControllerWidget> {
                 Positioned(
                     bottom: 4.0,
                     child: Text(
-                      "Max: ${provider.max}, Score: ${provider.score}",
+                      "${provider.edited ? "[EDITED] " : ""}" "Max: ${provider.max}, Score: ${provider.score}",
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 12.0,

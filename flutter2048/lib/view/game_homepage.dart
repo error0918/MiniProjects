@@ -45,21 +45,29 @@ class GameHomePage extends StatelessWidget {
         centerTitle: false,
         actions: [
           IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return NewGameDialog();
-                    }
-                );
-              },
-              icon: Row(
-                spacing: 4.0,
-                children: [
-                  Text("New"),
-                  Icon(Icons.add_circle_outline_sharp)
-                ],
-              ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return NewGameDialog();
+                  }
+              );
+            },
+            onLongPress: (){
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SetBoardDialog();
+                  }
+              );
+            },
+            icon: Row(
+              spacing: 4.0,
+              children: [
+                Text("New"),
+                Icon(Icons.add_circle_outline_sharp)
+              ],
+            ),
           ),
           Consumer<GameViewModel>(builder: (context, provider, child) {
             return IconButton(
