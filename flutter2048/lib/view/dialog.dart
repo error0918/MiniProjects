@@ -366,7 +366,7 @@ class _SetBoardDialogState extends State<SetBoardDialog> {
               _gameViewModel.set(newBoard, true);
               Navigator.of(context).pop();
             },
-            child: Text("Replay")
+            child: Text("Set")
         ),
       ],
     );
