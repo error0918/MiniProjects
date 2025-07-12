@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '/view/board_widget.dart';
 import '/view/controller_widget.dart';
 import '/view/dialog.dart';
+import '/view/wow.dart';
 import '/viewmodel/game_view_model.dart';
 
 
@@ -35,11 +36,30 @@ class GameHomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Flutter2048",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2.0,
+        title: GestureDetector(
+          onDoubleTap: () {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) => Wow()
+            );
+          },
+          child: ShaderMask(
+            shaderCallback: (bounds) {
+              return LinearGradient(
+                colors: gameViewModel.wow
+                    ? [Colors.red, Colors.deepOrange, Colors.green, Colors.blue, Colors.purple]
+                    : [Theme.of(context).colorScheme.onSurface, Theme.of(context).colorScheme.onSurface],
+              ).createShader(Rect.fromLTWH(0, 0, bounds.width, bounds.height));
+            },
+            blendMode: BlendMode.srcIn,
+            child: Text(
+              "Flutter2048",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2.0,
+              ),
+            ),
           ),
         ),
         centerTitle: false,
@@ -77,8 +97,8 @@ class GameHomePage extends StatelessWidget {
               ),
             );
           }),
-          SizedBox(width: 12.0),
         ],
+        actionsPadding: EdgeInsets.only(right: 12.0),
       ),
       body: Padding(
           padding: EdgeInsets.all(16.0),

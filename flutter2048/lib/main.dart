@@ -50,23 +50,17 @@ class _MyAppState extends State<MyApp> {
           onKeyEvent: (event) {
             if (event is KeyDownEvent) {
               switch (event.logicalKey) {
-                case LogicalKeyboardKey.keyW:
-                case LogicalKeyboardKey.arrowUp:
-                  if (_gameViewModel.able(Direction.up)) _gameViewModel.process(Direction.up);
-                case LogicalKeyboardKey.keyD:
-                case LogicalKeyboardKey.arrowDown:
-                  if (_gameViewModel.able(Direction.down)) _gameViewModel.process(Direction.down);
-                case LogicalKeyboardKey.keyA:
-                case LogicalKeyboardKey.arrowLeft:
-                  if (_gameViewModel.able(Direction.left)) _gameViewModel.process(Direction.left);
-                case LogicalKeyboardKey.keyD:
-                case LogicalKeyboardKey.arrowRight:
-                  if (_gameViewModel.able(Direction.right)) _gameViewModel.process(Direction.right);
-                case LogicalKeyboardKey.shiftLeft:
-                case LogicalKeyboardKey.shiftRight:
-                  if (_gameViewModel.free) _gameViewModel.process();
-                case LogicalKeyboardKey.keyQ:
-                case LogicalKeyboardKey.slash:
+                case LogicalKeyboardKey.keyW || LogicalKeyboardKey.arrowUp when _gameViewModel.able(Direction.up):
+                  _gameViewModel.process(Direction.up);
+                case LogicalKeyboardKey.keyS || LogicalKeyboardKey.arrowDown when _gameViewModel.able(Direction.down):
+                  _gameViewModel.process(Direction.down);
+                case LogicalKeyboardKey.keyA || LogicalKeyboardKey.arrowLeft when _gameViewModel.able(Direction.left):
+                  _gameViewModel.process(Direction.left);
+                case LogicalKeyboardKey.keyD || LogicalKeyboardKey.arrowRight when _gameViewModel.able(Direction.right):
+                  _gameViewModel.process(Direction.right);
+                case LogicalKeyboardKey.shiftLeft || LogicalKeyboardKey.shiftRight when _gameViewModel.free:
+                  _gameViewModel.process();
+                case LogicalKeyboardKey.keyQ || LogicalKeyboardKey.slash:
                   _gameViewModel.autoProcess();
               }
             }

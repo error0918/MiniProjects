@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -217,6 +218,7 @@ class SetBoardDialog extends StatefulWidget {
 
 
 class _SetBoardDialogState extends State<SetBoardDialog> {
+  final _focusNode = FocusNode();
   late GameViewModel _gameViewModel;
   List<(int, int, int)> newBoard = [];
   int selectedRow = 0, selectedColumn = 0;
@@ -238,97 +240,121 @@ class _SetBoardDialogState extends State<SetBoardDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Set the Board"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 12.0,
-        children: [
-          Container(
-            padding: EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              borderRadius: BorderRadius.all(Radius.circular(12.0))
-            ),
-            child: Column(
-              spacing: 12.0,
-              children: List<Row>.generate(_gameViewModel.size, (rowIndex) {
-                return Row(
-                  spacing: 12.0,
-                  children: List.generate(_gameViewModel.size, (columnIndex) {
-                    final selected = rowIndex == selectedRow && columnIndex == selectedColumn;
-                    return Expanded(
-                      flex: 1,
-                      child: FilledButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedRow = rowIndex;
-                            selectedColumn = columnIndex;
-                          });
-                        },
-                        style: FilledButton.styleFrom(
-                          foregroundColor: selected ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary,
-                          backgroundColor: selected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
-                          minimumSize: Size(0.0, 48.0),
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(6.0),
-                                topRight: Radius.circular(6.0),
-                                bottomLeft: Radius.circular(6.0),
-                                bottomRight: Radius.circular(6.0),
-                              )
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(6.0),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              newBoard[rowIndex * _gameViewModel.size + columnIndex].$1.toString(),
-                              textAlign: TextAlign.center,
+      content: KeyboardListener(
+        focusNode: _focusNode,
+        autofocus: true,
+        onKeyEvent: (event) {
+          final targetNumber = newBoard[selectedRow * _gameViewModel.size + selectedColumn].$1;
+          final targetIndex = selectedRow * _gameViewModel.size + selectedColumn;
+          if (event is KeyDownEvent) {
+            switch (event.logicalKey) {
+              case LogicalKeyboardKey.keyA || LogicalKeyboardKey.arrowLeft when targetNumber != 0:
+                setState(() {
+                  newBoard[targetIndex] = targetNumber == 2
+                    ? (0, selectedRow, selectedColumn)
+                    : ((targetNumber / 2).toInt(), selectedRow, selectedColumn);
+                });
+              case LogicalKeyboardKey.keyD || LogicalKeyboardKey.arrowRight when targetNumber != pow(2, 31):
+                setState(() {
+                  newBoard[targetIndex] = targetNumber == 0
+                    ? (2, selectedRow, selectedColumn)
+                    : (targetNumber * 2, selectedRow, selectedColumn);
+                });
+            }
+          }
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 12.0,
+          children: [
+            Container(
+              padding: EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.all(Radius.circular(12.0))
+              ),
+              child: Column(
+                spacing: 12.0,
+                children: List<Row>.generate(_gameViewModel.size, (rowIndex) {
+                  return Row(
+                    spacing: 12.0,
+                    children: List.generate(_gameViewModel.size, (columnIndex) {
+                      final selected = rowIndex == selectedRow && columnIndex == selectedColumn;
+                      return Expanded(
+                        flex: 1,
+                        child: FilledButton(
+                            onPressed: () {
+                              setState(() {
+                                selectedRow = rowIndex;
+                                selectedColumn = columnIndex;
+                              });
+                            },
+                            style: FilledButton.styleFrom(
+                              foregroundColor: selected ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary,
+                              backgroundColor: selected ? Theme.of(context).colorScheme.secondary : Theme.of(context).colorScheme.primary,
+                              minimumSize: Size(0.0, 48.0),
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(6.0),
+                                    topRight: Radius.circular(6.0),
+                                    bottomLeft: Radius.circular(6.0),
+                                    bottomRight: Radius.circular(6.0),
+                                  )
+                              ),
                             ),
-                          ),
-                        )
-                      ),
-                    );
-                  }),
-                );
-              }),
+                            child: Padding(
+                              padding: EdgeInsets.all(6.0),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  newBoard[rowIndex * _gameViewModel.size + columnIndex].$1.toString(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            )
+                        ),
+                      );
+                    }),
+                  );
+                }),
+              ),
             ),
-          ),
-          (() {
-            final targetNumber = newBoard[selectedRow * _gameViewModel.size + selectedColumn].$1;
-            final targetIndex = selectedRow * _gameViewModel.size + selectedColumn;
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 12.0,
-              children: [
-                FilledButton(
-                  onPressed: targetNumber == 0 ? null
-                      : () {
-                    setState(() {
-                      newBoard[targetIndex] = targetNumber == 2
-                          ? (0, selectedRow, selectedColumn)
-                          : ((targetNumber / 2).toInt(), selectedRow, selectedColumn);
-                    });
-                  },
-                  child: Text("-"),
-                ),
-                Text(targetNumber.toString()),
-                FilledButton(
-                  onPressed: targetNumber == pow(2, 31) ? null
-                      : () {
-                    setState(() {
-                      newBoard[targetIndex] = targetNumber == 0
-                          ? (2, selectedRow, selectedColumn)
-                          : (targetNumber * 2, selectedRow, selectedColumn);
-                    });
-                  },
-                  child: Text("+"),
-                ),
-              ],
-            );
-          })(),
-        ],
+            (() {
+              final targetNumber = newBoard[selectedRow * _gameViewModel.size + selectedColumn].$1;
+              final targetIndex = selectedRow * _gameViewModel.size + selectedColumn;
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 12.0,
+                children: [
+                  FilledButton(
+                    onPressed: targetNumber == 0 ? null
+                        : () {
+                      setState(() {
+                        newBoard[targetIndex] = targetNumber == 2
+                            ? (0, selectedRow, selectedColumn)
+                            : ((targetNumber / 2).toInt(), selectedRow, selectedColumn);
+                      });
+                    },
+                    child: Text("-"),
+                  ),
+                  Text(targetNumber.toString()),
+                  FilledButton(
+                    onPressed: targetNumber == pow(2, 31) ? null
+                        : () {
+                      setState(() {
+                        newBoard[targetIndex] = targetNumber == 0
+                            ? (2, selectedRow, selectedColumn)
+                            : (targetNumber * 2, selectedRow, selectedColumn);
+                      });
+                    },
+                    child: Text("+"),
+                  ),
+                ],
+              );
+            })(),
+          ],
+        ),
       ),
       actions: [
         TextButton(

@@ -10,6 +10,7 @@ class GameViewModel extends ChangeNotifier {
   bool _showedClear = false;
   bool _showClear = false;
   bool _edited = false;
+  bool _wow = false;
   ThemeMode? _themeMode;
 
   List<List<Tile>> get board => _game.board;
@@ -29,6 +30,7 @@ class GameViewModel extends ChangeNotifier {
     return tmp;
   }
   bool get edited => _edited;
+  bool get wow => _wow;
   ThemeMode get themeMode => _themeMode ?? ThemeMode.light;
 
   void playNewGame({ int size = 4 }) {
@@ -88,6 +90,11 @@ class GameViewModel extends ChangeNotifier {
   void set(List<(int number, int row, int column)> targets, [bool edited = false]) {
     _game.set(targets);
     if (!_edited) _edited = edited;
+    notifyListeners();
+  }
+
+  void wowMode() {
+    _wow = !_wow;
     notifyListeners();
   }
 

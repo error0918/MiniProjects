@@ -28,25 +28,12 @@ class Game {
   bool able(Direction direction) {
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size - 1; j++) {
-        int target, next;
-        switch (direction) {
-          case Direction.up:
-            target = _board[j][i].number;
-            next = _board[j + 1][i].number;
-            break;
-          case Direction.down:
-            target = _board[j + 1][i].number;
-            next = _board[j][i].number;
-            break;
-          case Direction.left:
-            target = _board[i][j].number;
-            next = _board[i][j + 1].number;
-            break;
-          case Direction.right:
-            target = _board[i][j + 1].number;
-            next = _board[i][j].number;
-            break;
-        }
+        final (target, next) = switch (direction) {
+          Direction.up => (_board[j][i].number, _board[j + 1][i].number),
+          Direction.down => (_board[j + 1][i].number, _board[j][i].number),
+          Direction.left => (_board[i][j].number, _board[i][j + 1].number),
+          Direction.right => (_board[i][j + 1].number, _board[i][j].number),
+        };
         if (target == 0 && next != 0) return true;
         if (target != 0 && target == next) return true;
       }
@@ -199,7 +186,7 @@ class Tile {
     final temp = _isNew;
     _isNew = false;
     return temp;
-  } // 복제됨..
+  }
 
   Tile(this.number);
   Tile._(this.number, this.changeTicket, this._id, this._isNew);
