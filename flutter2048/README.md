@@ -7,4 +7,6 @@
 > 2048 implemented int flutter    
 > Dart, Flutter, MVVM
 
+[Website](https://jtaeyeon05.github.io/flutter2048/), [Release](https://github.com/jtaeyeon05/MiniProjects/tree/main/flutter2048/release)
+
 Dart + Flutter 공부용

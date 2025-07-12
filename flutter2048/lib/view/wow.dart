@@ -107,8 +107,10 @@ class _WowState extends State<Wow>
                     if (_targetSlot - 1 == 1) {
                       while (_targetSlot != 0) {
                         if (_animation.value % 70 < 5) {
-                          _slot1 = (_animation.value / 70.0).floor();
-                          _slot1Y = _slot1! * 70.0;
+                          setState(() {
+                            _slot1 = (_animation.value / 70.0).floor();
+                            _slot1Y = _slot1! * 70.0;
+                          });
                           break;
                         }
                         await Future.delayed(const Duration(milliseconds: 20));
@@ -116,8 +118,10 @@ class _WowState extends State<Wow>
                     } else if (_targetSlot - 1 == 2) {
                       while (_targetSlot != 0) {
                         if (_animation.value % 70 < 5) {
-                          _slot2 = (_animation.value / 70.0).floor();
-                          _slot2Y = _slot2! * 70.0;
+                          setState(() {
+                            _slot2 = (_animation.value / 70.0).floor();
+                            _slot2Y = _slot2! * 70.0;
+                          });
                           break;
                         }
                         await Future.delayed(const Duration(milliseconds: 20));
@@ -125,11 +129,13 @@ class _WowState extends State<Wow>
                     } else {
                       while (_targetSlot != 0) {
                         if (_animation.value % 70 < 5) {
-                          _slot3 = (_animation.value / 70.0).floor();
-                          _slot3Y = _slot3! * 70.0;
-                          if (_slot1 == 2 && _slot2 == 2 && _slot3 == 2) {
-                            _clear = true;
-                          }
+                          setState(() {
+                            _slot3 = (_animation.value / 70.0).floor();
+                            _slot3Y = _slot3! * 70.0;
+                            if (_slot1 == 2 && _slot2 == 2 && _slot3 == 2) {
+                              _clear = true;
+                            }
+                          });
                           break;
                         }
                         await Future.delayed(const Duration(milliseconds: 20));
@@ -200,6 +206,7 @@ class _WowState extends State<Wow>
                       child: Text(
                         ["💣", "😖", "7️⃣"][i % 3],
                         textScaler: TextScaler.linear(2.0),
+                        style: TextStyle(color: _clear ? Colors.white : null),
                       ),
                     ),
                   );

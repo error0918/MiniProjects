@@ -78,6 +78,7 @@ class Game {
               final compareItem = _board[k][column];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
+                _board[k][column] = _board[row][column];
                 _board[k][column].number *= 2;
                 _board[k][column].changeTicket = _ticket;
                 _board[row][column] = Tile(0);
@@ -98,6 +99,7 @@ class Game {
               final compareItem = _board[k][column];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
+                _board[k][column] = _board[row][column];
                 _board[k][column].number *= 2;
                 _board[k][column].changeTicket = _ticket;
                 _board[row][column] = Tile(0);
@@ -118,6 +120,7 @@ class Game {
               final compareItem = _board[row][k];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
+                _board[row][k] = _board[row][column];
                 _board[row][k].number *= 2;
                 _board[row][k].changeTicket = _ticket;
                 _board[row][column] = Tile(0);
@@ -138,6 +141,7 @@ class Game {
               final compareItem = _board[row][k];
               if (compareItem.changeTicket != _ticket && compareItem == targetItem) {
                 if (compareItem.number * 2 > _max) _max = compareItem.number * 2;
+                _board[row][k] = _board[row][column];
                 _board[row][k].number *= 2;
                 _board[row][k].changeTicket = _ticket;
                 _board[row][column] = Tile(0);
