@@ -18,6 +18,10 @@ ThemeData theme(ColorScheme colorScheme, TextTheme textTheme) => ThemeData(
     bodyColor: colorScheme.onSurface,
     displayColor: colorScheme.onSurface,
   ),
+  sliderTheme: const SliderThemeData(
+    year2023: false,
+    showValueIndicator: ShowValueIndicator.always
+  ),
   scaffoldBackgroundColor: colorScheme.background,
   canvasColor: colorScheme.surface,
 );
