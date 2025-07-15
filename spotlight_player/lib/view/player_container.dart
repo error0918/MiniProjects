@@ -132,59 +132,70 @@ class _PlayerContainerState extends State<PlayerContainer> {
             ],
           ),
 
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              valueIndicatorColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              valueIndicatorTextStyle: TextStyle(color: Theme.of(context).colorScheme.primaryContainer),
+          ListenableBuilder(
+            listenable: Listenable.merge(
+              [playerViewModel.musicTimeNotifier, playerViewModel.musicLengthNotifier]
             ),
-            child: Slider(
-              key: playerViewModel.sliderKey,
-              value: playerViewModel.musicTime,
-              onChanged: (double value) { playerViewModel.musicTime = value; },
-              onChangeStart: (double value) {  },
-              onChangeEnd: (double value) {  },
-              min: 0.0,
-              max: playerViewModel.musicLength,
-              padding: EdgeInsets.zero,
-              activeColor: Theme.of(context).colorScheme.onPrimaryContainer,
-              inactiveColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(363),
-            ),
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                playerViewModel.formatTime(playerViewModel.musicTime),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
-                ),
-                textScaler: TextScaler.linear(0.8),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
-                  child: Text(
-                    "AAC",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+            builder: (context, child) {
+              return Column(
+                children: [
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      valueIndicatorColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      valueIndicatorTextStyle: TextStyle(color: Theme.of(context).colorScheme.primaryContainer),
                     ),
-                    textScaler: TextScaler.linear(0.6),
+                    child: Slider(
+                      key: playerViewModel.sliderKey,
+                      value: playerViewModel.musicTime,
+                      onChanged: (double value) { playerViewModel.musicTimeNotifier.value = value; },
+                      onChangeStart: (double value) {  },
+                      onChangeEnd: (double value) {  },
+                      min: 0.0,
+                      max: playerViewModel.musicLength,
+                      padding: EdgeInsets.zero,
+                      activeColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                      inactiveColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(363),
+                    ),
                   ),
-                ),
-              ),
-              Text(
-                playerViewModel.formatTime(playerViewModel.musicLength),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
-                ),
-                textScaler: TextScaler.linear(0.8),
-              ),
-            ],
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        playerViewModel.formatTime(playerViewModel.musicTime),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+                        ),
+                        textScaler: TextScaler.linear(0.8),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+                          child: Text(
+                            "AAC",
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+                            ),
+                            textScaler: TextScaler.linear(0.6),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        playerViewModel.formatTime(playerViewModel.musicLength),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+                        ),
+                        textScaler: TextScaler.linear(0.8),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            },
           ),
 
           SizedBox(height: 24.0),
@@ -213,8 +224,8 @@ class _PlayerContainerState extends State<PlayerContainer> {
               ),
               IconButton(
                 onPressed: () => playerViewModel.isPlaying = !playerViewModel.isPlaying,
-                icon: Icon(Icons.pause_rounded),
-                selectedIcon: Icon(Icons.play_arrow_rounded),
+                icon: Icon(Icons.play_arrow_rounded),
+                selectedIcon: Icon(Icons.pause_rounded),
                 isSelected: playerViewModel.isPlaying,
                 style: IconButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
