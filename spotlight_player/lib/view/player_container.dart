@@ -64,6 +64,10 @@ class _PlayerContainerState extends State<PlayerContainer> {
                   height: min(boxConstraints.maxWidth, boxConstraints.maxHeight),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage("assets/images/HeroesTonight.jpg"),
+                    ),
                     borderRadius: BorderRadius.all(Radius.circular(12.0)),
                     boxShadow: [
                       BoxShadow(
@@ -88,7 +92,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Music Title",
+                      playerViewModel.title,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.bold,
@@ -97,7 +101,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
                       textScaler: TextScaler.linear(1.8),
                     ),
                     Text(
-                      "Artist",
+                      playerViewModel.artist,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                         overflow: TextOverflow.ellipsis,
@@ -147,9 +151,9 @@ class _PlayerContainerState extends State<PlayerContainer> {
                     child: Slider(
                       key: playerViewModel.sliderKey,
                       value: playerViewModel.musicTime,
-                      onChanged: (double value) { playerViewModel.musicTimeNotifier.value = value; },
-                      onChangeStart: (double value) {  },
-                      onChangeEnd: (double value) {  },
+                      onChanged: (double value) => playerViewModel.seek((value * 1000).floor()),
+                      onChangeStart: (double value) => playerViewModel.isControlling = true,
+                      onChangeEnd: (double value) => playerViewModel.isControlling = false,
                       min: 0.0,
                       max: playerViewModel.musicLength,
                       padding: EdgeInsets.zero,
@@ -176,7 +180,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
                         child: Padding(
                           padding: EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
                           child: Text(
-                            "AAC",
+                            "NCS",
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                             ),
@@ -202,7 +206,6 @@ class _PlayerContainerState extends State<PlayerContainer> {
           Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            spacing: 12.0,
             children: [
               IconButton(
                 onPressed: () => playerViewModel.isShuffle = !playerViewModel.isShuffle,
