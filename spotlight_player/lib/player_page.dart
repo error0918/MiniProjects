@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 
 class PlayerPage extends StatefulWidget {
@@ -60,6 +61,9 @@ class _AnimationSet {
 class _BackgroundContainerState extends State<BackgroundContainer> with TickerProviderStateMixin {
   final _random = Random();
   final List<_AnimationSet> _animationList = [];
+  late final Ticker _ticker;
+  Duration _lastTick = Duration.zero;
+
   final int _moveDuration = 12000;
   final int _sizeDuration = 18000;
   final int _durationBase = 2000;
@@ -132,6 +136,20 @@ class _BackgroundContainerState extends State<BackgroundContainer> with TickerPr
 
       _animationList.add(animationSet);
     }
+
+    _ticker = Ticker((elapsed) {
+      if (elapsed - _lastTick >= Duration(milliseconds: 33)) {
+        _lastTick = elapsed;
+        setState(() {});
+      }
+    });
+    _ticker.start();
+  }
+
+  @override
+  void dispose() {
+    _ticker.dispose();
+    super.dispose();
   }
 
   @override
@@ -159,30 +177,21 @@ class _BackgroundContainerState extends State<BackgroundContainer> with TickerPr
           child: Container(color: Colors.black.withAlpha(31)),
         ),
         ..._animationList.mapIndexed((index, animationSet) {
-          return AnimatedBuilder(
-            animation: Listenable.merge([
-              animationSet.controllerX,
-              animationSet.controllerY,
-              animationSet.controllerSize,
-            ]),
-            builder: (context, child) {
-              return Positioned(
-                left: widget.width * animationSet.animationX.value - animationSet.animationSize.value * 2 / 3,
-                top: widget.height * animationSet.animationY.value - animationSet.animationSize.value * 2 / 3,
-                child: Container(
-                  width: animationSet.animationSize.value,
-                  height: animationSet.animationSize.value,
-                  decoration: BoxDecoration(
-                    color: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context).colorScheme.tertiary,
-                    ][index % 3].withAlpha(95),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              );
-            },
+          return Positioned(
+            left: widget.width * animationSet.animationX.value - animationSet.animationSize.value * 2 / 3,
+            top: widget.height * animationSet.animationY.value - animationSet.animationSize.value * 2 / 3,
+            child: Container(
+              width: animationSet.animationSize.value,
+              height: animationSet.animationSize.value,
+              decoration: BoxDecoration(
+                color: [
+                  Theme.of(context).colorScheme.primary,
+                  Theme.of(context).colorScheme.secondary,
+                  Theme.of(context).colorScheme.tertiary,
+                ][index % 3].withAlpha(95),
+                shape: BoxShape.circle,
+              ),
+            ),
           );
         }),
         Positioned.fill(
