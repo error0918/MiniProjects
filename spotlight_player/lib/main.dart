@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'player_page.dart';
-import 'theme.dart' as theme;
+import 'package:provider/provider.dart';
+import '/player_viewmodel.dart';
+import '/view/player_page.dart';
+import '/view/theme.dart' as theme;
 
 
 void main() => runApp(const MyApp());
@@ -11,13 +13,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SpotlightPlayer',
-      debugShowCheckedModeBanner: false,
-      theme: theme.light(),
-      darkTheme: theme.dark(),
-      themeMode: ThemeMode.light,
-      home: const PlayerPage(),
+    return ChangeNotifierProvider(
+        create: (_) => PlayerViewModel(),
+        lazy: false,
+        child: MaterialApp(
+          title: 'SpotlightPlayer',
+          debugShowCheckedModeBanner: false,
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          themeMode: ThemeMode.light,
+          home: const PlayerPage(),
+        )
     );
   }
 }
