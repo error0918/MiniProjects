@@ -12,7 +12,8 @@ enum RepeatMode {
 
 
 class PlayerViewModel extends ChangeNotifier {
-  final Key sliderKey = GlobalKey();
+  final GlobalKey sliderKey = GlobalKey();
+  final Size sliderThumbSize = Size(8.0, 44.0);
   final ValueNotifier<double> musicTimeNotifier = ValueNotifier(0.0);
   final ValueNotifier<double> musicLengthNotifier = ValueNotifier(0.1);
 
@@ -71,6 +72,53 @@ class PlayerViewModel extends ChangeNotifier {
     });
     await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
     if (kDebugMode) print("Player Inited");
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  Size? getSliderSize() {
+    if (sliderKey.currentContext != null) {
+      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      return renderBox.size;
+    }
+    return null;
+  }
+
+  Offset? getSliderPosition() {
+    if (sliderKey.currentContext != null) {
+      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      return renderBox.localToGlobal(Offset.zero);
+    }
+    return null;
+  }
+
+  Offset? getSliderThumbCenter() {
+    if (sliderKey.currentContext != null) {
+      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      final position = renderBox.localToGlobal(Offset.zero);
+      final size = renderBox.size;
+      if (musicRate * size.width < 0.5 * sliderThumbSize.width) {
+        return Offset(
+            position.dx + sliderThumbSize.width,
+            position.dy + 0.5 * size.height
+        );
+      } else if ((1.0 - musicRate) * size.width < 0.5 * sliderThumbSize.width) {
+        return Offset(
+            position.dx + size.width - sliderThumbSize.width,
+            position.dy + 0.5 * size.height
+        );
+      } else {
+        return Offset(
+            position.dx + musicRate * size.width,
+            position.dy + 0.5 * size.height
+        );
+      }
+    }
+    return null;
   }
 
   void toggleIsFavorite([bool? isFavorite]) {
@@ -146,11 +194,4 @@ class PlayerViewModel extends ChangeNotifier {
   String formatTime(double time) {
     return "${(time / 60).floor()}:${(time % 60).floor() < 10 ? "0${(time % 60).floor()}" : (time % 60).floor()}";
   }
-
-/*
-    if (_sliderKey.currentContext != null) {
-      RenderBox renderBox = _sliderKey.currentContext!.findRenderObject() as RenderBox;
-      print(renderBox.localToGlobal(Offset.zero));
-    }
-*/
 }
