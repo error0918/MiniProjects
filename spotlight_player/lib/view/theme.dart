@@ -158,3 +158,10 @@ ColorScheme darkScheme() {
     surfaceContainerHighest: Color(0xff353434),
   );
 }
+
+
+final extendedColors = (
+  shadow: Colors.black.withAlpha(63),
+  light: Colors.white.withAlpha(63),
+  powerLight: Color(0xFFE7F6FF).withAlpha(127),
+);

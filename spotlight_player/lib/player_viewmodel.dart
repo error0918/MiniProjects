@@ -12,6 +12,7 @@ enum RepeatMode {
 
 
 class PlayerViewModel extends ChangeNotifier {
+  final GlobalKey albumCoverKey = GlobalKey();
   final GlobalKey sliderKey = GlobalKey();
   final Size sliderThumbSize = Size(8.0, 44.0);
   final ValueNotifier<double> musicTimeNotifier = ValueNotifier(0.0);
@@ -92,6 +93,19 @@ class PlayerViewModel extends ChangeNotifier {
     if (sliderKey.currentContext != null) {
       RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
       return renderBox.localToGlobal(Offset.zero);
+    }
+    return null;
+  }
+
+  Offset? getAlbumCoverCenter() {
+    if (sliderKey.currentContext != null) {
+      RenderBox renderBox = albumCoverKey.currentContext!.findRenderObject() as RenderBox;
+      final position = renderBox.localToGlobal(Offset.zero);
+      final size = renderBox.size;
+      return Offset(
+          position.dx + 0.5 * size.width,
+          position.dy + 0.5 * size.height
+      );
     }
     return null;
   }

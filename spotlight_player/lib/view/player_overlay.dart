@@ -1,6 +1,85 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/player_viewmodel.dart';
+import '/view/theme.dart' as theme;
+
+
+class EffectPainter extends CustomPainter {
+  final _safeArea = 20.0;
+
+  final Size sliderThumbSize;
+  final Offset sliderThumbCenter;
+  final Offset albumCoverCenter;
+
+  const EffectPainter({
+    required this.sliderThumbSize,
+    required this.sliderThumbCenter,
+    required this.albumCoverCenter,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final (X, Y) = (size.width, size.height);
+    final (x, y) = (sliderThumbCenter.dx, sliderThumbCenter.dy);
+    final (a, b) = (albumCoverCenter.dx, albumCoverCenter.dy);
+
+    final septa = a == b ? pi / 2 : atan((y - b) / (a - x));
+    final (lSepta, rSepta) = (septa + pi / 12, septa - pi / 12);
+
+    final (lTargetX, rTargetX) = (x + y / tan(lSepta), x + y / tan(rSepta));
+    final (lTargetY, rTargetY) = (y - (x * tan(lSepta)).abs(), y - ((X - x) * tan(rSepta)).abs());
+
+    if (lTargetX >= _safeArea / tan(lSepta).abs()) {
+      canvas.drawLine(
+        sliderThumbCenter,
+        Offset(lTargetX - _safeArea / tan(lSepta), _safeArea),
+        Paint()..color = Colors.white,
+      );
+    } else {
+      canvas.drawLine(
+        sliderThumbCenter,
+        Offset(_safeArea, lTargetY - tan(lSepta) * _safeArea),
+        Paint()..color = Colors.white,
+      );
+    }
+
+    if (rTargetX <= X - _safeArea / tan(rSepta).abs()) {
+      canvas.drawLine(
+        sliderThumbCenter,
+        Offset(rTargetX - _safeArea / tan(rSepta), _safeArea),
+        Paint()..color = Colors.red,
+      );
+    } else {
+      canvas.drawLine(
+        sliderThumbCenter,
+        Offset(X - _safeArea, rTargetY + tan(rSepta) * _safeArea),
+        Paint()..color = Colors.red,
+      );
+    }
+
+    final safePaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke;
+    final safePath = Path();
+    safePath.moveTo(_safeArea, _safeArea);
+    safePath.lineTo(_safeArea, Y - _safeArea);
+    safePath.lineTo(X - _safeArea, Y - _safeArea);
+    safePath.lineTo(X - _safeArea, _safeArea);
+    safePath.lineTo(_safeArea, _safeArea);
+    canvas.drawPath(safePath, safePaint);
+
+    canvas.drawPaint(Paint()..color = theme.extendedColors.shadow);
+  }
+
+  @override
+  bool shouldRepaint(EffectPainter oldDelegate) {
+    return sliderThumbSize != oldDelegate.sliderThumbSize
+      || sliderThumbCenter != oldDelegate.sliderThumbCenter
+      || albumCoverCenter != oldDelegate.albumCoverCenter;
+  }
+}
+
 
 class PlayerOverlay extends StatelessWidget {
   const PlayerOverlay({super.key});
@@ -10,36 +89,28 @@ class PlayerOverlay extends StatelessWidget {
     final PlayerViewModel playerViewModel = Provider.of<PlayerViewModel>(context, listen: false);
 
     return ListenableBuilder(
-      listenable: Listenable.merge(
-        [playerViewModel.musicTimeNotifier, playerViewModel.musicLengthNotifier],
-      ),
+      listenable: Listenable.merge([playerViewModel.musicTimeNotifier, playerViewModel.musicLengthNotifier]),
       builder: (BuildContext context, Widget? child) {
-        final sliderThumbSize = playerViewModel.sliderThumbSize;
-        final sliderThumbCenter = playerViewModel.getSliderThumbCenter();
+        return LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints boxConstraints) {
+            final sliderThumbSize = playerViewModel.sliderThumbSize;
+            final sliderThumbCenter = playerViewModel.getSliderThumbCenter();
+            final albumCoverCenter = playerViewModel.getAlbumCoverCenter();
 
-        if (sliderThumbCenter == null) {
-          return Container();
-        } else {
-          return Stack(
-            children: [
-              Container(
-                color: Colors.black.withAlpha(31),
-              ),
-              Positioned(
-                top: sliderThumbCenter.dy - 0.5 * sliderThumbSize.height - 8.0,
-                left: sliderThumbCenter.dx - 0.5 * sliderThumbSize.width - 8.0,
-                child: Container(
-                    width: sliderThumbSize.width + 16.0,
-                    height: sliderThumbSize.height + 16.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                      color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
-                    ),
+            if (sliderThumbCenter == null || albumCoverCenter == null) {
+              return Container();
+            } else {
+              return CustomPaint(
+                painter: EffectPainter(
+                  sliderThumbSize: sliderThumbSize,
+                  sliderThumbCenter: sliderThumbCenter,
+                  albumCoverCenter: albumCoverCenter,
                 ),
-              ),
-            ],
-          );
-        }
+                size: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
+              );
+            }
+          },
+        );
       },
     );
   }

@@ -53,6 +53,7 @@ class PlayerContainer extends StatelessWidget {
               child: Center(
                 child: LayoutBuilder(builder: (BuildContext context, BoxConstraints boxConstraints) {
                   return Container(
+                    key: playerViewModel.albumCoverKey,
                     width: min(boxConstraints.maxWidth, boxConstraints.maxHeight),
                     height: min(boxConstraints.maxWidth, boxConstraints.maxHeight),
                     decoration: BoxDecoration(
