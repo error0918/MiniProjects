@@ -60,9 +60,6 @@ class PlayerViewModel extends ChangeNotifier {
     });
     _player.onPlayerComplete.listen((_) async {
       if (_repeatMode == RepeatMode.none) {
-        await _player.release();
-        await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
-        await _player.seek(Duration.zero);
         _isPlaying = false;
         notifyListeners();
       }
