@@ -1,22 +1,32 @@
 import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+
+enum RepeatMode {
+  none(Icons.repeat_rounded), repeat(Icons.repeat_rounded), repeatOne(Icons.repeat_one_rounded);
+  final IconData iconData;
+  const RepeatMode(this.iconData);
+}
 
 
 class PlayerViewModel extends ChangeNotifier {
   final Key sliderKey = GlobalKey();
   final ValueNotifier<double> musicTimeNotifier = ValueNotifier(0.0);
-  final ValueNotifier<double> musicLengthNotifier = ValueNotifier(0.0);
+  final ValueNotifier<double> musicLengthNotifier = ValueNotifier(0.1);
 
-  final _player = AudioPlayer();
+  bool _isInit = false;
+  bool _isPlayingWhenControlling = false;
+
+  late AudioPlayer _player;
   String _title = "Heroes Tonight";
   String _artist = "Janji, Johnning";
-  bool _isPlaying = false;
+  bool _isControlling = false;
   bool _isFavorite = false;
   bool _isShuffle = false;
-  int _isRepeat = -1;
-  bool _isPlayingWhenControlling = false;
-  bool _isControlling = false;
+  RepeatMode _repeatMode = RepeatMode.none;
+  bool _isPlaying = false;
 
   String get title => _title;
   set title (String value) {
@@ -28,57 +38,18 @@ class PlayerViewModel extends ChangeNotifier {
     _artist = value;
     notifyListeners();
   }
-  bool get isPlaying => _isPlaying;
-  set isPlaying (bool value) {
-    _isPlaying = value;
-    if (_isPlaying) {
-      _player.resume();
-    } else {
-      _player.pause();
-    }
-    notifyListeners();
-  }
-  bool get isFavorite => _isFavorite;
-  set isFavorite (bool value) {
-    _isFavorite = value;
-    notifyListeners();
-  }
-  bool get isShuffle => _isShuffle;
-  set isShuffle (bool value) {
-    _isShuffle = value;
-    notifyListeners();
-  }
-  int get isRepeat => _isRepeat;
-  set isRepeat (int value) {
-    _isRepeat = switch (value) {
-      < -1 => 1,
-      > 1 => -1,
-      _ => value
-    };
-    _player.setReleaseMode(_isRepeat == -1 ? ReleaseMode.stop : ReleaseMode.loop);
-    notifyListeners();
-  }
   bool get isControlling => _isControlling;
-  set isControlling (bool value) {
-    _isControlling = value;
-    if (_isControlling) {
-      _isPlayingWhenControlling = _isPlaying;
-      _player.pause();
-    } else if (_isPlayingWhenControlling) {
-      _player.resume();
-    }
-    notifyListeners();
-  }
+  bool get isFavorite => _isFavorite;
+  bool get isShuffle => _isShuffle;
+  RepeatMode get repeatMode => _repeatMode;
+  bool get isPlaying => _isPlaying;
   double get musicTime => musicTimeNotifier.value;
   double get musicLength => musicLengthNotifier.value;
   double get musicRate => musicTime / musicLength;
 
-  PlayerViewModel() {
-    _init();
-  }
-
-  Future _init() async {
-    await _player.setSource(AssetSource("/audios/HeroesTonight.mp3"));
+  Future init() async {
+    _isInit = true;
+    _player = AudioPlayer();
     _player.onDurationChanged.listen((Duration duration) {
       musicLengthNotifier.value = duration.inMilliseconds / 1000;
     });
@@ -88,18 +59,86 @@ class PlayerViewModel extends ChangeNotifier {
       }
     });
     _player.onPlayerComplete.listen((_) async {
-      if (_isRepeat == -1) {
+      if (_repeatMode == RepeatMode.none) {
         await _player.release();
-        await _player.setSource(AssetSource("/audios/HeroesTonight.mp3"));
+        await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
         await _player.seek(Duration.zero);
         _isPlaying = false;
         notifyListeners();
       }
     });
+    await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
+    if (kDebugMode) print("Player Inited");
+  }
+
+  void toggleIsFavorite([bool? isFavorite]) {
+    if (isFavorite == null) {
+      _isFavorite = !_isFavorite;
+    } else {
+      _isFavorite = isFavorite;
+    }
+    notifyListeners();
+  }
+
+  void toggleIsShuffle([bool? isShuffle]) {
+    if (isShuffle == null) {
+      _isShuffle = !_isShuffle;
+    } else {
+      _isShuffle = isShuffle;
+    }
+    notifyListeners();
+  }
+
+  void toggleRepeatMode([RepeatMode? repeatMode]) {
+    if (repeatMode == null) {
+      _repeatMode = switch (_repeatMode) {
+        RepeatMode.none => RepeatMode.repeat,
+        RepeatMode.repeat => RepeatMode.repeatOne,
+        RepeatMode.repeatOne => RepeatMode.none
+      };
+    } else {
+      _repeatMode = repeatMode;
+    }
+    _player.setReleaseMode(
+        repeatMode == RepeatMode.none
+            ? ReleaseMode.stop
+            : ReleaseMode.loop
+    );
+    notifyListeners();
   }
 
   void seek(int milliseconds) {
     _player.seek(Duration(milliseconds: milliseconds));
+  }
+
+  Future<void> controlStart() async {
+    _isControlling = true;
+    _isPlayingWhenControlling = _isPlaying;
+    if (_isInit) {
+      await _player.pause();
+    } else {
+      await init();
+    }
+    notifyListeners();
+  }
+
+  Future<void> controlEnd() async {
+    _isControlling = false;
+    if (_isPlayingWhenControlling) await _player.resume();
+    notifyListeners();
+  }
+
+  Future<void> resume() async {
+    if (!_isInit) await init();
+    _isPlaying = true;
+    await _player.resume();
+    notifyListeners();
+  }
+
+  Future<void> pause() async {
+    _isPlaying = false;
+    await _player.pause();
+    notifyListeners();
   }
 
   String formatTime(double time) {

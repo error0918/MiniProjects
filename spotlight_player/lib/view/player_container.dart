@@ -63,7 +63,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
                   width: min(boxConstraints.maxWidth, boxConstraints.maxHeight),
                   height: min(boxConstraints.maxWidth, boxConstraints.maxHeight),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: AssetImage("assets/images/HeroesTonight.jpg"),
@@ -112,7 +112,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
                 ),
               ),
               IconButton(
-                onPressed: () => playerViewModel.isFavorite = !playerViewModel.isFavorite,
+                onPressed: () => playerViewModel.toggleIsFavorite(),
                 icon: Icon(Icons.favorite_border_rounded),
                 selectedIcon: Icon(Icons.favorite_rounded),
                 isSelected: playerViewModel.isFavorite,
@@ -142,6 +142,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
             ),
             builder: (context, child) {
               return Column(
+                spacing: 8.0,
                 children: [
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
@@ -152,8 +153,8 @@ class _PlayerContainerState extends State<PlayerContainer> {
                       key: playerViewModel.sliderKey,
                       value: playerViewModel.musicTime,
                       onChanged: (double value) => playerViewModel.seek((value * 1000).floor()),
-                      onChangeStart: (double value) => playerViewModel.isControlling = true,
-                      onChangeEnd: (double value) => playerViewModel.isControlling = false,
+                      onChangeStart: (double value) async { playerViewModel.controlStart(); },
+                      onChangeEnd: (double value) async { playerViewModel.controlEnd(); },
                       min: 0.0,
                       max: playerViewModel.musicLength,
                       padding: EdgeInsets.zero,
@@ -208,7 +209,7 @@ class _PlayerContainerState extends State<PlayerContainer> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () => playerViewModel.isShuffle = !playerViewModel.isShuffle,
+                onPressed: () => playerViewModel.toggleIsShuffle(),
                 icon: Icon(Icons.shuffle_rounded),
                 style: IconButton.styleFrom(
                   foregroundColor: playerViewModel.isShuffle
@@ -226,7 +227,13 @@ class _PlayerContainerState extends State<PlayerContainer> {
                 ),
               ),
               IconButton(
-                onPressed: () => playerViewModel.isPlaying = !playerViewModel.isPlaying,
+                onPressed: () async {
+                  if (playerViewModel.isPlaying) {
+                    playerViewModel.pause();
+                  } else {
+                    playerViewModel.resume();
+                  }
+                },
                 icon: Icon(Icons.play_arrow_rounded),
                 selectedIcon: Icon(Icons.pause_rounded),
                 isSelected: playerViewModel.isPlaying,
@@ -246,14 +253,10 @@ class _PlayerContainerState extends State<PlayerContainer> {
                 ),
               ),
               IconButton(
-                onPressed: () => playerViewModel.isRepeat += 1,
-                icon: Icon(
-                  playerViewModel.isRepeat != 1
-                      ? Icons.repeat_rounded
-                      : Icons.repeat_one_rounded
-                ),
+                onPressed: () => playerViewModel.toggleRepeatMode(),
+                icon: Icon(playerViewModel.repeatMode.iconData),
                 style: IconButton.styleFrom(
-                  foregroundColor: playerViewModel.isRepeat != -1
+                  foregroundColor: playerViewModel.repeatMode != RepeatMode.none
                       ? Theme.of(context).colorScheme.onPrimaryContainer
                       : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                   iconSize: 32.0,
