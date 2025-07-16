@@ -59,9 +59,14 @@ class PlayerViewModel extends ChangeNotifier {
       }
     });
     _player.onPlayerComplete.listen((_) async {
+      musicTimeNotifier.value = 0.0; // tq 왜 안돼ㅈ
       if (_repeatMode == RepeatMode.none) {
+        await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
+        await _player.pause();
         _isPlaying = false;
         notifyListeners();
+      } else {
+        _player.resume();
       }
     });
     await _player.setSource(AssetSource("audios/HeroesTonight.mp3"));
