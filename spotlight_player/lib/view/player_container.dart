@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/player_viewmodel.dart';
@@ -9,6 +10,8 @@ class PlayerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final menuButtonKey = GlobalKey();
+
     return Consumer(builder: (BuildContext context, PlayerViewModel playerViewModel, Widget? child) {
       return Padding(
         padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
@@ -118,7 +121,79 @@ class PlayerContainer extends StatelessWidget {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {  },
+                  key: menuButtonKey,
+                  onPressed: () {
+                    final parentRenderBox = context.findRenderObject() as RenderBox;
+                    final parentSize = parentRenderBox.size;
+
+                    final renderBox = menuButtonKey.currentContext?.findRenderObject() as RenderBox;
+                    final size = renderBox.size;
+                    final position = renderBox.localToGlobal(Offset.zero);
+
+                    showMenuOverlay(
+                      context: context,
+                      top: position.dy,
+                      right: parentSize.width - position.dx - size.width,
+                      builder: (context) {
+                        return ClipRRect(
+                          borderRadius: BorderRadiusGeometry.all(Radius.circular(24.0)),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: 4,
+                              sigmaY: 4,
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.all(12.0),
+                              decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.all(Radius.circular(24)),
+                                border: Border.all(
+                                  color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+                                  width: 2.0,
+                                ),
+                              ),
+                              child: Consumer<PlayerViewModel>(builder: (BuildContext context, PlayerViewModel playerViewModel, Widget? child) {
+                                return Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      spacing: 12.0,
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsetsGeometry.only(left: 8),
+                                          child: Text(
+                                            "Debug Mode",
+                                            style: TextStyle(
+                                              color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                            ),
+                                          ),
+                                        ),
+                                        Transform.scale(
+                                          scale: 0.8,
+                                          child: Switch(
+                                            value: playerViewModel.isDebug,
+                                            onChanged: (value) => playerViewModel.toggleIsDebug(),
+                                            activeColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                                            activeTrackColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
+                                            inactiveThumbColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                                            inactiveTrackColor: Colors.transparent,
+                                            trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+                                              if (states.contains(WidgetState.selected)) return Colors.transparent;
+                                              return Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127);
+                                            }),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              }),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
                   icon: Icon(Icons.more_vert_rounded),
                   style: IconButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
@@ -296,4 +371,44 @@ class PlayerContainer extends StatelessWidget {
       );
     });
   }
+}
+
+
+void showMenuOverlay({
+  required BuildContext context,
+  required Widget Function(BuildContext) builder,
+  double? top,
+  double? left,
+  double? right,
+  double? bottom,
+}) {
+  late OverlayEntry overlayEntry;
+  overlayEntry =  OverlayEntry(
+    builder: (context) {
+      return Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              overlayEntry.remove();
+            },
+            behavior: HitTestBehavior.translucent,
+            child: Container(color: Colors.transparent),
+          ),
+          Positioned(
+            left: left,
+            top: top,
+            right: right,
+            bottom: bottom,
+            child: Material(
+              color: Colors.transparent,
+              elevation: 8.0,
+              borderRadius: BorderRadius.circular(24),
+              child: builder(context),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+  Overlay.of(context).insert(overlayEntry);
 }

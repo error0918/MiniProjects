@@ -21,9 +21,9 @@ class PlayerPage extends StatelessWidget {
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints boxConstraints) {
-          return Selector<PlayerViewModel, bool>(
-            selector: (BuildContext context, PlayerViewModel playerViewModel) => playerViewModel.isControlling,
-            builder: (BuildContext context, bool isControlling, Widget? child) {
+          return Selector<PlayerViewModel, (bool, bool)>(
+            selector: (BuildContext context, PlayerViewModel playerViewModel) => (playerViewModel.isControlling, playerViewModel.isDebug),
+            builder: (BuildContext context, (bool isControlling, bool isDebug) variables, Widget? child) {
               return Stack(
                 children: [
                   BackgroundContainer(
@@ -35,7 +35,7 @@ class PlayerPage extends StatelessWidget {
                   ),
                   IgnorePointer(
                     child: AnimatedOpacity(
-                      opacity: isControlling ? 1.0 : 0,
+                      opacity: variables.$1 ? 1.0 : 0,
                       duration: Duration(milliseconds: 100),
                       child: PlayerOverlay(),
                     ),

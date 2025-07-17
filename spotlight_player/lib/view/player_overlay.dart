@@ -6,18 +6,19 @@ import '/view/theme.dart' as theme;
 
 
 class EffectPainter extends CustomPainter {
-  final debug = false;
   final _safeArea = -20.0;
   final _scatterRadian = pi / 7;
 
   final Size sliderThumbSize;
   final Offset sliderThumbCenter;
   final Offset albumCoverCenter;
+  final bool isDebug;
 
   const EffectPainter({
     required this.sliderThumbSize,
     required this.sliderThumbCenter,
     required this.albumCoverCenter,
+    this.isDebug = false,
   });
 
   @override
@@ -33,7 +34,7 @@ class EffectPainter extends CustomPainter {
 
     // CenterLine ↓
 
-    if (debug) {
+    if (isDebug) {
       final targetX = x + (y - _safeArea) / tan(septa);
       final targetY = y - ((x - _safeArea) * tan(septa)).abs();
 
@@ -70,24 +71,28 @@ class EffectPainter extends CustomPainter {
     leftSidePowerPath.moveTo(x, y);
     if (llpTargetX >= _safeArea) {
       leftSidePowerPath.lineTo(llpTargetX, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(llpTargetX, _safeArea), Paint()..color = Colors.green);
     } else {
       leftSidePowerPath.lineTo(_safeArea, llpTargetY);
       leftSidePowerPath.lineTo(_safeArea, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(_safeArea, llpTargetY), Paint()..color = Colors.green);
     }
 
     if (lrpTargetX >= _safeArea) {
       leftSidePowerPath.lineTo(lrpTargetX, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(lrpTargetX, _safeArea), Paint()..color = Colors.greenAccent);
     } else {
       leftSidePowerPath.lineTo(_safeArea, lrpTargetY);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(_safeArea, lrpTargetY), Paint()..color = Colors.greenAccent);
     }
-    leftSidePowerPath.moveTo(x, y);
+    leftSidePowerPath.lineTo(x, y);
     leftSidePowerPath.close();
 
     canvas.drawPath(leftSidePowerPath, sidePowerPaint);
+    if (isDebug) {
+      canvas.drawPath(
+        leftSidePowerPath,
+        Paint()
+          ..color = Colors.red
+          ..style = PaintingStyle.stroke,
+      );
+    }
 
     final (rlpSepta, rrpSepta) = (rSepta + pi / 60, rSepta - pi / 60);
     final (rlpTargetX, rrpTargetX) = (x + (y - _safeArea) / tan(rlpSepta), x + (y - _safeArea) / tan(rrpSepta));
@@ -99,23 +104,27 @@ class EffectPainter extends CustomPainter {
     if (rlpTargetX <= X - _safeArea) {
       rightSidePowerPath.lineTo(rlpTargetX, _safeArea);
       rightSidePowerPath.lineTo(X - _safeArea, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(rlpTargetX, _safeArea), Paint()..color = Colors.green);
     } else {
       rightSidePowerPath.lineTo(X - _safeArea, rlpTargetY);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(X - _safeArea, rlpTargetY), Paint()..color = Colors.green);
     }
 
     if (rrpTargetX <= X - _safeArea) {
       rightSidePowerPath.lineTo(rrpTargetX, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(rrpTargetX, _safeArea), Paint()..color = Colors.greenAccent);
     } else {
       rightSidePowerPath.lineTo(X - _safeArea, rrpTargetY);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(X - _safeArea, rrpTargetY), Paint()..color = Colors.greenAccent);
     }
-    rightSidePowerPath.moveTo(x, y);
+    rightSidePowerPath.lineTo(x, y);
     rightSidePowerPath.close();
 
     canvas.drawPath(rightSidePowerPath, sidePowerPaint);
+    if (isDebug) {
+      canvas.drawPath(
+        rightSidePowerPath,
+        Paint()
+          ..color = Colors.red
+          ..style = PaintingStyle.stroke,
+      );
+    }
 
     // SidePower ↑
     // RadiusPower ↓
@@ -139,7 +148,7 @@ class EffectPainter extends CustomPainter {
     radiusPowerPowerPath.close();
 
     canvas.drawPath(radiusPowerPowerPath, radiusPowerPaint);
-    if (debug) {
+    if (isDebug) {
       canvas.drawPath(
           radiusPowerPowerPath,
           Paint()
@@ -163,10 +172,8 @@ class EffectPainter extends CustomPainter {
     if (lTargetX >= _safeArea) {
       shadowPath.lineTo(lTargetX, _safeArea);
       shadowPath.lineTo(_safeArea, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(lTargetX, _safeArea), Paint()..color = Colors.white);
     } else {
       shadowPath.lineTo(_safeArea, lTargetY);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(_safeArea, lTargetY), Paint()..color = Colors.white);
     }
     shadowPath.lineTo(_safeArea, Y - _safeArea);
     shadowPath.lineTo(X - _safeArea, Y - _safeArea);
@@ -174,22 +181,20 @@ class EffectPainter extends CustomPainter {
     if (rTargetX <= X - _safeArea) {
       shadowPath.lineTo(X - _safeArea, _safeArea);
       shadowPath.lineTo(rTargetX, _safeArea);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(rTargetX, _safeArea), Paint()..color = Colors.red);
     } else {
       shadowPath.lineTo(X - _safeArea, rTargetY);
-      if (debug) canvas.drawLine(sliderThumbCenter, Offset(X - _safeArea, rTargetY), Paint()..color = Colors.red);
     }
-    shadowPath.moveTo(x, y);
+    shadowPath.lineTo(x, y);
     shadowPath.close();
 
     canvas.drawPath(shadowPath, shadowPaint);
-    if (debug) {
+    if (isDebug) {
       canvas.drawPath(
-        shadowPath,
-        Paint()
-          ..color = Colors.red
-          ..style = PaintingStyle.stroke,
-    );
+          shadowPath,
+          Paint()
+            ..color = Colors.white
+            ..style = PaintingStyle.stroke
+      );
     }
 
     // Shadow ↑
@@ -222,7 +227,7 @@ class EffectPainter extends CustomPainter {
       ..translate(-cfpX, -cfpY);
 
     canvas.drawPath(centerForwardPowerPath.transform(matrix4centerForwardPower.storage), centerForwardPowerPaint);
-    if (debug) {
+    if (isDebug) {
       canvas.drawPath(
           centerForwardPowerPath.transform(matrix4centerForwardPower.storage),
           Paint()
@@ -260,7 +265,7 @@ class EffectPainter extends CustomPainter {
       ..translate(-cfX, -cfY);
 
     canvas.drawPath(centerForwardPath.transform(matrix4centerForward.storage), centerForwardPaint);
-    if (debug) {
+    if (isDebug) {
       canvas.drawPath(
           centerForwardPath.transform(matrix4centerForward.storage),
           Paint()
@@ -292,18 +297,18 @@ class EffectPainter extends CustomPainter {
     centerLightPath.close();
 
     canvas.drawPath(centerLightPath, centerPaint);
-    if (debug) {
+    if (isDebug) {
       canvas.drawPath(
           centerLightPath,
           Paint()
-            ..color = Colors.cyan
+            ..color = Colors.brown
             ..style = PaintingStyle.stroke
       );
     }
 
     // CenterLight ↑
 
-    if (debug) {
+    if (isDebug) {
       final safePaint = Paint()
         ..color = Colors.blue
         ..style = PaintingStyle.stroke;
@@ -321,7 +326,8 @@ class EffectPainter extends CustomPainter {
   bool shouldRepaint(EffectPainter oldDelegate) {
     return sliderThumbSize != oldDelegate.sliderThumbSize
       || sliderThumbCenter != oldDelegate.sliderThumbCenter
-      || albumCoverCenter != oldDelegate.albumCoverCenter;
+      || albumCoverCenter != oldDelegate.albumCoverCenter
+      || isDebug != oldDelegate.isDebug;
   }
 }
 
@@ -352,6 +358,7 @@ class PlayerOverlay extends StatelessWidget {
                   sliderThumbSize: sliderThumbSize,
                   sliderThumbCenter: sliderThumbCenter,
                   albumCoverCenter: albumCoverCenter,
+                  isDebug: playerViewModel.isDebug,
                 ),
                 size: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
               );

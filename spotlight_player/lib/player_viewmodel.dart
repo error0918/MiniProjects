@@ -24,6 +24,7 @@ class PlayerViewModel extends ChangeNotifier {
   late AudioPlayer _player;
   String _title = "Heroes Tonight";
   String _artist = "Janji, Johnning";
+  bool _isDebug = false;
   bool _isControlling = false;
   bool _isFavorite = false;
   bool _isShuffle = false;
@@ -40,6 +41,7 @@ class PlayerViewModel extends ChangeNotifier {
     _artist = value;
     notifyListeners();
   }
+  bool get isDebug => _isDebug;
   bool get isControlling => _isControlling;
   bool get isFavorite => _isFavorite;
   bool get isShuffle => _isShuffle;
@@ -137,6 +139,15 @@ class PlayerViewModel extends ChangeNotifier {
       }
     }
     return null;
+  }
+
+  void toggleIsDebug([bool? isDebug]) {
+    if (isDebug == null) {
+      _isDebug = !_isDebug;
+    } else {
+      _isDebug = isDebug;
+    }
+    notifyListeners();
   }
 
   void toggleIsFavorite([bool? isFavorite]) {
