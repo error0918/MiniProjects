@@ -161,7 +161,7 @@ ColorScheme darkScheme() {
 
 
 final extendedColors = (
-  shadow: Colors.black.withAlpha(63),
+  shadow: Colors.black.withAlpha(127),
   light: Colors.white.withAlpha(63),
   powerLight: Color(0xFFE7F6FF).withAlpha(127),
 );

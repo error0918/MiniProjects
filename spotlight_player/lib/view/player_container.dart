@@ -147,7 +147,7 @@ class PlayerContainer extends StatelessWidget {
                       child: Slider(
                         key: playerViewModel.sliderKey,
                         value: playerViewModel.musicTime,
-                        onChanged: (double value) => playerViewModel.seek((value * 1000).floor()),
+                        onChanged: (double value) => playerViewModel.seeking((value * 1000).floor()),
                         onChangeStart: (double value) async { playerViewModel.controlStart(); },
                         onChangeEnd: (double value) async { playerViewModel.controlEnd(); },
                         min: 0.0,

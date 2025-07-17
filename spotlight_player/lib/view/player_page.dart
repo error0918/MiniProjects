@@ -33,7 +33,13 @@ class PlayerPage extends StatelessWidget {
                   SafeArea(
                     child: PlayerContainer(),
                   ),
-                  if (isControlling) PlayerOverlay(),
+                  IgnorePointer(
+                    child: AnimatedOpacity(
+                      opacity: isControlling ? 1.0 : 0,
+                      duration: Duration(milliseconds: 100),
+                      child: PlayerOverlay(),
+                    ),
+                  ),
                 ],
               );
             },

@@ -83,7 +83,8 @@ class PlayerViewModel extends ChangeNotifier {
 
   Size? getSliderSize() {
     if (sliderKey.currentContext != null) {
-      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      RenderBox? renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox?;
+      if (renderBox == null || !renderBox.hasSize) return null;
       return renderBox.size;
     }
     return null;
@@ -91,7 +92,8 @@ class PlayerViewModel extends ChangeNotifier {
 
   Offset? getSliderPosition() {
     if (sliderKey.currentContext != null) {
-      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      RenderBox? renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox?;
+      if (renderBox == null || !renderBox.hasSize) return null;
       return renderBox.localToGlobal(Offset.zero);
     }
     return null;
@@ -99,7 +101,8 @@ class PlayerViewModel extends ChangeNotifier {
 
   Offset? getAlbumCoverCenter() {
     if (sliderKey.currentContext != null) {
-      RenderBox renderBox = albumCoverKey.currentContext!.findRenderObject() as RenderBox;
+      RenderBox? renderBox = albumCoverKey.currentContext!.findRenderObject() as RenderBox?;
+      if (renderBox == null || !renderBox.hasSize) return null;
       final position = renderBox.localToGlobal(Offset.zero);
       final size = renderBox.size;
       return Offset(
@@ -112,7 +115,8 @@ class PlayerViewModel extends ChangeNotifier {
 
   Offset? getSliderThumbCenter() {
     if (sliderKey.currentContext != null) {
-      RenderBox renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox;
+      RenderBox? renderBox = sliderKey.currentContext!.findRenderObject() as RenderBox?;
+      if (renderBox == null || !renderBox.hasSize) return null;
       final position = renderBox.localToGlobal(Offset.zero);
       final size = renderBox.size;
       if (musicRate * size.width < 0.5 * sliderThumbSize.width) {
@@ -171,8 +175,8 @@ class PlayerViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void seek(int milliseconds) {
-    _player.seek(Duration(milliseconds: milliseconds));
+  void seeking(int milliseconds) {
+    musicTimeNotifier.value = milliseconds / 1000.0;
   }
 
   Future<void> controlStart() async {
@@ -188,6 +192,7 @@ class PlayerViewModel extends ChangeNotifier {
 
   Future<void> controlEnd() async {
     _isControlling = false;
+    await _player.seek(Duration(milliseconds: (musicTimeNotifier.value * 1000).floor()));
     if (_isPlayingWhenControlling) await _player.resume();
     notifyListeners();
   }

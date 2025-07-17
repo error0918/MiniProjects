@@ -6,7 +6,8 @@ import '/view/theme.dart' as theme;
 
 
 class EffectPainter extends CustomPainter {
-  final _safeArea = 20.0;
+  final debug = false;
+  final _safeArea = -20.0;
 
   final Size sliderThumbSize;
   final Offset sliderThumbCenter;
@@ -25,51 +26,53 @@ class EffectPainter extends CustomPainter {
     final (a, b) = (albumCoverCenter.dx, albumCoverCenter.dy);
 
     final septa = a == b ? pi / 2 : atan((y - b) / (a - x));
-    final (lSepta, rSepta) = (septa + pi / 12, septa - pi / 12);
+    final (lSepta, rSepta) = (septa + pi / 9, septa - pi / 9);
 
     final (lTargetX, rTargetX) = (x + (y - _safeArea) / tan(lSepta), x + (y - _safeArea) / tan(rSepta));
     final (lTargetY, rTargetY) = (y - ((x - _safeArea) * tan(lSepta)).abs(), y - ((X - x - _safeArea) * tan(rSepta)).abs());
 
+    final shadowPaint = Paint()
+      ..color = theme.extendedColors.shadow;
+    shadowPaint.maskFilter = MaskFilter.blur(BlurStyle.normal, 5);
+    final shadowPath = Path();
+
+    shadowPath.moveTo(x, y);
     if (lTargetX >= _safeArea) {
-      canvas.drawLine(
-        sliderThumbCenter,
-        Offset(lTargetX, _safeArea),
-        Paint()..color = Colors.white,
-      );
+      shadowPath.lineTo(lTargetX, _safeArea);
+      shadowPath.lineTo(_safeArea, _safeArea);
+      if (debug) canvas.drawLine(sliderThumbCenter, Offset(lTargetX, _safeArea), Paint()..color = Colors.white);
     } else {
-      canvas.drawLine(
-        sliderThumbCenter,
-        Offset(_safeArea, lTargetY),
-        Paint()..color = Colors.white,
-      );
+      shadowPath.lineTo(_safeArea, lTargetY);
+      if (debug) canvas.drawLine(sliderThumbCenter, Offset(_safeArea, lTargetY), Paint()..color = Colors.white);
     }
+    shadowPath.lineTo(_safeArea, Y - _safeArea);
+    shadowPath.lineTo(X - _safeArea, Y - _safeArea);
 
     if (rTargetX <= X - _safeArea) {
-      canvas.drawLine(
-        sliderThumbCenter,
-        Offset(rTargetX, _safeArea),
-        Paint()..color = Colors.red,
-      );
+      shadowPath.lineTo(X - _safeArea, _safeArea);
+      shadowPath.lineTo(rTargetX, _safeArea);
+      if (debug) canvas.drawLine(sliderThumbCenter, Offset(rTargetX, _safeArea), Paint()..color = Colors.red);
     } else {
-      canvas.drawLine(
-        sliderThumbCenter,
-        Offset(X - _safeArea, rTargetY),
-        Paint()..color = Colors.red,
-      );
+      shadowPath.lineTo(X - _safeArea, rTargetY);
+      if (debug) canvas.drawLine(sliderThumbCenter, Offset(X - _safeArea, rTargetY), Paint()..color = Colors.red);
     }
+    shadowPath.moveTo(x, y);
+    shadowPath.close();
 
-    final safePaint = Paint()
-      ..color = Colors.blue
-      ..style = PaintingStyle.stroke;
-    final safePath = Path();
-    safePath.moveTo(_safeArea, _safeArea);
-    safePath.lineTo(_safeArea, Y - _safeArea);
-    safePath.lineTo(X - _safeArea, Y - _safeArea);
-    safePath.lineTo(X - _safeArea, _safeArea);
-    safePath.lineTo(_safeArea, _safeArea);
-    canvas.drawPath(safePath, safePaint);
+    canvas.drawPath(shadowPath, shadowPaint);
 
-    canvas.drawPaint(Paint()..color = theme.extendedColors.shadow);
+    if (debug) {
+      final safePaint = Paint()
+        ..color = Colors.blue
+        ..style = PaintingStyle.stroke;
+      final safePath = Path();
+      safePath.moveTo(_safeArea, _safeArea);
+      safePath.lineTo(_safeArea, Y - _safeArea);
+      safePath.lineTo(X - _safeArea, Y - _safeArea);
+      safePath.lineTo(X - _safeArea, _safeArea);
+      safePath.lineTo(_safeArea, _safeArea);
+      canvas.drawPath(safePath, safePaint);
+    }
   }
 
   @override
@@ -93,6 +96,8 @@ class PlayerOverlay extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return LayoutBuilder(
           builder: (BuildContext context, BoxConstraints boxConstraints) {
+            if (!WidgetsBinding.instance.firstFrameRasterized) return Container();
+
             final sliderThumbSize = playerViewModel.sliderThumbSize;
             final sliderThumbCenter = playerViewModel.getSliderThumbCenter();
             final albumCoverCenter = playerViewModel.getAlbumCoverCenter();
