@@ -25,7 +25,8 @@ class EffectPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final (X, Y) = (size.width, size.height);
     final (w, h) = (sliderThumbSize.width, sliderThumbSize.height);
-    final (x, y) = (sliderThumbCenter.dx, sliderThumbCenter.dy);
+    final (x, y) = (sliderThumbCenter.dx, sliderThumbCenter.dy - h / 2);
+    //final (x, y) = (sliderThumbCenter.dx, sliderThumbCenter.dy);
     final (a, b) = (albumCoverCenter.dx, albumCoverCenter.dy);
 
     final septaRaw = a == b ? pi / 2 : atan2(y - b, a - x);
@@ -283,17 +284,17 @@ class EffectPainter extends CustomPainter {
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6);
     final centerLightPath = Path();
 
-    centerLightPath.moveTo(x - w / 2 - centerRadius, y - h / 2);
+    centerLightPath.moveTo(x - w / 2 - centerRadius, y);
     centerLightPath.arcToPoint(
-      Offset(x + w / 2 + centerRadius, y - h / 2),
+      Offset(x + w / 2 + centerRadius, y),
       radius: Radius.circular(centerRadius),
     );
-    centerLightPath.lineTo(x + w / 2 + centerRadius, y + h / 2);
+    centerLightPath.lineTo(x + w / 2 + centerRadius, y + h);
     centerLightPath.arcToPoint(
-      Offset(x - w / 2 - centerRadius, y + h / 2),
+      Offset(x - w / 2 - centerRadius, y + h),
       radius: Radius.circular(centerRadius),
     );
-    centerLightPath.lineTo(x - w / 2 - centerRadius, y + h / 2);
+    centerLightPath.lineTo(x - w / 2 - centerRadius, y + h);
     centerLightPath.close();
 
     canvas.drawPath(centerLightPath, centerPaint);
