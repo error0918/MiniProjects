@@ -1,4 +1,5 @@
 import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_size/window_size.dart';
@@ -9,9 +10,11 @@ import '/view/theme.dart' as theme;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-    setWindowTitle("SpotlightPlayer");
-    setWindowMinSize(Size(360, 720));
+  if (!kIsWeb) {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+      setWindowTitle("SpotlightPlayer");
+      setWindowMinSize(Size(360, 720));
+    }
   }
   runApp(const MyApp());
 }
