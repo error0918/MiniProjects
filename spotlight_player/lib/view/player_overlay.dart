@@ -274,7 +274,7 @@ class EffectPainter extends CustomPainter {
     // CenterForward ↑
     // CenterLight ↓
 
-    final centerRadius = 32.0;
+    final centerRadius = 24.0;
     final centerPaint = Paint()
       ..color = theme.extendedColors.light.withAlpha(255)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6);

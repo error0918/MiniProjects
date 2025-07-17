@@ -211,13 +211,17 @@ class PlayerContainer extends StatelessWidget {
               ),
               builder: (BuildContext context, Widget? child) {
                 return Column(
-                  spacing: 8.0,
+                  spacing: 4.0,
                   children: [
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         valueIndicatorColor: Theme.of(context).colorScheme.onPrimaryContainer,
                         valueIndicatorTextStyle: TextStyle(color: Theme.of(context).colorScheme.primaryContainer),
                         overlayShape: SliderComponentShape.noOverlay,
+                        thumbSize: WidgetStateProperty.resolveWith<Size>((states) {
+                          if (states.contains(WidgetState.pressed)) return Size(0, 32);
+                          return Size(4, 32);
+                        })
                       ),
                       child: Slider(
                         key: playerViewModel.sliderKey,
