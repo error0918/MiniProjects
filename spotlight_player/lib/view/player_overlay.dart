@@ -126,7 +126,7 @@ class EffectPainter extends CustomPainter {
     // SidePower ↑
     // RadiusPower ↓
 
-    final rpRadius = 80.0;
+    final rpRadius = 96.0;
     final (rplTargetX, rprTargetX) = (x + rpRadius * cos(lSepta), x + rpRadius * cos(rSepta));
     final (rplTargetY, rprTargetY) = (y - (rpRadius * sin(lSepta)).abs(), y - (rpRadius * sin(rSepta)).abs());
 
@@ -139,7 +139,7 @@ class EffectPainter extends CustomPainter {
     radiusPowerPowerPath.lineTo(rplTargetX, rplTargetY);
     radiusPowerPowerPath.arcToPoint(
       Offset(rprTargetX, rprTargetY),
-      radius: Radius.circular(40.0),
+      radius: Radius.circular(rpRadius),
     );
     radiusPowerPowerPath.lineTo(x, y);
     radiusPowerPowerPath.close();

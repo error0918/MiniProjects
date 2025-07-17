@@ -1,11 +1,20 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:window_size/window_size.dart';
 import '/player_viewmodel.dart';
 import '/view/player_page.dart';
 import '/view/theme.dart' as theme;
 
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
+    setWindowTitle("SpotlightPlayer");
+    setWindowMinSize(Size(360, 720));
+  }
+  runApp(const MyApp());
+}
 
 
 class MyApp extends StatelessWidget {
