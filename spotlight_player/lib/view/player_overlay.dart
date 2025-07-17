@@ -27,33 +27,33 @@ class EffectPainter extends CustomPainter {
     final septa = a == b ? pi / 2 : atan((y - b) / (a - x));
     final (lSepta, rSepta) = (septa + pi / 12, septa - pi / 12);
 
-    final (lTargetX, rTargetX) = (x + y / tan(lSepta), x + y / tan(rSepta));
-    final (lTargetY, rTargetY) = (y - (x * tan(lSepta)).abs(), y - ((X - x) * tan(rSepta)).abs());
+    final (lTargetX, rTargetX) = (x + (y - _safeArea) / tan(lSepta), x + (y - _safeArea) / tan(rSepta));
+    final (lTargetY, rTargetY) = (y - ((x - _safeArea) * tan(lSepta)).abs(), y - ((X - x - _safeArea) * tan(rSepta)).abs());
 
-    if (lTargetX >= _safeArea / tan(lSepta).abs()) {
+    if (lTargetX >= _safeArea) {
       canvas.drawLine(
         sliderThumbCenter,
-        Offset(lTargetX - _safeArea / tan(lSepta), _safeArea),
+        Offset(lTargetX, _safeArea),
         Paint()..color = Colors.white,
       );
     } else {
       canvas.drawLine(
         sliderThumbCenter,
-        Offset(_safeArea, lTargetY - tan(lSepta) * _safeArea),
+        Offset(_safeArea, lTargetY),
         Paint()..color = Colors.white,
       );
     }
 
-    if (rTargetX <= X - _safeArea / tan(rSepta).abs()) {
+    if (rTargetX <= X - _safeArea) {
       canvas.drawLine(
         sliderThumbCenter,
-        Offset(rTargetX - _safeArea / tan(rSepta), _safeArea),
+        Offset(rTargetX, _safeArea),
         Paint()..color = Colors.red,
       );
     } else {
       canvas.drawLine(
         sliderThumbCenter,
-        Offset(X - _safeArea, rTargetY + tan(rSepta) * _safeArea),
+        Offset(X - _safeArea, rTargetY),
         Paint()..color = Colors.red,
       );
     }
