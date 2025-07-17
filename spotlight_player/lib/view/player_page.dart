@@ -4,8 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import '/player_viewmodel.dart';
 import '/view/player_overlay.dart';
 import '/view/player_container.dart';
 
@@ -21,28 +19,15 @@ class PlayerPage extends StatelessWidget {
     return Scaffold(
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints boxConstraints) {
-          return Selector<PlayerViewModel, (bool, bool)>(
-            selector: (BuildContext context, PlayerViewModel playerViewModel) => (playerViewModel.isControlling, playerViewModel.isDebug),
-            builder: (BuildContext context, (bool isControlling, bool isDebug) variables, Widget? child) {
-              return Stack(
-                children: [
-                  BackgroundContainer(
-                    width: boxConstraints.maxWidth,
-                    height: boxConstraints.maxHeight,
-                  ),
-                  SafeArea(
-                    child: PlayerContainer(),
-                  ),
-                  IgnorePointer(
-                    child: AnimatedOpacity(
-                      opacity: variables.$1 ? 1.0 : 0,
-                      duration: Duration(milliseconds: 100),
-                      child: PlayerOverlay(),
-                    ),
-                  ),
-                ],
-              );
-            },
+          return Stack(
+            children: [
+              BackgroundContainer(
+                width: boxConstraints.maxWidth,
+                height: boxConstraints.maxHeight,
+              ),
+              SafeArea(child: PlayerContainer()),
+              IgnorePointer(child: PlayerOverlay()),
+            ],
           );
         },
       ),

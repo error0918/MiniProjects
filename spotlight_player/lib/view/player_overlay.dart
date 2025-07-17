@@ -353,14 +353,23 @@ class PlayerOverlay extends StatelessWidget {
             if (sliderThumbCenter == null || albumCoverCenter == null) {
               return Container();
             } else {
-              return CustomPaint(
-                painter: EffectPainter(
-                  sliderThumbSize: sliderThumbSize,
-                  sliderThumbCenter: sliderThumbCenter,
-                  albumCoverCenter: albumCoverCenter,
-                  isDebug: playerViewModel.isDebug,
-                ),
-                size: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
+              return Selector<PlayerViewModel, (bool, bool)>(
+                selector: (BuildContext context, PlayerViewModel playerViewModel) => (playerViewModel.isControlling, playerViewModel.isDebug),
+                builder: (BuildContext context, (bool isControlling, bool isDebug) variables, Widget? child) {
+                  return AnimatedOpacity(
+                    opacity: variables.$1 ? 1.0 : 0,
+                    duration: Duration(milliseconds: 100),
+                    child: CustomPaint(
+                      painter: EffectPainter(
+                        sliderThumbSize: sliderThumbSize,
+                        sliderThumbCenter: sliderThumbCenter,
+                        albumCoverCenter: albumCoverCenter,
+                        isDebug: playerViewModel.isDebug,
+                      ),
+                      size: Size(boxConstraints.maxWidth, boxConstraints.maxHeight),
+                    ),
+                  );
+                },
               );
             }
           },
