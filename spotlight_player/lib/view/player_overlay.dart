@@ -9,13 +9,11 @@ class EffectPainter extends CustomPainter {
   final _safeArea = -20.0;
   final _scatterRadian = pi / 7;
 
-  final Size sliderThumbSize;
   final Offset sliderThumbCenter;
   final Offset albumCoverCenter;
   final bool isDebug;
 
   const EffectPainter({
-    required this.sliderThumbSize,
     required this.sliderThumbCenter,
     required this.albumCoverCenter,
     this.isDebug = false,
@@ -24,7 +22,6 @@ class EffectPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final (X, Y) = (size.width, size.height);
-    final (w, h) = (sliderThumbSize.width, sliderThumbSize.height);
     final (x, y) = (sliderThumbCenter.dx, sliderThumbCenter.dy);
     final (a, b) = (albumCoverCenter.dx, albumCoverCenter.dy);
 
@@ -277,24 +274,18 @@ class EffectPainter extends CustomPainter {
     // CenterForward ↑
     // CenterLight ↓
 
-    final centerRadius = 12.0;
+    final centerRadius = 32.0;
     final centerPaint = Paint()
-      ..color = theme.extendedColors.light
+      ..color = theme.extendedColors.light.withAlpha(255)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6);
     final centerLightPath = Path();
 
-    centerLightPath.moveTo(x - w / 2 - centerRadius, y - h / 2);
-    centerLightPath.arcToPoint(
-      Offset(x + w / 2 + centerRadius, y - h / 2),
-      radius: Radius.circular(centerRadius),
+    centerLightPath.addOval(
+      Rect.fromCircle(
+        center: Offset(x, y),
+        radius: centerRadius
+      )
     );
-    centerLightPath.lineTo(x + w / 2 + centerRadius, y + h / 2);
-    centerLightPath.arcToPoint(
-      Offset(x - w / 2 - centerRadius, y + h / 2),
-      radius: Radius.circular(centerRadius),
-    );
-    centerLightPath.lineTo(x - w / 2 - centerRadius, y + h / 2);
-    centerLightPath.close();
 
     canvas.drawPath(centerLightPath, centerPaint);
     if (isDebug) {
@@ -324,8 +315,7 @@ class EffectPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(EffectPainter oldDelegate) {
-    return sliderThumbSize != oldDelegate.sliderThumbSize
-      || sliderThumbCenter != oldDelegate.sliderThumbCenter
+    return sliderThumbCenter != oldDelegate.sliderThumbCenter
       || albumCoverCenter != oldDelegate.albumCoverCenter
       || isDebug != oldDelegate.isDebug;
   }
@@ -346,7 +336,6 @@ class PlayerOverlay extends StatelessWidget {
           builder: (BuildContext context, BoxConstraints boxConstraints) {
             if (!WidgetsBinding.instance.firstFrameRasterized) return Container();
 
-            final sliderThumbSize = playerViewModel.sliderThumbSize;
             final sliderThumbCenter = playerViewModel.getSliderThumbCenter();
             final albumCoverCenter = playerViewModel.getAlbumCoverCenter();
 
@@ -361,7 +350,6 @@ class PlayerOverlay extends StatelessWidget {
                     duration: Duration(milliseconds: 100),
                     child: CustomPaint(
                       painter: EffectPainter(
-                        sliderThumbSize: sliderThumbSize,
                         sliderThumbCenter: sliderThumbCenter,
                         albumCoverCenter: albumCoverCenter,
                         isDebug: playerViewModel.isDebug,
