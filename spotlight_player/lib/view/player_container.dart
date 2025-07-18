@@ -95,7 +95,7 @@ class PlayerContainer extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        textScaler: TextScaler.linear(1.8),
+                        textScaler: TextScaler.linear(1.6),
                       ),
                       Text(
                         playerViewModel.artist,
@@ -103,7 +103,7 @@ class PlayerContainer extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                           overflow: TextOverflow.ellipsis,
                         ),
-                        textScaler: TextScaler.linear(1.25),
+                        textScaler: TextScaler.linear(1),
                       ),
                     ],
                   ),
@@ -116,8 +116,8 @@ class PlayerContainer extends StatelessWidget {
                   style: IconButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
                     foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                    iconSize: 24.0,
-                    padding: EdgeInsets.all(8.0),
+                    iconSize: 18.0,
+                    padding: EdgeInsets.all(6.0),
                   ),
                 ),
                 IconButton(
@@ -143,7 +143,7 @@ class PlayerContainer extends StatelessWidget {
                               sigmaY: 4,
                             ),
                             child: Container(
-                              padding: EdgeInsets.all(12.0),
+                              padding: EdgeInsets.all(8.0),
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -169,7 +169,7 @@ class PlayerContainer extends StatelessWidget {
                                           ),
                                         ),
                                         Transform.scale(
-                                          scale: 0.8,
+                                          scale: 0.75,
                                           child: Switch(
                                             value: playerViewModel.isDebug,
                                             onChanged: (value) => playerViewModel.toggleIsDebug(),
@@ -198,8 +198,8 @@ class PlayerContainer extends StatelessWidget {
                   style: IconButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(63),
                     foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-                    iconSize: 24.0,
-                    padding: EdgeInsets.all(8.0),
+                    iconSize: 18.0,
+                    padding: EdgeInsets.all(6.0),
                   ),
                 ),
               ],
@@ -211,7 +211,6 @@ class PlayerContainer extends StatelessWidget {
               ),
               builder: (BuildContext context, Widget? child) {
                 return Column(
-                  spacing: 4.0,
                   children: [
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
@@ -277,7 +276,7 @@ class PlayerContainer extends StatelessWidget {
               },
             ),
 
-            SizedBox(height: 24.0),
+            SizedBox(height: 12.0),
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -338,7 +337,7 @@ class PlayerContainer extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 24.0),
+            SizedBox(height: 12.0),
 
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -350,6 +349,7 @@ class PlayerContainer extends StatelessWidget {
                   style: IconButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                     iconSize: 24.0,
+                    padding: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                   ),
                 ),
                 IconButton(
@@ -358,6 +358,7 @@ class PlayerContainer extends StatelessWidget {
                   style: IconButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                     iconSize: 24.0,
+                    padding: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                   ),
                 ),
                 IconButton(
@@ -366,6 +367,7 @@ class PlayerContainer extends StatelessWidget {
                   style: IconButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(127),
                     iconSize: 24.0,
+                    padding: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
                   ),
                 ),
               ],
